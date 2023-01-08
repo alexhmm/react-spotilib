@@ -1,0 +1,11 @@
+.app {
+  @apply flex flex-col min-h-screen w-full;
+  &-main {
+    @apply flex w-full;
+    &-content {
+      @apply box-border grow p-2;
+      @apply sm:p-4;
+      @apply lg:p-8;
+    }
+  }
+}

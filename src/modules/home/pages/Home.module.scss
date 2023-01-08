@@ -1,13 +1,13 @@
 .home {
-  @apply flex flex-col m-4 lg:m-8;
+  @apply flex flex-col;
 }
 
 .home-content {
-  @apply flex items-center justify-center pt-4;
+  @apply flex items-center pt-4;
 }
 
 .home-header {
-  @apply border-0 border-b border-solid flex items-center justify-center m-auto pb-4 text-lg w-full lg:text-xl lg:w-96;
+  @apply border-0 border-b border-solid flex items-center pb-4 text-lg w-full lg:text-xl lg:w-96;
   &-text {
     @apply mr-2;
   }
