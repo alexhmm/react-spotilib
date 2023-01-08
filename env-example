@@ -1,0 +1,11 @@
+# Client ID
+
+REACT_APP_CLIENT_ID=
+
+# Client Secret
+
+REACT_APP_CLIENT_SECRET=
+
+# Redirect URI
+
+REACT_APP_REDIRECT_URI=
