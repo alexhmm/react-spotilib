@@ -44,7 +44,8 @@ export const useAuth = () => {
       `https://accounts.spotify.com/authorize?${new URLSearchParams({
         response_type: 'code',
         client_id: process.env.REACT_APP_CLIENT_ID ?? '',
-        scope: 'user-read-private user-read-email user-modify-playback-state',
+        scope:
+          'playlist-read-private user-read-private user-read-email user-modify-playback-state',
         redirect_uri: process.env.REACT_APP_REDIRECT_URI ?? '',
         state,
       })}`

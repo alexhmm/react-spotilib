@@ -17,7 +17,6 @@ export const useLogout = () => {
    * Handler to logout.
    */
   const logout = () => {
-    console.log('logout');
     // Remove access token from local storage
     localStorage.removeItem('app:token');
 
