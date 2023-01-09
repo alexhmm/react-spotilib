@@ -9,9 +9,6 @@ import { useAuth } from '../../use-auth.hook';
 // Stores
 import { useAuthStore } from '../../use-auth.store';
 
-// Styles
-import styles from './Auth.module.scss';
-
 const Auth = () => {
   const { tokenGet } = useAuth();
   const navigate = useNavigate();
@@ -53,11 +50,7 @@ const Auth = () => {
     // eslint-disable-next-line
   }, []);
 
-  return (
-    <div className={styles['auth']}>
-      <CircularProgress />
-    </div>
-  );
+  return <CircularProgress />;
 };
 
 export default Auth;

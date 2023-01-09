@@ -1,3 +1,6 @@
 .login {
-  @apply flex justify-center w-full;
+  @apply flex flex-col;
+  &-text {
+    @apply mb-4;
+  }
 }
