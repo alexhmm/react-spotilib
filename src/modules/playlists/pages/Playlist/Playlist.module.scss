@@ -1,0 +1,35 @@
+.playlist {
+  @apply flex flex-col;
+}
+
+.playlist-content {
+  @apply flex flex-col;
+}
+
+.playlist-header {
+  @apply flex mb-4 w-full lg:items-end lg:mb-8;
+  &-img {
+    @apply flex-shrink-0 pr-2 lg:pr-4;
+    & img {
+      @apply flex-shrink-0 h-32 object-cover shadow-2xl w-32 lg:h-48 lg:w-48;
+    }
+  }
+  &-info {
+    @apply flex flex-col pl-2 lg:pl-4;
+    &-description {
+      @apply opacity-75 mb-2 text-sm;
+    }
+    &-meta {
+      @apply flex items-center mb-2 text-sm uppercase;
+      &-public {
+        @apply ml-2 opacity-75;
+      }
+      &-type {
+        @apply font-bold;
+      }
+    }
+    &-tracks {
+      @apply mb-2 text-sm;
+    }
+  }
+}

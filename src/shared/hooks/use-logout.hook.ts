@@ -8,7 +8,7 @@ export const useLogout = () => {
   const navigate = useNavigate();
 
   // Auth store state
-  const [resetAuthState] = useAuthStore((state) => [state.resetState]);
+  const [setToken] = useAuthStore((state) => [state.setToken]);
 
   // User store state
   const [resetUserState] = useUserStore((state) => [state.resetState]);
@@ -21,7 +21,7 @@ export const useLogout = () => {
     localStorage.removeItem('app:token');
 
     // Reset store states
-    resetAuthState();
+    setToken(undefined);
     resetUserState();
 
     // Navigate to home

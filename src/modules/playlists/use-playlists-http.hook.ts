@@ -2,14 +2,18 @@
 import { useFetch } from '../../shared/hooks/use-fetch.hook';
 
 // Types
-import { PlaylistsGetParams, PlaylistsGetResponse } from './playlists.types';
+import {
+  Playlist,
+  PlaylistsGetParams,
+  PlaylistsGetResponse,
+} from './playlists.types';
 
 export const usePlaylistsHttp = () => {
   const { fetchData } = useFetch();
 
   /**
-   * GET Contacts.
-   * @returns Contacts
+   * GET User playlists.
+   * @returns User playlists
    */
   const playlistsGet = async (
     params?: PlaylistsGetParams
@@ -25,7 +29,20 @@ export const usePlaylistsHttp = () => {
     );
   };
 
+  /**
+   * GET Playlist by id.
+   * @returns Playlist
+   */
+  const playlistGet = async (id?: string): Promise<Playlist | undefined> => {
+    if (id) {
+      return await fetchData(`playlists/${id}`);
+    } else {
+      return undefined;
+    }
+  };
+
   return {
     playlistsGet,
+    playlistGet,
   };
 };

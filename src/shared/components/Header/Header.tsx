@@ -72,12 +72,12 @@ const Header = () => {
         </Button>
         <Button
           onClick={() => {
-            i18n.language === 'en'
-              ? i18n.changeLanguage('de')
-              : i18n.changeLanguage('en');
+            i18n.language === 'en-US'
+              ? i18n.changeLanguage('de-DE')
+              : i18n.changeLanguage('en-US');
           }}
         >
-          {i18n.language === 'en'
+          {i18n.language === 'en-US'
             ? t('app.language.german')
             : t('app.language.english')}
         </Button>

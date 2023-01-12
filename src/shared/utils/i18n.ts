@@ -10,10 +10,10 @@ import { translationsDe } from '../translations/translations.de';
 import { translationsEn } from '../translations/translations.en';
 
 const resources = {
-  de: {
+  'de-DE': {
     translation: translationsDe,
   },
-  en: {
+  'en-US': {
     translation: translationsEn,
   },
 };
@@ -31,7 +31,7 @@ i18n
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     resources,
-    fallbackLng: 'de',
+    fallbackLng: 'de-DE',
     debug: true,
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default

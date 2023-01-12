@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
 // Router
+import { PlaylistsRouter } from './PlaylistsRouter';
 import { ProtectedRoute } from './ProtectedRoute';
 
 // Lazy-load pages
@@ -41,12 +42,20 @@ export const AppRouter = () => {
         }
       />
       <Route
-        path="notes"
+        path="/notes"
         element={
           <ProtectedRoute>
             <Suspense fallback={<CircularProgress />}>
               <Notes />
             </Suspense>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/playlists/*"
+        element={
+          <ProtectedRoute>
+            <PlaylistsRouter />
           </ProtectedRoute>
         }
       />

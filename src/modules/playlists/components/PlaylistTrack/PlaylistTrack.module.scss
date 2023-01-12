@@ -1,0 +1,33 @@
+.playlist-track {
+  @apply grid grid-cols-12 items-center mb-2;
+  &-added-at {
+    @apply hidden text-sm lg:col-span-2 lg:flex lg:opacity-80 lg:px-2;
+  }
+  &-album {
+    @apply hidden text-sm lg:col-span-3 lg:flex lg:opacity-80 lg:px-2;
+  }
+  &-duration {
+    @apply hidden text-sm lg:col-span-1 lg:flex lg:justify-end lg:opacity-80 lg:pl-2 lg:pr-4;
+  }
+  &-title {
+    @apply col-span-12 flex items-center truncate lg:col-span-6;
+    &-image {
+      @apply flex flex-shrink-0 pr-1 lg:pr-2;
+      & img {
+        @apply h-8 object-cover shadow-md w-8 lg:h-10 lg:w-10;
+      }
+    }
+    &-info {
+      @apply flex flex-col pl-1 truncate w-full lg:px-2;
+      &-artists {
+        @apply flex flex-wrap truncate;
+        &-item {
+          @apply opacity-80 text-sm;
+        }
+      }
+      &-name {
+        @apply truncate;
+      }
+    }
+  }
+}
