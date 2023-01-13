@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import { Box, Button } from '@mui/material';
 
 // Hooks
+import { useBreakpoints } from '../../hooks/use-breakpoints.hook';
 import { useFetch } from '../../hooks/use-fetch.hook';
 import { useLogout } from '../../hooks/use-logout.hook';
 
@@ -21,6 +22,7 @@ import styles from './Header.module.scss';
 import { Theme } from '../../types/shared.types';
 
 const Header = () => {
+  const { lgDown } = useBreakpoints();
   const { fetchData } = useFetch();
   const { logout } = useLogout();
   const { i18n, t } = useTranslation();
@@ -59,9 +61,14 @@ const Header = () => {
   return (
     <Box
       className={styles['header']}
-      sx={{ backgroundColor: 'background.default' }}
+      sx={{ backgroundColor: lgDown ? 'background.default' : undefined }}
     >
-      <Box className={styles['header-logo']}>Spotilib</Box>
+      <Box
+        className={styles['header-logo']}
+        sx={{ backgroundColor: lgDown ? undefined : 'bg.sidebar' }}
+      >
+        Spotilib
+      </Box>
       <div className={styles['header-info']}>
         <Button
           onClick={() =>

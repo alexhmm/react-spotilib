@@ -6,6 +6,11 @@ export const appTranslationsEN: AppTranslations = {
     german: 'German',
   },
   hello: 'Hello world!',
+  sidebar: {
+    home: 'Home',
+    library: 'Library',
+    search: 'Search',
+  },
   theme: {
     toggle: 'Toggle theme',
   },

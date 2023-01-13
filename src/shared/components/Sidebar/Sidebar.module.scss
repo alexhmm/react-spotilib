@@ -4,7 +4,7 @@
 }
 
 .sidebar-content {
-  @apply box-border flex flex-col h-[calc(100vh-192px)] pb-8 px-6 pt-4 overflow-y-auto relative w-full;
+  @apply box-border flex flex-col h-[calc(100vh-224px)] pb-8 px-6 pt-4 overflow-y-auto relative w-full;
   &-info {
     @apply h-full mt-4 opacity-75 justify-self-end text-xs;
   }
@@ -16,15 +16,21 @@
   }
 }
 
-.sidebar-link {
+.sidebar-item {
   @apply truncate w-full;
-  & a {
-    @apply duration-200 no-underline transition-colors truncate w-full;
+  &-link {
+    @apply duration-200 flex items-center no-underline transition-colors truncate w-full;
+    &-icon {
+      @apply flex items-center w-10;
+    }
+    &-text {
+      @apply no-underline truncate;
+    }
   }
 }
 
 .sidebar-nav {
-  @apply box-border flex flex-col grow h-32 justify-between pt-8 px-6 relative;
+  @apply box-border flex flex-col grow h-40 justify-between pt-8 px-6 relative;
   &-bg {
     @apply absolute h-4 left-0 -bottom-4 w-full z-10;
   }
