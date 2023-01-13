@@ -4,6 +4,9 @@
 
 .home-content {
   @apply flex items-center pt-4;
+  &-popovers {
+    @apply flex flex-wrap items-center my-4;
+  }
 }
 
 .home-header {
