@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Box, Button } from '@mui/material';
@@ -10,9 +10,8 @@ import { useLogout } from '../../hooks/use-logout.hook';
 
 // Stores
 import { useAuthStore } from '../../../modules/auth/use-auth.store';
+import { useSharedStore } from '../../stores/use-shared.store';
 import { useThemeStore } from '../../stores/use-theme.store';
-
-// Stores
 import { useUserStore } from '../../../modules/user/use-user.store';
 
 // Styles
@@ -27,6 +26,10 @@ const Header = () => {
   const { logout } = useLogout();
   const { i18n, t } = useTranslation();
 
+  // Refs
+  const headerBgRef = useRef<HTMLElement>(null);
+  const headerTitleRef = useRef<HTMLElement>(null);
+
   // User store state
   const [profile, setProfile] = useUserStore((state) => [
     state.profile,
@@ -35,6 +38,9 @@ const Header = () => {
 
   // Auth store state
   const [token] = useAuthStore((state) => [state.token]);
+
+  // Shared store state
+  const [headerTitle] = useSharedStore((state) => [state.headerTitle]);
 
   // Theme store state
   const [theme, setTheme] = useThemeStore((state) => [
@@ -58,6 +64,45 @@ const Header = () => {
     },
   });
 
+  // ####### //
+  // EFFECTS //
+  // ####### //
+
+  // Set refs style by scroll position
+  useEffect(() => {
+    const onScroll = (event: any) => {
+      const scrollTop = event.target.documentElement.scrollTop;
+      if (scrollTop < 150 && headerBgRef.current) {
+        headerBgRef.current.style.opacity = '0%';
+      }
+      if (scrollTop >= 150 && headerBgRef.current) {
+        headerBgRef.current.style.opacity = '100%';
+      }
+      if (scrollTop < 250 && headerTitleRef.current) {
+        headerTitleRef.current.style.opacity = '0%';
+        headerTitleRef.current.style.visibility = 'hidden';
+      }
+      if (scrollTop >= 250 && headerTitleRef.current) {
+        headerTitleRef.current.style.visibility = 'visible';
+        headerTitleRef.current.style.opacity = '100%';
+      }
+    };
+    !lgDown && window.addEventListener('scroll', onScroll);
+
+    // Set initial refs style
+    if (headerBgRef.current) {
+      headerBgRef.current.style.opacity = '0%';
+    }
+    if (headerTitleRef.current) {
+      headerTitleRef.current.style.opacity = '0%';
+      headerTitleRef.current.style.visibility = 'hidden';
+    }
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [headerBgRef, headerTitle, headerTitleRef, lgDown]);
+
   return (
     <Box
       className={styles['header']}
@@ -70,27 +115,39 @@ const Header = () => {
         Spotilib
       </Box>
       <div className={styles['header-info']}>
-        <Button
-          onClick={() =>
-            setTheme(theme === Theme.Light ? Theme.Dark : Theme.Light)
-          }
-        >
-          {t('app.theme.toggle')}
-        </Button>
-        <Button
-          onClick={() => {
-            i18n.language === 'en-US'
-              ? i18n.changeLanguage('de-DE')
-              : i18n.changeLanguage('en-US');
+        <Box className={styles['header-info-title']} ref={headerTitleRef}>
+          {headerTitle ?? ''}
+        </Box>
+        <div className={styles['header-info-content']}>
+          <Button
+            onClick={() =>
+              setTheme(theme === Theme.Light ? Theme.Dark : Theme.Light)
+            }
+          >
+            {t('app.theme.toggle')}
+          </Button>
+          <Button
+            onClick={() => {
+              i18n.language === 'en-US'
+                ? i18n.changeLanguage('de-DE')
+                : i18n.changeLanguage('en-US');
+            }}
+          >
+            {i18n.language === 'en-US'
+              ? t('app.language.german')
+              : t('app.language.english')}
+          </Button>
+          {profile?.display_name && (
+            <Button onClick={logout}>{profile?.display_name}</Button>
+          )}
+        </div>
+        <Box
+          className={styles['header-info-bg']}
+          ref={headerBgRef}
+          sx={{
+            backgroundColor: lgDown ? undefined : 'bg.sidebar',
           }}
-        >
-          {i18n.language === 'en-US'
-            ? t('app.language.german')
-            : t('app.language.english')}
-        </Button>
-        {profile?.display_name && (
-          <Button onClick={logout}>{profile?.display_name}</Button>
-        )}
+        ></Box>
       </div>
     </Box>
   );

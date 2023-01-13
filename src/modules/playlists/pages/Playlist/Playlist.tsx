@@ -13,6 +13,9 @@ import { usePlaylistsHttp } from '../../use-playlists-http.hook';
 // Styles
 import styles from './Playlist.module.scss';
 
+// Stores
+import { useSharedStore } from '../../../../shared/stores/use-shared.store';
+
 // Types
 import { Playlist as IPlaylist } from '../../playlists.types';
 
@@ -27,6 +30,9 @@ const Playlist = () => {
   // Component state
   const [playlist, setPlaylist] = useState<IPlaylist | undefined>(undefined);
 
+  // Shared store state
+  const [setHeaderTitle] = useSharedStore((state) => [state.setHeaderTitle]);
+
   // ####### //
   // QUERIES //
   // ####### //
@@ -39,8 +45,11 @@ const Playlist = () => {
       console.error('Error on getting profile:', error);
     },
     onSuccess: (data) => {
-      console.log('playlistQuery success', data);
       setPlaylist(data);
+      // Wait for transition animation
+      setTimeout(() => {
+        setHeaderTitle(data?.name);
+      }, 500);
     },
   });
 
@@ -51,6 +60,10 @@ const Playlist = () => {
   // Reset playlist on id change
   useEffect(() => {
     playlist && setPlaylist(undefined);
+    // eslint-disable-next-line
+    return () => {
+      setHeaderTitle(undefined);
+    };
     // eslint-disable-next-line
   }, [id]);
 

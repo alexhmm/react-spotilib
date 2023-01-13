@@ -108,14 +108,14 @@ export const themeDark = createTheme({
 export const themeLight = createTheme({
   breakpoints,
   bg: {
-    sidebar: '#fafafa',
+    sidebar: '#f9f9f9',
   },
   palette: {
     background: {
       default: '#fcfcfc',
     },
     bg: {
-      sidebar: '#fafafa',
+      sidebar: '#f9f9f9',
     },
     border: {
       app: '#eaeaea',

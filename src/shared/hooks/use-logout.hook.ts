@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Stores
 import { useAuthStore } from '../../modules/auth/use-auth.store';
+import { useSharedStore } from '../stores/use-shared.store';
 import { useUserStore } from '../../modules/user/use-user.store';
 
 export const useLogout = () => {
@@ -9,6 +10,9 @@ export const useLogout = () => {
 
   // Auth store state
   const [setToken] = useAuthStore((state) => [state.setToken]);
+
+  // Shared store state
+  const [resetSharedState] = useSharedStore((state) => [state.resetState]);
 
   // User store state
   const [resetUserState] = useUserStore((state) => [state.resetState]);
@@ -22,6 +26,7 @@ export const useLogout = () => {
 
     // Reset store states
     setToken(undefined);
+    resetSharedState();
     resetUserState();
 
     // Navigate to home
