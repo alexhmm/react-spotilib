@@ -1,0 +1,10 @@
+.artist-card {
+  @apply flex flex-col p-4 rounded-sm w-full;
+  &-image {
+    @apply aspect-square object-cover rounded-full shadow-xl w-full;
+  }
+  &-name {
+    @apply font-semibold mt-4 text-sm truncate;
+    @apply lg:mt-8;
+  }
+}

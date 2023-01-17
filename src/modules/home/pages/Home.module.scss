@@ -1,17 +1,43 @@
 .home {
-  @apply flex flex-col;
+  @apply flex flex-col @container;
 }
 
 .home-content {
   @apply flex items-center pt-4;
   &-popovers {
-    @apply flex flex-wrap items-center my-4;
+    @apply flex flex-wrap items-center mt-4 mb-32;
   }
 }
 
 .home-header {
-  @apply border-0 border-b border-solid flex items-center pb-4 text-lg w-full lg:text-xl lg:w-96;
+  @apply border-0 border-b border-solid flex items-center pb-4 text-lg mt-16 w-full lg:text-xl lg:w-96;
   &-text {
     @apply mr-2;
   }
+}
+
+.home-top-artists {
+  @apply gap-2 grid grid-cols-2 pb-4;
+  @apply lg:pb-8;
+  @apply @md:grid-cols-3;
+  @apply @xl:grid-cols-4;
+  @apply @2xl:gap-4 @2xl:grid-cols-5;
+  @apply @4xl:grid-cols-6;
+  @apply @6xl:grid-cols-7;
+  @apply @8xl:grid-cols-8;
+  @apply @10xl:grid-cols-9;
+  @apply @12xl:grid-cols-10;
+}
+
+.home-top-item-loading {
+  @apply opacity-50 rounded-sm;
+}
+
+.home-top-tracks {
+  @apply gap-2 grid grid-cols-1;
+  @apply @md:gap-2 @md:grid-cols-2;
+  @apply @2xl:gap-4;
+  @apply @4xl:grid-cols-3;
+  @apply @8xl:grid-cols-4;
+  @apply @12xl:grid-cols-5;
 }

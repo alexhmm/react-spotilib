@@ -1,14 +1,18 @@
-import { ExternalUrls } from '../../shared/types/shared.types';
+import {
+  ExternalUrls,
+  Followers,
+  Image,
+} from '../../shared/types/shared.types';
 // import { Track } from '../tracks/tracks.types';
 
 export interface Playlist {
   collaborative: boolean;
   description: string;
   external_urls: ExternalUrls;
-  followers: PlaylistFollowers;
+  followers: Followers;
   href: string;
   id: string;
-  images: PlaylistImage[];
+  images: Image[];
   name: string;
   owner: PlaylistOwner;
   primary_color: any;
@@ -17,17 +21,6 @@ export interface Playlist {
   tracks: PlaylistTracks;
   type: string;
   uri: string;
-}
-
-export interface PlaylistFollowers {
-  href: string;
-  total: number;
-}
-
-export interface PlaylistImage {
-  height: number;
-  url: string;
-  width: number;
 }
 
 export interface PlaylistOwner {

@@ -1,7 +1,3 @@
-// import { useTranslation } from 'react-i18next';
-// import { MultipleFieldErrors, ValidateResult } from 'react-hook-form';
-// import jwt_decode from 'jwt-decode';
-
 // Hooks
 import { useLogout } from '../../shared/hooks/use-logout.hook';
 
@@ -45,7 +41,7 @@ export const useAuth = () => {
         response_type: 'code',
         client_id: process.env.REACT_APP_CLIENT_ID ?? '',
         scope:
-          'playlist-read-private user-read-private user-read-email user-modify-playback-state',
+          'playlist-read-private user-modify-playback-state user-read-email user-read-private user-top-read',
         redirect_uri: process.env.REACT_APP_REDIRECT_URI ?? '',
         state,
       })}`

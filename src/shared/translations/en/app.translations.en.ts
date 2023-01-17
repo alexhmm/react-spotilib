@@ -1,7 +1,7 @@
 import { AppTranslations } from '../types/app.translations.interface';
 
 export const appTranslationsEN: AppTranslations = {
-  hello: 'Hello world!',
+  hello: 'Hello!',
   language: {
     english: 'English',
     german: 'German',
@@ -17,4 +17,6 @@ export const appTranslationsEN: AppTranslations = {
   theme: {
     toggle: 'Toggle theme',
   },
+  top_artists: 'Your top artists',
+  top_tracks: 'Your top tracks',
 };
