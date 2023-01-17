@@ -74,7 +74,6 @@ const Popover = (props: PopoverProps) => {
           paper: styles['popover-paper'],
           root: styles['popover'],
         }}
-        id={'123'}
         open={Boolean(props.anchor)}
         transformOrigin={
           props.transformOrigin ?? {

@@ -1,11 +1,14 @@
 import { AppTranslations } from '../types/app.translations.interface';
 
 export const appTranslationsDE: AppTranslations = {
+  hello: 'Hallo Welt!',
   language: {
     english: 'Englisch',
     german: 'Deutsch',
   },
-  hello: 'Hallo Welt!',
+  logout: 'Abmelden',
+  profile: 'Profil',
+  settings: 'Einstellungen',
   sidebar: {
     home: 'Start',
     library: 'Bibliothek',

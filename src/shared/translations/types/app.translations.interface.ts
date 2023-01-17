@@ -1,9 +1,12 @@
 export interface AppTranslations {
+  hello: string;
   language: {
     english: string;
     german: string;
   };
-  hello: string;
+  logout: string;
+  profile: string;
+  settings: string;
   sidebar: {
     home: string;
     library: string;

@@ -1,11 +1,14 @@
 import { AppTranslations } from '../types/app.translations.interface';
 
 export const appTranslationsEN: AppTranslations = {
+  hello: 'Hello world!',
   language: {
     english: 'English',
     german: 'German',
   },
-  hello: 'Hello world!',
+  logout: 'Logout',
+  profile: 'Profile',
+  settings: 'Settings',
   sidebar: {
     home: 'Home',
     library: 'Library',
