@@ -1,10 +1,11 @@
-import { memo, ReactNode, useEffect } from 'react';
+import { memo, ReactNode, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { useTranslation } from 'react-i18next';
-import { Box, Divider, useTheme } from '@mui/material';
+import { Box, CircularProgress, Divider, useTheme } from '@mui/material';
 import { IconName, IconPrefix } from '@fortawesome/free-solid-svg-icons';
 import clsx from 'clsx';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 // Hooks
 import { useFetch } from '../../hooks/use-fetch.hook';
@@ -58,7 +59,7 @@ const SidebarItem = (props: SidebarItemProps) => {
 
 const Sidebar = () => {
   const { handleError, handleRetry } = useFetch();
-  const { playlistsGetEffect } = usePlaylists();
+  const { playlistsAddEffect, playlistsGetEffect } = usePlaylists();
   const { playlistsGet } = usePlaylistsHttp();
   const theme = useTheme();
   const { t } = useTranslation();
@@ -72,6 +73,37 @@ const Sidebar = () => {
   // ######### //
   // MUTATIONS //
   // ######### //
+
+  // GET Add Playlists mutation
+  const playlistsAddMutation = useMutation(
+    (params?: PlaylistsGetParams) => playlistsGet(params),
+    {
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
+  // Set playlists data on mount
+  useEffect(() => {
+    if (playlistsAddMutation.data) {
+      try {
+        playlistsAddEffect({
+          items: playlistsAddMutation.data.items,
+          limit: playlistsAddMutation.data.limit,
+          offset: playlistsAddMutation.data.offset,
+          total: playlistsAddMutation.data.total,
+        });
+      } catch (error) {
+        console.error('ERROR on adding playlists:', error);
+      }
+    }
+    if (playlistsAddMutation.error) {
+      const errRes = playlistsAddMutation.error?.response;
+      if (errRes) {
+        handleError(errRes.status);
+      }
+    }
+    // eslint-disable-next-line
+  }, [playlistsAddMutation.data, playlistsAddMutation.error]);
 
   // GET Playlists mutation
   const playlistsGetMutation = useMutation(
@@ -116,6 +148,23 @@ const Sidebar = () => {
     // eslint-disable-next-line
   }, [token]);
 
+  // ######### //
+  // CALLBACKS //
+  // ######### //
+
+  /**
+   * Handler to add playlists.
+   */
+  const onAddPlaylists = useCallback(() => {
+    if (playlists.items.length < playlists.total) {
+      playlistsAddMutation.mutate({
+        limit: 25,
+        offset: playlists.offset,
+      });
+    }
+    // eslint-disable-next-line
+  }, [playlists]);
+
   return (
     <Box className={styles['sidebar']} sx={{ backgroundColor: 'bg.sidebar' }}>
       <div className={styles['sidebar-nav']}>
@@ -145,8 +194,16 @@ const Sidebar = () => {
           sx={{ color: 'border.app' }}
         />
       </div>
-      <div className={styles['sidebar-content']}>
-        <div className={styles['sidebar-content-playlists']}>
+      <div className={styles['sidebar-content']} id="content">
+        <InfiniteScroll
+          className={styles['sidebar-content-scroll']}
+          dataLength={playlists.items.length}
+          hasMore={!!token}
+          loader={null}
+          next={onAddPlaylists}
+          scrollableTarget="content"
+          scrollThreshold={1}
+        >
           {token && (
             <>
               {playlists &&
@@ -162,7 +219,8 @@ const Sidebar = () => {
                 ))}
             </>
           )}
-        </div>
+          {playlistsAddMutation.isLoading && <CircularProgress />}
+        </InfiniteScroll>
         <div className={styles['sidebar-content-info']}>© 2022 Spotilib</div>
       </div>
     </Box>

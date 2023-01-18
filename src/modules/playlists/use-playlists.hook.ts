@@ -24,6 +24,8 @@ export const usePlaylists = () => {
     ) {
       updatedPlaylists.offset =
         updatedPlaylists.offset + fetchedPlaylists.limit;
+    } else {
+      updatedPlaylists.offset = fetchedPlaylists.total;
     }
     if (fetchedPlaylists.total !== updatedPlaylists.offset) {
       updatedPlaylists.total = fetchedPlaylists.total;

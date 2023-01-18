@@ -6,13 +6,13 @@
 .sidebar-content {
   @apply box-border flex flex-col h-[calc(100vh-224px)] pb-8 px-6 pt-4 overflow-y-auto relative w-full;
   &-info {
-    @apply h-full mt-4 opacity-75 justify-self-end text-xs;
+    @apply mt-4 opacity-75 justify-self-end text-xs;
   }
-  &-playlists {
-    @apply flex flex-col w-full;
-    &-item {
-      @apply flex-1 min-w-0 mb-2 truncate w-full;
-    }
+  &-item {
+    @apply flex-1 min-w-0 mb-2 truncate w-full;
+  }
+  &-scroll {
+    overflow: hidden !important;
   }
 }
 
@@ -24,7 +24,7 @@
       @apply flex items-center w-10;
     }
     &-text {
-      @apply no-underline truncate;
+      @apply font-semibold no-underline text-sm truncate;
     }
   }
 }
