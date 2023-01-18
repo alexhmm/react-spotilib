@@ -7,12 +7,14 @@ import {
   PlaylistsGetParams,
   PlaylistsGetResponse,
 } from './playlists.types';
+import { TracksGetResponse } from '../tracks/tracks.types';
 
 export const usePlaylistsHttp = () => {
   const { fetchData } = useFetch();
 
   /**
    * GET User playlists.
+   * @param params PlaylistGetParams
    * @returns User playlists
    */
   const playlistsGet = async (
@@ -41,8 +43,30 @@ export const usePlaylistsHttp = () => {
     }
   };
 
+  /**
+   * GET Playlist tracks by offset.
+   * @param id Playlist id
+   * @param params PlaylistsGetParams
+   * @returns User playlists
+   */
+  const playlistTracksGet = async (data: {
+    id: string;
+    params?: PlaylistsGetParams;
+  }): Promise<TracksGetResponse | undefined> => {
+    return await fetchData(
+      `playlists/${data.id}/tracks`,
+      data.params && {
+        params: new URLSearchParams({
+          limit: data.params.limit.toString(),
+          offset: data.params.offset.toString(),
+        }),
+      }
+    );
+  };
+
   return {
     playlistsGet,
     playlistGet,
+    playlistTracksGet,
   };
 };

@@ -1,6 +1,6 @@
 import { ExternalUrls } from '../../shared/types/shared.types';
 
-export interface Track {
+export interface TrackMetaData {
   added_at: string;
   added_by: {
     external_urls: ExternalUrls;
@@ -11,12 +11,12 @@ export interface Track {
   };
   is_local: false;
   primary_color: any;
-  track: TrackDetail;
+  track: Track;
   video_thumbnail: { url: any };
 }
 
 export interface TopTracksGetResponse {
-  items: TrackDetail[];
+  items: Track[];
   total: number;
   limit: number;
   offset: number;
@@ -25,7 +25,7 @@ export interface TopTracksGetResponse {
   next: string;
 }
 
-export interface TrackDetail {
+export interface Track {
   album: any;
   artists: any[];
   available_markets: any[];
@@ -45,4 +45,14 @@ export interface TrackDetail {
   track_number: number;
   type: string;
   uri: string;
+}
+
+export interface TracksGetResponse {
+  items: TrackMetaData[];
+  total: number;
+  limit: number;
+  offset: number;
+  href: string;
+  previous: null;
+  next: string;
 }

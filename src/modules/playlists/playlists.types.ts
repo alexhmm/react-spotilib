@@ -3,7 +3,7 @@ import {
   Followers,
   Image,
 } from '../../shared/types/shared.types';
-// import { Track } from '../tracks/tracks.types';
+import { TrackMetaData } from '../tracks/tracks.types';
 
 export interface Playlist {
   collaborative: boolean;
@@ -34,8 +34,7 @@ export interface PlaylistOwner {
 
 export interface PlaylistTracks {
   href: string;
-  //   items: Track[];
-  items: any[];
+  items: TrackMetaData[];
   total: number;
 }
 

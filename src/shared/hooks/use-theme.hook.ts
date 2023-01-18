@@ -100,6 +100,9 @@ export const themeDark = createTheme({
     mode: 'dark',
     // orange,
     primary: primary,
+    text: {
+      secondary: 'rgba(255, 255, 255, 0.7)',
+    },
     // success,
   },
   typography,
@@ -123,6 +126,9 @@ export const themeLight = createTheme({
     mode: 'light',
     // orange,
     primary: primary,
+    text: {
+      secondary: 'rgba(0, 0, 0, 0.75)',
+    },
     // success,
     // text: {
     //   primary: '#444d58',

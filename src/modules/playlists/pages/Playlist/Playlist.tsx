@@ -1,6 +1,6 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import { CircularProgress } from '@mui/material';
 
@@ -17,14 +17,22 @@ import styles from './Playlist.module.scss';
 import { useSharedStore } from '../../../../shared/stores/use-shared.store';
 
 // Types
-import { Playlist as IPlaylist } from '../../playlists.types';
+import {
+  Playlist as IPlaylist,
+  PlaylistsGetParams,
+} from '../../playlists.types';
 
 // UI
 import H2 from '../../../../shared/ui/H2/H2';
+import { useFetch } from '../../../../shared/hooks/use-fetch.hook';
+import { usePlaylists } from '../../use-playlists.hook';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const Playlist = () => {
+  const { handleError, handleRetry } = useFetch();
   const { id } = useParams();
-  const { playlistGet } = usePlaylistsHttp();
+  const { playlistTracksGetEffect } = usePlaylists();
+  const { playlistGet, playlistTracksGet } = usePlaylistsHttp();
   const { t } = useTranslation();
 
   // Component state
@@ -53,6 +61,40 @@ const Playlist = () => {
     },
   });
 
+  // ######### //
+  // MUTATIONS //
+  // ######### //
+
+  // GET Playlist tracks mutation
+  const playlistTracksGetMutation = useMutation(
+    (data: { id: string; params?: PlaylistsGetParams }) =>
+      playlistTracksGet(data),
+    {
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
+  // Add playlist tracks
+  useEffect(() => {
+    if (playlistTracksGetMutation.data) {
+      console.log('playlistTracksGetMutation', playlistTracksGetMutation.data);
+      playlist &&
+        setPlaylist(
+          playlistTracksGetEffect(
+            playlistTracksGetMutation.data.items,
+            playlist
+          )
+        );
+    }
+    if (playlistTracksGetMutation.error) {
+      const errRes = playlistTracksGetMutation.error?.response;
+      if (errRes) {
+        handleError(errRes.status);
+      }
+    }
+    // eslint-disable-next-line
+  }, [playlistTracksGetMutation.data, playlistTracksGetMutation.error]);
+
   // ####### //
   // EFFECTS //
   // ####### //
@@ -67,11 +109,38 @@ const Playlist = () => {
     // eslint-disable-next-line
   }, [id]);
 
+  // ######### //
+  // CALLBACKS //
+  // ######### //
+
+  /**
+   * Handler to add tracks to playlist.
+   */
+  const onAddTracks = useCallback(() => {
+    if (
+      playlist?.id &&
+      playlist?.tracks.items.length < playlist?.tracks.total
+    ) {
+      playlistTracksGetMutation.mutate({
+        id: playlist.id,
+        params: { limit: 100, offset: playlist.tracks.items.length },
+      });
+    }
+    // eslint-disable-next-line
+  }, [playlist]);
+
   return (
-    <div className={styles['playlist']}>
+    <>
       {!playlist && playlistQuery.isLoading && <CircularProgress />}
       {playlist && (
-        <>
+        <InfiniteScroll
+          className={styles['playlist']}
+          dataLength={playlist?.tracks.items.length}
+          hasMore={true}
+          loader={null}
+          next={onAddTracks}
+          scrollThreshold={1}
+        >
           <div className={styles['playlist-header']}>
             <div className={styles['playlist-header-img']}>
               <img
@@ -104,10 +173,11 @@ const Playlist = () => {
             {playlist.tracks.items.map((track) => (
               <PlaylistTrack key={track.track.id} track={track} />
             ))}
+            {playlistTracksGetMutation.isLoading && <CircularProgress />}
           </div>
-        </>
+        </InfiniteScroll>
       )}
-    </div>
+    </>
   );
 };
 

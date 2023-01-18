@@ -4,6 +4,7 @@
 
 .playlist-content {
   @apply flex flex-col;
+  overflow: hidden !important;
 }
 
 .playlist-header {

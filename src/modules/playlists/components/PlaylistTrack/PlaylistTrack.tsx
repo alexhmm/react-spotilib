@@ -1,4 +1,6 @@
 import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Box } from '@mui/material';
 
 // Hooks
 import { useBreakpoints } from '../../../../shared/hooks/use-breakpoints.hook';
@@ -7,14 +9,13 @@ import { useBreakpoints } from '../../../../shared/hooks/use-breakpoints.hook';
 import styles from './PlaylistTrack.module.scss';
 
 // Types
-import { Track } from '../../../tracks/tracks.types';
+import { TrackMetaData } from '../../../tracks/tracks.types';
 
 // Utils
 import { minutesSecondsByMillisecondsGet } from '../../../../shared/utils/shared.utils';
-import { useTranslation } from 'react-i18next';
 
 type PlaylistTrackProps = {
-  track: Track;
+  track: TrackMetaData;
 };
 
 const PlaylistTrack = (props: PlaylistTrackProps) => {
@@ -39,27 +40,37 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
           </div>
           <div className={styles['playlist-track-title-info-artists']}>
             {props.track.track.artists.map((artist, index) => (
-              <div
+              <Box
                 key={artist.id}
                 className={styles['playlist-track-title-info-artists-item']}
+                sx={{ color: 'text.secondary' }}
               >{`${artist.name}${
                 index < props.track.track.artists.length - 1 ? ',\xa0' : ''
-              }`}</div>
+              }`}</Box>
             ))}
           </div>
         </div>
       </div>
-      <div className={styles['playlist-track-album']}>
+      <Box
+        className={styles['playlist-track-album']}
+        sx={{ color: 'text.secondary' }}
+      >
         {props.track.track.album.name}
-      </div>
-      <div className={styles['playlist-track-added-at']}>
+      </Box>
+      <Box
+        className={styles['playlist-track-added-at']}
+        sx={{ color: 'text.secondary' }}
+      >
         {new Intl.DateTimeFormat(i18n.language).format(
           new Date(props.track.added_at)
         )}
-      </div>
-      <div className={styles['playlist-track-duration']}>
+      </Box>
+      <Box
+        className={styles['playlist-track-duration']}
+        sx={{ color: 'text.secondary' }}
+      >
         {minutesSecondsByMillisecondsGet(props.track.track.duration_ms)}
-      </div>
+      </Box>
     </div>
   );
 };

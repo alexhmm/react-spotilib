@@ -5,10 +5,10 @@ import { Box } from '@mui/material';
 import styles from './TrackCard.module.scss';
 
 // Types
-import { TrackDetail } from '../../tracks.types';
+import { Track } from '../../tracks.types';
 
 type TrackCardProps = {
-  track: TrackDetail;
+  track: Track;
 };
 
 const ArtistCard = (props: TrackCardProps) => {

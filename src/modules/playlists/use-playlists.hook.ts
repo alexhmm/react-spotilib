@@ -2,7 +2,8 @@
 import { usePlaylistsStore } from './use-playlists.store';
 
 // Types
-import { Playlists } from './playlists.types';
+import { Playlist, Playlists } from './playlists.types';
+import { TrackMetaData } from '../tracks/tracks.types';
 
 export const usePlaylists = () => {
   // Playlists store state
@@ -59,8 +60,26 @@ export const usePlaylists = () => {
     setPlaylists(updatedPlaylists);
   };
 
+  /**
+   * GET Playlist tracks effect.
+   * @param fetchedTracks Tracks array
+   * @param playlist Playlist
+   * @returns Updated playlist
+   */
+  const playlistTracksGetEffect = (
+    fetchedTracks: TrackMetaData[],
+    playlist: Playlist
+  ): Playlist => {
+    console.log('fetchedTracks', fetchedTracks);
+    const updatedPlaylist = { ...playlist };
+    updatedPlaylist.tracks.items =
+      updatedPlaylist.tracks.items.concat(fetchedTracks);
+    return updatedPlaylist;
+  };
+
   return {
     playlistsAddEffect,
     playlistsGetEffect,
+    playlistTracksGetEffect,
   };
 };
