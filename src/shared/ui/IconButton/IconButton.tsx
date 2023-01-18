@@ -15,6 +15,7 @@ type IconButtonProps = {
   disabled?: boolean;
   icon: [IconPrefix, IconName];
   iconSize?: 'small' | 'medium' | 'large';
+  id?: string;
   padding?: string;
   onClick?: (event?: any) => void;
 };
@@ -33,6 +34,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
         className={clsx(styles['icon-button'], classes && classes)}
         color="inherit"
         disabled={disabled && disabled}
+        id={props.id}
         ref={ref}
         onClick={props.onClick && props.onClick}
         sx={{

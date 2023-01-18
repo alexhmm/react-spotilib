@@ -49,8 +49,12 @@ export const useFetch = () => {
             throw new FetchError(response);
           }
           return await response.json().catch((error) => {
-            console.error('Error fetching data:', error);
-            return {};
+            if (response.status === 200 || response.status === 204) {
+              return {};
+            } else {
+              console.error('Error fetching data:', error);
+              return {};
+            }
           });
         });
       } catch (error) {

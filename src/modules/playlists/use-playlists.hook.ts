@@ -70,7 +70,6 @@ export const usePlaylists = () => {
     fetchedTracks: TrackMetaData[],
     playlist: Playlist
   ): Playlist => {
-    console.log('fetchedTracks', fetchedTracks);
     const updatedPlaylist = { ...playlist };
     updatedPlaylist.tracks.items =
       updatedPlaylist.tracks.items.concat(fetchedTracks);

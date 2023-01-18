@@ -77,7 +77,6 @@ const Playlist = () => {
   // Add playlist tracks
   useEffect(() => {
     if (playlistTracksGetMutation.data) {
-      console.log('playlistTracksGetMutation', playlistTracksGetMutation.data);
       playlist &&
         setPlaylist(
           playlistTracksGetEffect(
@@ -170,8 +169,13 @@ const Playlist = () => {
             </div>
           </div>
           <div className={styles['playlist-content']}>
-            {playlist.tracks.items.map((track) => (
-              <PlaylistTrack key={track.track.id} track={track} />
+            {playlist.tracks.items.map((track, index) => (
+              <PlaylistTrack
+                key={track.track.id}
+                playlistUri={playlist.uri}
+                track={track}
+                trackIndex={index + 1}
+              />
             ))}
             {playlistTracksGetMutation.isLoading && <CircularProgress />}
           </div>

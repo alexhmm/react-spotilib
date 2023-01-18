@@ -10,6 +10,7 @@ import {
   faMagnifyingGlass as fasMagnifyingGlass,
   faMoon as fasMoon,
   faPaintBrush as fasPaintBrush,
+  faPlay as fasPlay,
   faRightFromBracket as fasRightFromBracket,
   faSun as fasSun,
   faUser as fasUser,
@@ -26,6 +27,7 @@ library.add(
   fasMagnifyingGlass,
   fasMoon,
   fasPaintBrush,
+  fasPlay,
   fasRightFromBracket,
   fasSun,
   fasUser

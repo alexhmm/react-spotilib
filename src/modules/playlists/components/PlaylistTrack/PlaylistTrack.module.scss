@@ -1,5 +1,5 @@
 .playlist-track {
-  @apply grid grid-cols-12 items-center mb-2;
+  @apply duration-200 grid grid-cols-12 items-center p-1 rounded-md transition-colors mb-2;
   &-added-at {
     @apply hidden text-sm lg:col-span-2 lg:flex lg:px-2;
   }
@@ -11,14 +11,8 @@
   }
   &-title {
     @apply col-span-12 flex items-center truncate lg:col-span-6;
-    &-image {
-      @apply flex flex-shrink-0 pr-1 lg:pr-2;
-      & img {
-        @apply h-8 object-cover shadow-md w-8 lg:h-10 lg:w-10;
-      }
-    }
-    &-info {
-      @apply flex flex-col pl-1 truncate w-full lg:px-2;
+    &-data {
+      @apply flex flex-col px-1 truncate w-full lg:px-2;
       &-artists {
         @apply flex flex-wrap truncate;
         &-item {
@@ -27,6 +21,21 @@
       }
       &-name {
         @apply truncate;
+      }
+    }
+    &-info {
+      @apply flex items-center justify-end pr-2 shrink-0 truncate w-16 lg:pr-4;
+      &-index {
+        @apply truncate;
+      }
+      &-play {
+        @apply h-9 flex;
+      }
+    }
+    &-image {
+      @apply flex pr-1 shrink-0 lg:pr-2;
+      & img {
+        @apply h-8 left-0 object-cover top-0 w-8 lg:h-10 lg:w-10;
       }
     }
   }

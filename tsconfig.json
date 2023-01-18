@@ -16,9 +16,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": [
-    "src",
-    "coverage/use-player-http.hook.ts",
-    "coverage/player.types.ts"
-  ]
+  "include": ["src"]
 }
