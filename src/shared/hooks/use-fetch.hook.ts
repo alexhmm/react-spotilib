@@ -46,7 +46,7 @@ export const useFetch = () => {
           },
         }).then(async (response) => {
           if (!response.ok) {
-            throw new FetchError(response);
+            throw new FetchError(response, JSON.stringify(options?.body));
           }
           return await response.json().catch((error) => {
             if (response.status === 200 || response.status === 204) {

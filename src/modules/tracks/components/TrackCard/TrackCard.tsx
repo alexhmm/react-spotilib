@@ -9,6 +9,7 @@ import { Track } from '../../tracks.types';
 
 type TrackCardProps = {
   track: Track;
+  onPlay: () => void;
 };
 
 const ArtistCard = (props: TrackCardProps) => {
@@ -21,6 +22,7 @@ const ArtistCard = (props: TrackCardProps) => {
         alt={props.track.album.name}
         className={styles['track-card-image']}
         src={props.track.album.images[2].url}
+        onClick={props.onPlay}
       />
       <div className={styles['track-card-info']}>
         <div className={styles['track-card-info-track']}>

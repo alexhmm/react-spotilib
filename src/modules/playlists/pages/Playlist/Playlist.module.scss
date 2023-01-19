@@ -10,9 +10,9 @@
 .playlist-header {
   @apply flex mb-4 w-full lg:items-end lg:mb-8;
   &-img {
-    @apply flex-shrink-0 pr-2 lg:pr-4;
+    @apply pr-2 relative shrink-0 lg:pr-4;
     & img {
-      @apply flex-shrink-0 h-32 object-cover shadow-2xl w-32 lg:h-48 lg:w-48;
+      @apply h-32 object-cover w-32 lg:h-48 lg:w-48;
     }
   }
   &-info {

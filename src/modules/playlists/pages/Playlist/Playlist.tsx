@@ -2,12 +2,16 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { CircularProgress } from '@mui/material';
 
 // Components
 import PlaylistTrack from '../../components/PlaylistTrack/PlaylistTrack';
 
 // Hooks
+import { useFetch } from '../../../../shared/hooks/use-fetch.hook';
+import { usePlayerHttp } from '../../../../shared/hooks/use-player-http.hook';
+import { usePlaylists } from '../../use-playlists.hook';
 import { usePlaylistsHttp } from '../../use-playlists-http.hook';
 
 // Styles
@@ -18,22 +22,25 @@ import { useSharedStore } from '../../../../shared/stores/use-shared.store';
 
 // Types
 import {
+  DevicesGetResponse,
+  PlayPutParams,
+  PlayPutRequest,
+} from '../../../../shared/types/player.types';
+import {
   Playlist as IPlaylist,
   PlaylistsGetParams,
 } from '../../playlists.types';
 
 // UI
 import H2 from '../../../../shared/ui/H2/H2';
-import { useFetch } from '../../../../shared/hooks/use-fetch.hook';
-import { usePlaylists } from '../../use-playlists.hook';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 const Playlist = () => {
-  const { handleError, handleRetry } = useFetch();
+  const { fetchData, handleError, handleRetry } = useFetch();
   const { id } = useParams();
+  const { play } = usePlayerHttp();
   const { playlistTracksGetEffect } = usePlaylists();
   const { playlistGet, playlistTracksGet } = usePlaylistsHttp();
-  const { t } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   // Component state
   const [playlist, setPlaylist] = useState<IPlaylist | undefined>(undefined);
@@ -44,6 +51,18 @@ const Playlist = () => {
   // ####### //
   // QUERIES //
   // ####### //
+
+  // Get (non active) devices
+  const devicesQuery = useQuery(
+    'devices',
+    () => fetchData('me/player/devices'),
+    {
+      enabled: false,
+      onError: (error: unknown) => {
+        console.error('Error on getting devices:', error);
+      },
+    }
+  );
 
   // Get playlist on component mount.
   // eslint-disable-next-line
@@ -94,6 +113,40 @@ const Playlist = () => {
     // eslint-disable-next-line
   }, [playlistTracksGetMutation.data, playlistTracksGetMutation.error]);
 
+  // PUT Play mutation
+  const playPutMutation = useMutation(
+    (data: { body?: PlayPutRequest; params?: PlayPutParams }) => play(data),
+    {
+      onError: async (
+        error: any,
+        data: {
+          body?: PlayPutRequest | undefined;
+          params?: PlayPutParams | undefined;
+        }
+      ) => {
+        const json = await error?.response.json();
+        if (json.error.reason === 'NO_ACTIVE_DEVICE') {
+          // Check for non active devices
+          const devices: DevicesGetResponse = (await devicesQuery.refetch())
+            .data;
+          const device = devices.devices[0];
+          // Start playing from main device
+          if (device) {
+            playPutMutation.mutate({
+              body: {
+                uris: data.body?.uris,
+              },
+              params: {
+                device_id: device.id,
+              },
+            });
+          }
+        }
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
   // ####### //
   // EFFECTS //
   // ####### //
@@ -101,7 +154,7 @@ const Playlist = () => {
   // Reset playlist on id change
   useEffect(() => {
     playlist && setPlaylist(undefined);
-    // eslint-disable-next-line
+    // Reset header title
     return () => {
       setHeaderTitle(undefined);
     };
@@ -127,6 +180,19 @@ const Playlist = () => {
     }
     // eslint-disable-next-line
   }, [playlist]);
+
+  /**
+   * Handler to play track from playlist.
+   */
+  const onTrackPlay = useCallback((playlistUri: string, trackUri: string) => {
+    playPutMutation.mutate({
+      body: {
+        context_uri: playlistUri,
+        offset: { uri: trackUri },
+      },
+    });
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <>
@@ -172,9 +238,10 @@ const Playlist = () => {
             {playlist.tracks.items.map((track, index) => (
               <PlaylistTrack
                 key={track.track.id}
-                playlistUri={playlist.uri}
+                locale={i18n.language}
                 track={track}
                 trackIndex={index + 1}
+                onPlay={() => onTrackPlay(playlist.uri, track.track.uri)}
               />
             ))}
             {playlistTracksGetMutation.isLoading && <CircularProgress />}

@@ -1,19 +1,14 @@
-import { memo, useCallback, useEffect } from 'react';
-import { useMutation } from 'react-query';
-import { useTranslation } from 'react-i18next';
+import { memo } from 'react';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
 
 // Hooks
 import { useBreakpoints } from '../../../../shared/hooks/use-breakpoints.hook';
-import { useFetch } from '../../../../shared/hooks/use-fetch.hook';
-import { usePlayerHttp } from '../../../../shared/hooks/use-player-http.hook';
 
 // Styles
 import styles from './PlaylistTrack.module.scss';
 
 // Types
-import { PlayPutRequest } from '../../../../shared/types/player.types';
 import { TrackMetaData } from '../../../tracks/tracks.types';
 
 // UI
@@ -23,51 +18,28 @@ import { IconButton } from '../../../../shared/ui/IconButton/IconButton';
 import { minutesSecondsByMillisecondsGet } from '../../../../shared/utils/shared.utils';
 
 type PlaylistTrackProps = {
-  playlistUri: string;
+  locale: string;
   track: TrackMetaData;
   trackIndex: number;
+  onPlay: () => void;
+};
+
+const playlistPropsAreEqual = (
+  prevProps: Readonly<PlaylistTrackProps>,
+  nextProps: Readonly<PlaylistTrackProps>
+): boolean => {
+  if (
+    prevProps.locale === nextProps.locale &&
+    prevProps.track.track.id === nextProps.track.track.id &&
+    prevProps.trackIndex === nextProps.trackIndex
+  ) {
+    return true;
+  }
+  return false;
 };
 
 const PlaylistTrack = (props: PlaylistTrackProps) => {
   const { lgDown } = useBreakpoints();
-  const { handleError, handleRetry } = useFetch();
-  const { play } = usePlayerHttp();
-  const { i18n } = useTranslation();
-
-  // ######### //
-  // MUTATIONS //
-  // ######### //
-
-  // PUT Play mutation
-  const playPutMutation = useMutation((body?: PlayPutRequest) => play(body), {
-    retry: (failureCount, error: any) => handleRetry(failureCount, error),
-  });
-
-  // Play track
-  useEffect(() => {
-    if (playPutMutation.error) {
-      const errRes = playPutMutation.error?.response;
-      if (errRes) {
-        handleError(errRes.status);
-      }
-    }
-    // eslint-disable-next-line
-  }, [playPutMutation.data, playPutMutation.error]);
-
-  // ######### //
-  // CALLBACKS //
-  // ######### //
-
-  /**
-   * Handler to play track from playlist.
-   */
-  const onTrackPlay = useCallback(() => {
-    playPutMutation.mutate({
-      context_uri: props.playlistUri,
-      offset: { uri: props.track.track.uri },
-    });
-    // eslint-disable-next-line
-  }, []);
 
   return (
     <Box
@@ -98,7 +70,7 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
           <IconButton
             classes={clsx(styles['playlist-track-title-info-play'], 'play')}
             icon={['fas', 'play']}
-            onClick={onTrackPlay}
+            onClick={props.onPlay}
           />
         </div>
         <div className={styles['playlist-track-title-image']}>
@@ -137,7 +109,7 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
         className={styles['playlist-track-added-at']}
         sx={{ color: 'text.secondary' }}
       >
-        {new Intl.DateTimeFormat(i18n.language).format(
+        {new Intl.DateTimeFormat(props.locale).format(
           new Date(props.track.added_at)
         )}
       </Box>
@@ -151,4 +123,4 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
   );
 };
 
-export default memo(PlaylistTrack);
+export default memo(PlaylistTrack, playlistPropsAreEqual);

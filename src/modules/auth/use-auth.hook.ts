@@ -41,7 +41,7 @@ export const useAuth = () => {
         response_type: 'code',
         client_id: process.env.REACT_APP_CLIENT_ID ?? '',
         scope:
-          'playlist-read-private user-modify-playback-state user-read-email user-read-private user-top-read',
+          'playlist-read-private user-modify-playback-state user-read-email user-read-playback-state user-read-private user-top-read',
         redirect_uri: process.env.REACT_APP_REDIRECT_URI ?? '',
         state,
       })}`

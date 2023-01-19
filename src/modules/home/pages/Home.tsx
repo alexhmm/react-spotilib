@@ -1,5 +1,5 @@
-import { memo, useState } from 'react';
-import { useQuery } from 'react-query';
+import { memo, useCallback, useState } from 'react';
+import { useMutation, useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Skeleton } from '@mui/material';
 
@@ -9,6 +9,7 @@ import TrackCard from '../../tracks/components/TrackCard/TrackCard';
 
 // Hooks
 import { useFetch } from '../../../shared/hooks/use-fetch.hook';
+import { usePlayerHttp } from '../../../shared/hooks/use-player-http.hook';
 
 // Stores
 import { useAuthStore } from '../../auth/use-auth.store';
@@ -19,6 +20,11 @@ import styles from './Home.module.scss';
 
 // Types
 import { TopArtistsGetResponse } from '../../artists/artists.types';
+import {
+  DevicesGetResponse,
+  PlayPutParams,
+  PlayPutRequest,
+} from '../../../shared/types/player.types';
 import { Theme } from '../../../shared/types/shared.types';
 import { TopTracksGetResponse } from '../../tracks/tracks.types';
 
@@ -29,7 +35,8 @@ import { Icon } from '../../../shared/ui/Icon/Icon';
 import Popover from '../../../shared/ui/Popover/Popover';
 
 const Home = () => {
-  const { fetchData } = useFetch();
+  const { fetchData, handleRetry } = useFetch();
+  const { play } = usePlayerHttp();
   const { i18n, t } = useTranslation();
 
   // Auth store state
@@ -62,6 +69,18 @@ const Home = () => {
   // QUERIES //
   // ####### //
 
+  // Get (non active) devices
+  const devicesQuery = useQuery(
+    'devices',
+    () => fetchData('me/player/devices'),
+    {
+      enabled: false,
+      onError: (error: unknown) => {
+        console.error('Error on getting devices:', error);
+      },
+    }
+  );
+
   // Get profile on access token change.
   // eslint-disable-next-line
   const topArtistsQuery = useQuery(
@@ -93,6 +112,61 @@ const Home = () => {
       },
     }
   );
+
+  // ######### //
+  // MUTATIONS //
+  // ######### //
+
+  // PUT Play mutation
+  const playPutMutation = useMutation(
+    (data: { body?: PlayPutRequest; params?: PlayPutParams }) => play(data),
+    {
+      onError: async (
+        error: any,
+        data: {
+          body?: PlayPutRequest | undefined;
+          params?: PlayPutParams | undefined;
+        }
+      ) => {
+        const json = await error?.response.json();
+        if (json.error.reason === 'NO_ACTIVE_DEVICE') {
+          // Check for non active devices
+          const devices: DevicesGetResponse = (await devicesQuery.refetch())
+            .data;
+          const device = devices.devices[0];
+          // Start playing from main device
+          if (device) {
+            playPutMutation.mutate({
+              body: {
+                uris: data.body?.uris,
+              },
+              params: {
+                device_id: device.id,
+              },
+            });
+          }
+        }
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
+  // ######### //
+  // CALLBACKS //
+  // ######### //
+
+  /**
+   * Handler to play selected track.
+   * @param trackUri Track uri
+   */
+  const onTrackPlay = useCallback((trackUri: string) => {
+    playPutMutation.mutate({
+      body: {
+        uris: [trackUri],
+      },
+    });
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className={styles['home']}>
@@ -128,7 +202,11 @@ const Home = () => {
             );
           })}
         {topTracks?.items.map((track) => (
-          <TrackCard key={track.id} track={track} />
+          <TrackCard
+            key={track.id}
+            track={track}
+            onPlay={() => onTrackPlay(track.uri)}
+          />
         ))}
       </div>
       <Box className={styles['home-header']} sx={{ borderColor: 'border.app' }}>

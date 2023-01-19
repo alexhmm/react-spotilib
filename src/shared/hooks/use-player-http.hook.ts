@@ -2,7 +2,7 @@
 import { useFetch } from './use-fetch.hook';
 
 // Types
-import { PlayPutRequest } from '../types/player.types';
+import { PlayPutParams, PlayPutRequest } from '../types/player.types';
 
 export const usePlayerHttp = () => {
   const { fetchData } = useFetch();
@@ -12,10 +12,18 @@ export const usePlayerHttp = () => {
    * @param params PlayParams
    *
    */
-  const play = async (body?: PlayPutRequest) => {
+  const play = async (data: {
+    body?: PlayPutRequest;
+    params?: PlayPutParams;
+  }) => {
     return await fetchData('me/player/play', {
-      body: body ?? undefined,
+      body: data.body ?? undefined,
       method: 'PUT',
+      params: data.params
+        ? new URLSearchParams({
+            device_id: data.params.device_id.toString(),
+          })
+        : undefined,
     });
   };
 
