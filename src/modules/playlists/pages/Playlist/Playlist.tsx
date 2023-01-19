@@ -235,12 +235,11 @@ const Playlist = () => {
             </div>
           </div>
           <div className={styles['playlist-content']}>
-            {playlist.tracks.items.map((track, index) => (
+            {playlist.tracks.items.map((track) => (
               <PlaylistTrack
                 key={track.track.id}
                 locale={i18n.language}
                 track={track}
-                trackIndex={index + 1}
                 onPlay={() => onTrackPlay(playlist.uri, track.track.uri)}
               />
             ))}

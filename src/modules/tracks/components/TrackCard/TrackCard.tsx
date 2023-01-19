@@ -51,7 +51,7 @@ const TrackCard = (props: TrackCardProps) => {
       <Box
         className={styles['track-card-info']}
         sx={{
-          '.link:hover': {
+          '.app-link:hover': {
             color: 'primary.main',
           },
         }}
@@ -65,6 +65,7 @@ const TrackCard = (props: TrackCardProps) => {
         <div className={styles['track-card-info-artists']}>
           {props.track.artists.map((artist, index) => (
             <Box
+              key={artist.id}
               className={styles['track-card-info-artists-item']}
               sx={{ color: 'text.secondary' }}
             >
@@ -72,10 +73,9 @@ const TrackCard = (props: TrackCardProps) => {
                 key={artist.id}
                 className={clsx(
                   styles['track-card-info-artists-item-link'],
-                  'app-link',
-                  'link'
+                  'app-link'
                 )}
-                to={`artists/${artist.id}`}
+                to={`/artists/${artist.id}`}
               >{`${artist.name}`}</Link>
               {`${index < props.track.artists.length - 1 ? ',\xa0' : ''}`}
             </Box>

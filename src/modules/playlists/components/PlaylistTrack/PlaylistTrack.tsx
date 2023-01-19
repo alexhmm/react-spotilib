@@ -1,9 +1,7 @@
 import { memo } from 'react';
+import { Link } from 'react-router-dom';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
-
-// Hooks
-import { useBreakpoints } from '../../../../shared/hooks/use-breakpoints.hook';
 
 // Styles
 import styles from './PlaylistTrack.module.scss';
@@ -20,7 +18,6 @@ import { minutesSecondsByMillisecondsGet } from '../../../../shared/utils/shared
 type PlaylistTrackProps = {
   locale: string;
   track: TrackMetaData;
-  trackIndex: number;
   onPlay: () => void;
 };
 
@@ -30,8 +27,7 @@ const playlistPropsAreEqual = (
 ): boolean => {
   if (
     prevProps.locale === nextProps.locale &&
-    prevProps.track.track.id === nextProps.track.track.id &&
-    prevProps.trackIndex === nextProps.trackIndex
+    prevProps.track.track.id === nextProps.track.track.id
   ) {
     return true;
   }
@@ -39,20 +35,21 @@ const playlistPropsAreEqual = (
 };
 
 const PlaylistTrack = (props: PlaylistTrackProps) => {
-  const { lgDown } = useBreakpoints();
-
   return (
     <Box
       className={styles['playlist-track']}
       sx={{
         ':hover': {
           backgroundColor: 'action.hover',
-          '.index': {
+          '.image': {
             display: 'none',
           },
           '.play': {
             display: 'flex !important',
           },
+        },
+        '.app-link:hover': {
+          color: 'primary.main',
         },
         '.play': {
           display: 'none !important',
@@ -60,50 +57,59 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
       }}
     >
       <div className={styles['playlist-track-title']}>
-        <div className={styles['playlist-track-title-info']}>
-          <Box
-            className={clsx(styles['playlist-track-title-info-index'], 'index')}
-            sx={{ color: 'text.secondary' }}
+        <img
+          alt={props.track.track.album.name}
+          className={clsx(styles['playlist-track-title-image'], 'image')}
+          height={36}
+          src={props.track.track.album.images[2].url}
+          width={36}
+          loading="lazy"
+        />
+        <IconButton
+          classes={clsx(styles['playlist-track-title-play'], 'play')}
+          icon={['fas', 'play']}
+          onClick={props.onPlay}
+        />
+        <Box className={styles['playlist-track-title-data']}>
+          <Link
+            className={clsx(
+              styles['playlist-track-title-data-name'],
+              'app-link'
+            )}
+            to={`/tracks/${props.track.track.id}`}
           >
-            {props.trackIndex}
-          </Box>
-          <IconButton
-            classes={clsx(styles['playlist-track-title-info-play'], 'play')}
-            icon={['fas', 'play']}
-            onClick={props.onPlay}
-          />
-        </div>
-        <div className={styles['playlist-track-title-image']}>
-          <img
-            alt={props.track.track.album.name}
-            height={lgDown ? 32 : 40}
-            src={props.track.track.album.images[2].url}
-            width={lgDown ? 32 : 40}
-            loading="lazy"
-          />
-        </div>
-        <div className={styles['playlist-track-title-data']}>
-          <div className={styles['playlist-track-title-data-name']}>
             {props.track.track.name}
-          </div>
+          </Link>
           <div className={styles['playlist-track-title-data-artists']}>
             {props.track.track.artists.map((artist, index) => (
               <Box
                 key={artist.id}
                 className={styles['playlist-track-title-data-artists-item']}
                 sx={{ color: 'text.secondary' }}
-              >{`${artist.name}${
-                index < props.track.track.artists.length - 1 ? ',\xa0' : ''
-              }`}</Box>
+              >
+                <Link
+                  key={artist.id}
+                  className={clsx(
+                    styles['playlist-track-title-data-artists-item-link'],
+                    'app-link'
+                  )}
+                  to={`/artists/${artist.id}`}
+                >{`${artist.name}`}</Link>
+                {`${
+                  index < props.track.track.artists.length - 1 ? ',\xa0' : ''
+                }`}
+              </Box>
             ))}
           </div>
-        </div>
+        </Box>
       </div>
       <Box
         className={styles['playlist-track-album']}
         sx={{ color: 'text.secondary' }}
       >
-        {props.track.track.album.name}
+        <Link className="app-link" to={`/albums/${props.track.track.album.id}`}>
+          {props.track.track.album.name}
+        </Link>
       </Box>
       <Box
         className={styles['playlist-track-added-at']}
