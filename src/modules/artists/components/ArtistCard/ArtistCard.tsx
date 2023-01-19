@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { Link } from 'react-router-dom';
 import { Box } from '@mui/material';
 
 // Hooks
@@ -17,17 +18,24 @@ type ArtistCardProps = {
 const ArtistCard = (props: ArtistCardProps) => {
   const { lgDown } = useBreakpoints();
   return (
-    <Box
-      className={styles['artist-card']}
-      sx={{ backgroundColor: 'background.paper' }}
-    >
-      <img
-        alt={props.artist.name}
-        className={styles['artist-card-image']}
-        src={lgDown ? props.artist.images[1].url : props.artist.images[0].url}
-      />
-      <div className={styles['artist-card-name']}>{props.artist.name}</div>
-    </Box>
+    <Link className="app-link" to={`/artists/${props.artist.id}`}>
+      <Box
+        className={styles['artist-card']}
+        sx={{
+          backgroundColor: 'background.paper',
+          ':hover': {
+            backgroundColor: 'action.hover',
+          },
+        }}
+      >
+        <img
+          alt={props.artist.name}
+          className={styles['artist-card-image']}
+          src={lgDown ? props.artist.images[1].url : props.artist.images[0].url}
+        />
+        <div className={styles['artist-card-name']}>{props.artist.name}</div>
+      </Box>
+    </Link>
   );
 };
 

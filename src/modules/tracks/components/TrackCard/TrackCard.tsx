@@ -44,7 +44,7 @@ const TrackCard = (props: TrackCardProps) => {
         onClick={props.onPlay}
       />
       <IconButton
-        classes={clsx(styles['playlist-track-title-info-play'], 'play')}
+        classes="play"
         icon={['fas', 'play']}
         onClick={props.onPlay}
       />
