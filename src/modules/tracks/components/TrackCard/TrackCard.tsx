@@ -1,5 +1,7 @@
 import { memo } from 'react';
+import { Link } from 'react-router-dom';
 import { Box } from '@mui/material';
+import clsx from 'clsx';
 
 // Styles
 import styles from './TrackCard.module.scss';
@@ -7,40 +9,81 @@ import styles from './TrackCard.module.scss';
 // Types
 import { Track } from '../../tracks.types';
 
+// UI
+import { IconButton } from '../../../../shared/ui/IconButton/IconButton';
+
 type TrackCardProps = {
   track: Track;
   onPlay: () => void;
 };
 
-const ArtistCard = (props: TrackCardProps) => {
+const TrackCard = (props: TrackCardProps) => {
   return (
     <Box
       className={styles['track-card']}
-      sx={{ backgroundColor: 'background.paper' }}
+      sx={{
+        backgroundColor: 'background.paper',
+        ':hover': {
+          backgroundColor: 'action.hover',
+          '.image': {
+            display: 'none',
+          },
+          '.play': {
+            display: 'flex !important',
+          },
+        },
+        '.play': {
+          display: 'none !important',
+        },
+      }}
     >
       <img
         alt={props.track.album.name}
-        className={styles['track-card-image']}
+        className={clsx(styles['track-card-image'], 'image')}
         src={props.track.album.images[2].url}
         onClick={props.onPlay}
       />
-      <div className={styles['track-card-info']}>
-        <div className={styles['track-card-info-track']}>
+      <IconButton
+        classes={clsx(styles['playlist-track-title-info-play'], 'play')}
+        icon={['fas', 'play']}
+        onClick={props.onPlay}
+      />
+      <Box
+        className={styles['track-card-info']}
+        sx={{
+          '.link:hover': {
+            color: 'primary.main',
+          },
+        }}
+      >
+        <Link
+          className={clsx(styles['track-card-info-track'], 'app-link', 'link')}
+          to={`tracks/${props.track.id}`}
+        >
           {props.track.name}
-        </div>
+        </Link>
         <div className={styles['track-card-info-artists']}>
           {props.track.artists.map((artist, index) => (
-            <div
-              key={artist.id}
+            <Box
               className={styles['track-card-info-artists-item']}
-            >{`${artist.name}${
-              index < props.track.artists.length - 1 ? ',\xa0' : ''
-            }`}</div>
+              sx={{ color: 'text.secondary' }}
+            >
+              <Link
+                key={artist.id}
+                className={clsx(
+                  styles['track-card-info-artists-item-link'],
+                  'app-link',
+                  'link'
+                )}
+                to={`artists/${artist.id}`}
+              >{`${artist.name}`}</Link>
+              {`${index < props.track.artists.length - 1 ? ',\xa0' : ''}`}
+            </Box>
           ))}
         </div>
-      </div>
+      </Box>
     </Box>
   );
 };
 
-export default memo(ArtistCard);
+export default memo(TrackCard);

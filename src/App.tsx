@@ -18,6 +18,7 @@ import { AppRouter } from './shared/router/AppRouter';
 
 // Styles
 import styles from './App.module.scss';
+import './shared/styles/styles.scss';
 
 // Utils
 import './shared/utils/i18n';

@@ -1,18 +1,21 @@
 .track-card {
-  @apply flex h-12 items-center p-2 rounded-sm w-full;
+  @apply duration-200 flex items-center px-2 py-1 rounded-md transition-colors w-full;
   &-image {
-    @apply aspect-square h-full object-cover shadow-md;
+    @apply aspect-square h-9 object-cover shadow-md w-9;
   }
   &-info {
     @apply flex flex-col ml-4 truncate;
     &-artists {
       @apply flex truncate;
       &-item {
-        @apply opacity-80 text-sm;
+        @apply text-sm;
+        &-link {
+          @apply duration-200 transition-colors;
+        }
       }
     }
     &-track {
-      @apply font-semibold text-sm truncate;
+      @apply duration-200 font-semibold text-sm truncate transition-colors w-fit;
     }
   }
 }
