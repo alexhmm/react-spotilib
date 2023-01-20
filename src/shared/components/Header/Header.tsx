@@ -110,11 +110,13 @@ const HeaderMenu = () => {
         disableElevation
         onClick={(event) => setAnchor(event.currentTarget)}
       >
-        <img
-          alt={t('app.profile').toString()}
-          className={styles['header-menu-button-image']}
-          src={profile?.images[0].url}
-        />
+        {profile?.images[0]?.url && (
+          <img
+            alt={t('app.profile').toString()}
+            className={styles['header-menu-button-image']}
+            src={profile?.images[0].url}
+          />
+        )}
         {!smDown && (
           <>
             <div className={styles['header-menu-button-name']}>
