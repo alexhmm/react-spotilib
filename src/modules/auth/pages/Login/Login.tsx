@@ -17,7 +17,9 @@ const Login = () => {
   return (
     <div className={styles['login']}>
       <H2>{t('auth.login.title')}</H2>
-      <div className={styles['login-text']}>{t('auth.login.text')}</div>
+      <div className="mb-8">{t('auth.login.text1')}</div>
+      <div>{t('auth.login.text2')}</div>
+      <div className="mb-12">{t('auth.login.text3')}</div>
       <TextButtonOutlined classes="w-fit" onClick={authorize}>
         {t('auth.login.title')}
       </TextButtonOutlined>
