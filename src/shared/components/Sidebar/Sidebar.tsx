@@ -78,63 +78,55 @@ const Sidebar = () => {
   const playlistsAddMutation = useMutation(
     (params?: PlaylistsGetParams) => playlistsGet(params),
     {
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data) => {
+        try {
+          data &&
+            playlistsAddEffect({
+              items: data.items,
+              limit: data.limit,
+              offset: data.offset,
+              total: data.total,
+            });
+        } catch (error) {
+          console.error('ERROR on adding playlists:', error);
+        }
+      },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),
     }
   );
-
-  // Set playlists data on mount
-  useEffect(() => {
-    if (playlistsAddMutation.data) {
-      try {
-        playlistsAddEffect({
-          items: playlistsAddMutation.data.items,
-          limit: playlistsAddMutation.data.limit,
-          offset: playlistsAddMutation.data.offset,
-          total: playlistsAddMutation.data.total,
-        });
-      } catch (error) {
-        console.error('ERROR on adding playlists:', error);
-      }
-    }
-    if (playlistsAddMutation.error) {
-      const errRes = playlistsAddMutation.error?.response;
-      if (errRes) {
-        handleError(errRes.status);
-      }
-    }
-    // eslint-disable-next-line
-  }, [playlistsAddMutation.data, playlistsAddMutation.error]);
 
   // GET Playlists mutation
   const playlistsGetMutation = useMutation(
     (params?: PlaylistsGetParams) => playlistsGet(params),
     {
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data) => {
+        try {
+          data &&
+            playlistsGetEffect({
+              items: data.items,
+              limit: data.limit,
+              offset: data.offset,
+              total: data.total,
+            });
+        } catch (error) {
+          console.error('ERROR on getting playlists:', error);
+        }
+      },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),
     }
   );
-
-  // Set playlists data on mount
-  useEffect(() => {
-    if (playlistsGetMutation.data) {
-      try {
-        playlistsGetEffect({
-          items: playlistsGetMutation.data.items,
-          limit: playlistsGetMutation.data.limit,
-          offset: playlistsGetMutation.data.offset,
-          total: playlistsGetMutation.data.total,
-        });
-      } catch (error) {
-        console.error('ERROR on getting playlists:', error);
-      }
-    }
-    if (playlistsGetMutation.error) {
-      const errRes = playlistsGetMutation.error?.response;
-      if (errRes) {
-        handleError(errRes.status);
-      }
-    }
-    // eslint-disable-next-line
-  }, [playlistsGetMutation.data, playlistsGetMutation.error]);
 
   // ####### //
   // EFFECTS //

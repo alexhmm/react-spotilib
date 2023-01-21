@@ -101,29 +101,20 @@ const Playlist = () => {
     (data: { id: string; params?: PlaylistsGetParams }) =>
       playlistTracksGet(data),
     {
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data) => {
+        data &&
+          playlist &&
+          setPlaylist(playlistTracksGetEffect(data.items, playlist));
+      },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),
     }
   );
-
-  // Add playlist tracks
-  useEffect(() => {
-    if (playlistTracksGetMutation.data) {
-      playlist &&
-        setPlaylist(
-          playlistTracksGetEffect(
-            playlistTracksGetMutation.data.items,
-            playlist
-          )
-        );
-    }
-    if (playlistTracksGetMutation.error) {
-      const errRes = playlistTracksGetMutation.error?.response;
-      if (errRes) {
-        handleError(errRes.status);
-      }
-    }
-    // eslint-disable-next-line
-  }, [playlistTracksGetMutation.data, playlistTracksGetMutation.error]);
 
   // PUT Play mutation
   const playPutMutation = useMutation(
