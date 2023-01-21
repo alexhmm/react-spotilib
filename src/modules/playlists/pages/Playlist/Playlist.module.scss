@@ -30,7 +30,10 @@
       }
     }
     &-tracks {
-      @apply mb-2 text-sm;
+      @apply flex items-center text-sm;
+      & a {
+        @apply ml-4;
+      }
     }
   }
 }

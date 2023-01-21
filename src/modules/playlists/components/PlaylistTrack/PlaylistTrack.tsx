@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import styles from './PlaylistTrack.module.scss';
 
 // Types
-import { TrackMetaData } from '../../../tracks/tracks.types';
+import { PlaylistTrack as IPlaylistTrack } from '../../playlists.types';
 
 // UI
 import { IconButton } from '../../../../shared/ui/IconButton/IconButton';
@@ -17,7 +17,7 @@ import { minutesSecondsByMillisecondsGet } from '../../../../shared/utils/shared
 
 type PlaylistTrackProps = {
   locale: string;
-  track: TrackMetaData;
+  track: IPlaylistTrack;
   onPlay: () => void;
 };
 
@@ -27,7 +27,7 @@ const playlistPropsAreEqual = (
 ): boolean => {
   if (
     prevProps.locale === nextProps.locale &&
-    prevProps.track.track.id === nextProps.track.track.id
+    prevProps.track.id === nextProps.track.id
   ) {
     return true;
   }
@@ -58,10 +58,10 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
     >
       <div className={styles['playlist-track-title']}>
         <img
-          alt={props.track.track.album.name}
+          alt={props.track.album.name}
           className={clsx(styles['playlist-track-title-image'], 'image')}
           height={36}
-          src={props.track.track.album.images[2].url}
+          src={props.track.album.images[2].url}
           width={36}
           loading="lazy"
         />
@@ -76,12 +76,12 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
               styles['playlist-track-title-data-name'],
               'app-link'
             )}
-            to={`/tracks/${props.track.track.id}`}
+            to={`/tracks/${props.track.id}`}
           >
-            {props.track.track.name}
+            {props.track.name}
           </Link>
           <div className={styles['playlist-track-title-data-artists']}>
-            {props.track.track.artists.map((artist, index) => (
+            {props.track.artists.map((artist, index) => (
               <Box
                 key={artist.id}
                 className={styles['playlist-track-title-data-artists-item']}
@@ -95,9 +95,7 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
                   )}
                   to={`/artists/${artist.id}`}
                 >{`${artist.name}`}</Link>
-                {`${
-                  index < props.track.track.artists.length - 1 ? ',\xa0' : ''
-                }`}
+                {`${index < props.track.artists.length - 1 ? ',\xa0' : ''}`}
               </Box>
             ))}
           </div>
@@ -107,8 +105,8 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
         className={styles['playlist-track-album']}
         sx={{ color: 'text.secondary' }}
       >
-        <Link className="app-link" to={`/albums/${props.track.track.album.id}`}>
-          {props.track.track.album.name}
+        <Link className="app-link" to={`/albums/${props.track.album.id}`}>
+          {props.track.album.name}
         </Link>
       </Box>
       <Box
@@ -123,7 +121,7 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
         className={styles['playlist-track-duration']}
         sx={{ color: 'text.secondary' }}
       >
-        {minutesSecondsByMillisecondsGet(props.track.track.duration_ms)}
+        {minutesSecondsByMillisecondsGet(props.track.duration_ms)}
       </Box>
     </Box>
   );

@@ -7,13 +7,13 @@ import clsx from 'clsx';
 import styles from './TrackCard.module.scss';
 
 // Types
-import { Track } from '../../tracks.types';
+import { SpotifyTrack } from '../../../../shared/types/spotify.types';
 
 // UI
 import { IconButton } from '../../../../shared/ui/IconButton/IconButton';
 
 type TrackCardProps = {
-  track: Track;
+  track: SpotifyTrack;
   onPlay: () => void;
 };
 

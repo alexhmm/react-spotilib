@@ -10,6 +10,7 @@ import PlaylistTrack from '../../components/PlaylistTrack/PlaylistTrack';
 
 // Hooks
 import { useFetch } from '../../../../shared/hooks/use-fetch.hook';
+import { useObjectURL } from '../../../../shared/hooks/use-object-url.hook';
 import { usePlayerHttp } from '../../../../shared/hooks/use-player-http.hook';
 import { usePlaylists } from '../../use-playlists.hook';
 import { usePlaylistsHttp } from '../../use-playlists-http.hook';
@@ -27,15 +28,20 @@ import {
   PlayPutRequest,
 } from '../../../../shared/types/player.types';
 import {
-  Playlist as IPlaylist,
   PlaylistsGetParams,
+  Playlist as IPlaylist,
 } from '../../playlists.types';
 
 // UI
 import H2 from '../../../../shared/ui/H2/H2';
+import { IconButton } from '../../../../shared/ui/IconButton/IconButton';
+
+// Utils
+import { playlistCreate } from '../../playlists.utils';
 
 const Playlist = () => {
   const { fetchData, handleError, handleRetry } = useFetch();
+  const { objectURL, setObject } = useObjectURL(null);
   const { id } = useParams();
   const { play } = usePlayerHttp();
   const { playlistTracksGetEffect } = usePlaylists();
@@ -72,11 +78,17 @@ const Playlist = () => {
       console.error('Error on getting profile:', error);
     },
     onSuccess: (data) => {
-      setPlaylist(data);
-      // Wait for transition animation
-      setTimeout(() => {
-        setHeaderTitle(data?.name);
-      }, 500);
+      if (data) {
+        const mappedPlaylist = playlistCreate(data);
+        setPlaylist(mappedPlaylist);
+        const output = JSON.stringify({ playlist: mappedPlaylist }, null, 4);
+        const blob = new Blob([output]);
+        setObject(blob);
+        // Wait for transition animation
+        setTimeout(() => {
+          setHeaderTitle(data?.name);
+        }, 500);
+      }
     },
   });
 
@@ -169,13 +181,10 @@ const Playlist = () => {
    * Handler to add tracks to playlist.
    */
   const onAddTracks = useCallback(() => {
-    if (
-      playlist?.id &&
-      playlist?.tracks.items.length < playlist?.tracks.total
-    ) {
+    if (playlist?.id && playlist?.tracks.length < playlist?.tracks_total) {
       playlistTracksGetMutation.mutate({
         id: playlist.id,
-        params: { limit: 100, offset: playlist.tracks.items.length },
+        params: { limit: 100, offset: playlist.tracks.length },
       });
     }
     // eslint-disable-next-line
@@ -194,13 +203,24 @@ const Playlist = () => {
     // eslint-disable-next-line
   }, []);
 
+  /**
+   * Handler to download playlist meta data.
+   */
+  const onPlaylistMetaDataDownload = useCallback(() => {
+    const output = JSON.stringify({ playlist: playlist }, null, 4);
+    // Create file data
+    const blob = new Blob([output]);
+    setObject(blob);
+    // eslint-disable-next-line
+  }, [playlist]);
+
   return (
     <>
       {!playlist && playlistQuery.isLoading && <CircularProgress />}
       {playlist && (
         <InfiniteScroll
           className={styles['playlist']}
-          dataLength={playlist?.tracks.items.length}
+          dataLength={playlist?.tracks.length}
           hasMore={true}
           loader={null}
           next={onAddTracks}
@@ -211,6 +231,7 @@ const Playlist = () => {
               <img
                 alt={`${t('playlists.detail.title')} ${playlist.name}`}
                 src={playlist.images[0].url}
+                onClick={onPlaylistMetaDataDownload}
               />
             </div>
             <div className={styles['playlist-header-info']}>
@@ -229,18 +250,29 @@ const Playlist = () => {
                 {playlist.description}
               </div>
               <div className={styles['playlist-header-info-tracks']}>
-                {playlist.owner.display_name} • {playlist.tracks.total}{' '}
+                {playlist.owner.display_name} • {playlist.tracks_total}{' '}
                 {t('playlists.detail.tracks')}
+                {objectURL && (
+                  <a
+                    className="app-link"
+                    download={`${playlist.name}.json`}
+                    href={objectURL}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    <IconButton icon={['fas', 'download']} />
+                  </a>
+                )}
               </div>
             </div>
           </div>
           <div className={styles['playlist-content']}>
-            {playlist.tracks.items.map((track) => (
+            {playlist.tracks.map((track) => (
               <PlaylistTrack
-                key={track.track.id}
+                key={track.id}
                 locale={i18n.language}
                 track={track}
-                onPlay={() => onTrackPlay(playlist.uri, track.track.uri)}
+                onPlay={() => onTrackPlay(playlist.uri, track.uri)}
               />
             ))}
             {playlistTracksGetMutation.isLoading && <CircularProgress />}

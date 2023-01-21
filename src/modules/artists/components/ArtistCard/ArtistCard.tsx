@@ -9,10 +9,10 @@ import { useBreakpoints } from '../../../../shared/hooks/use-breakpoints.hook';
 import styles from './ArtistCard.module.scss';
 
 // Types
-import { Artist } from '../../artists.types';
+import { SpotifyArtist } from '../../../../shared/types/spotify.types';
 
 type ArtistCardProps = {
-  artist: Artist;
+  artist: SpotifyArtist;
 };
 
 const ArtistCard = (props: ArtistCardProps) => {

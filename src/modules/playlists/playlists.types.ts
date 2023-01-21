@@ -1,41 +1,26 @@
+// Types
 import {
-  ExternalUrls,
-  Followers,
-  Image,
-} from '../../shared/types/shared.types';
-import { TrackMetaData } from '../tracks/tracks.types';
-
-export interface Playlist {
-  collaborative: boolean;
-  description: string;
-  external_urls: ExternalUrls;
-  followers: Followers;
-  href: string;
-  id: string;
-  images: Image[];
-  name: string;
-  owner: PlaylistOwner;
-  primary_color: any;
-  public: boolean;
-  snapshot_id: string;
-  tracks: PlaylistTracks;
-  type: string;
-  uri: string;
-}
-
-export interface PlaylistOwner {
-  id: string;
-  display_name: string;
-  external_urls: ExternalUrls;
-  href: string;
-  type: string;
-  uri: string;
-}
+  SpotifyAlbum,
+  SpotifyArtist,
+  SpotifyPlaylist,
+  SpotifyTrack,
+  TrackMetaData,
+} from '../../shared/types/spotify.types';
 
 export interface PlaylistTracks {
-  href: string;
-  items: TrackMetaData[];
-  total: number;
+  tracks: PlaylistTrack[];
+}
+
+export interface PlaylistTracksTotal {
+  tracks_total: number;
+}
+
+export interface PlaylistTrackAlbum {
+  album: Pick<SpotifyAlbum, 'id' | 'images' | 'name'>;
+}
+
+export interface PlaylistTrackArtists {
+  artists: PlaylistTrackArtist[];
 }
 
 export interface PlaylistsGetParams {
@@ -45,7 +30,7 @@ export interface PlaylistsGetParams {
 
 export interface PlaylistsGetResponse {
   href: string;
-  items: Playlist[];
+  items: SpotifyPlaylist[];
   limit: number;
   next: string;
   offset: number;
@@ -57,3 +42,20 @@ export type Playlists = Pick<
   PlaylistsGetResponse,
   'items' | 'limit' | 'offset' | 'total'
 >;
+
+export type Playlist = Pick<
+  SpotifyPlaylist,
+  'description' | 'id' | 'images' | 'name' | 'owner' | 'public' | 'uri'
+> &
+  PlaylistTracks &
+  PlaylistTracksTotal;
+
+export type PlaylistTrack = Pick<
+  SpotifyTrack,
+  'duration_ms' | 'id' | 'name' | 'uri'
+> &
+  Pick<TrackMetaData, 'added_at' | 'added_by'> &
+  PlaylistTrackAlbum &
+  PlaylistTrackArtists;
+
+export type PlaylistTrackArtist = Pick<SpotifyArtist, 'id' | 'name'>;

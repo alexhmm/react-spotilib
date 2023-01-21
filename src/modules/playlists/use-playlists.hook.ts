@@ -2,8 +2,11 @@
 import { usePlaylistsStore } from './use-playlists.store';
 
 // Types
-import { Playlist, Playlists } from './playlists.types';
-import { TrackMetaData } from '../tracks/tracks.types';
+import { Playlists, Playlist } from './playlists.types';
+import { TrackMetaData } from '../../shared/types/spotify.types';
+
+// Utils
+import { playlistTracksMap } from './playlists.utils';
 
 export const usePlaylists = () => {
   // Playlists store state
@@ -71,8 +74,10 @@ export const usePlaylists = () => {
     playlist: Playlist
   ): Playlist => {
     const updatedPlaylist = { ...playlist };
-    updatedPlaylist.tracks.items =
-      updatedPlaylist.tracks.items.concat(fetchedTracks);
+
+    // Map spotify track data
+    const tracks = playlistTracksMap(fetchedTracks);
+    updatedPlaylist.tracks = updatedPlaylist.tracks.concat(tracks);
     return updatedPlaylist;
   };
 
