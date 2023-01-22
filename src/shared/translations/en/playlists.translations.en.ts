@@ -9,4 +9,5 @@ export const playlistsTranslationsEN: PlaylistsTranslations = {
     title: 'Playlist',
     tracks: 'Tracks',
   },
+  title: 'Playlists',
 };

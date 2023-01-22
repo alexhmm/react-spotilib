@@ -7,4 +7,5 @@ export interface PlaylistsTranslations {
     title: string;
     tracks: string;
   };
+  title: string;
 }

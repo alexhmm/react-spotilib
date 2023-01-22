@@ -1,6 +1,7 @@
 import { AppTranslations } from '../types/app.translations.interface';
 
 export const appTranslationsEN: AppTranslations = {
+  coming_soon: 'Coming soon ...',
   hello: 'Hello!',
   language: {
     english: 'English',

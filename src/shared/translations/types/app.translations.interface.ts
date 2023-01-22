@@ -1,4 +1,5 @@
 export interface AppTranslations {
+  coming_soon: string;
   hello: string;
   language: {
     english: string;

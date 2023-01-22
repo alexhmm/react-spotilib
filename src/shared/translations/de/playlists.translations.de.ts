@@ -9,4 +9,5 @@ export const playlistsTranslationsDE: PlaylistsTranslations = {
     title: 'Playlist',
     tracks: 'Songs',
   },
+  title: 'Playlists',
 };

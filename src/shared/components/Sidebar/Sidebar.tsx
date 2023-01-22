@@ -1,8 +1,15 @@
-import { memo, ReactNode, useCallback, useEffect } from 'react';
+import { memo, ReactNode, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { useTranslation } from 'react-i18next';
-import { Box, CircularProgress, Divider, useTheme } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  Tab,
+  Tabs,
+  Tooltip,
+  useTheme,
+} from '@mui/material';
 import { IconName, IconPrefix } from '@fortawesome/free-solid-svg-icons';
 import clsx from 'clsx';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -24,6 +31,7 @@ import { PlaylistsGetParams } from '../../../modules/playlists/playlists.types';
 
 // UI
 import { Icon } from '../../ui/Icon/Icon';
+import { IconButton } from '../../ui/IconButton/IconButton';
 
 type SidebarItemProps = {
   children: ReactNode;
@@ -69,6 +77,9 @@ const Sidebar = () => {
 
   // Playlists store state
   const [playlists] = usePlaylistsStore((state) => [state.playlists]);
+
+  // Component state
+  const [tabActive, setTabActive] = useState<number>(1);
 
   // ######### //
   // MUTATIONS //
@@ -157,6 +168,13 @@ const Sidebar = () => {
     // eslint-disable-next-line
   }, [playlists]);
 
+  const onTabChange = useCallback(
+    (event: React.SyntheticEvent, newValue: number) => {
+      setTabActive(newValue);
+    },
+    []
+  );
+
   return (
     <Box className={styles['sidebar']} sx={{ backgroundColor: 'bg.sidebar' }}>
       <div className={styles['sidebar-nav']}>
@@ -181,10 +199,33 @@ const Sidebar = () => {
             {t('app.sidebar.library')}
           </SidebarItem>
         </div>
-        <Divider
-          className={styles['sidebar-nav-divider']}
-          sx={{ color: 'border.app' }}
-        />
+        <Tabs
+          aria-label="basic tabs example"
+          className={styles['sidebar-nav-tabs']}
+          value={tabActive}
+          sx={{
+            '.MuiTab-root': {
+              padding: 0,
+              width: '50%',
+            },
+          }}
+          onChange={onTabChange}
+        >
+          <Tab
+            label={
+              <Tooltip title={t('collections.title')}>
+                <IconButton classes="tab-icon" icon={['fas', 'record-vinyl']} />
+              </Tooltip>
+            }
+          />
+          <Tab
+            label={
+              <Tooltip title={t('playlists.title')}>
+                <IconButton classes="tab-icon" icon={['fas', 'music']} />
+              </Tooltip>
+            }
+          />
+        </Tabs>
       </div>
       <div className={styles['sidebar-content']} id="content">
         <InfiniteScroll
@@ -198,7 +239,9 @@ const Sidebar = () => {
         >
           {token && (
             <>
-              {playlists &&
+              {tabActive === 0 && <>{t('app.coming_soon')}</>}
+              {tabActive === 1 &&
+                playlists &&
                 playlists.items.length > 0 &&
                 playlists.items.map((playlist) => (
                   <SidebarItem

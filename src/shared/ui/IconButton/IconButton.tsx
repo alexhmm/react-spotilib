@@ -12,6 +12,14 @@ import { Icon } from '../Icon/Icon';
 type IconButtonProps = {
   children?: ReactNode;
   classes?: string;
+  color?:
+    | 'info'
+    | 'warning'
+    | 'inherit'
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'error';
   disabled?: boolean;
   icon: [IconPrefix, IconName];
   iconSize?: 'small' | 'medium' | 'large';
@@ -32,7 +40,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       <Button
         {...rest}
         className={clsx(styles['icon-button'], classes && classes)}
-        color="inherit"
+        color={props.color ?? 'inherit'}
         disabled={disabled && disabled}
         id={props.id}
         ref={ref}
@@ -48,7 +56,9 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
           )}
           icon={icon}
           size={iconSize ?? 'small'}
-          sx={{ color: 'text.primary' }}
+          sx={{
+            color: props.color ? undefined : 'text.primary',
+          }}
         />
         {props.children && props.children}
       </Button>

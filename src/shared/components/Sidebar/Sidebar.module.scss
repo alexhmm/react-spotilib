@@ -4,7 +4,7 @@
 }
 
 .sidebar-content {
-  @apply box-border flex flex-col h-[calc(100vh-224px)] pb-8 px-6 pt-4 overflow-y-auto relative w-full;
+  @apply box-border flex flex-col h-[calc(100vh-256px)] pb-8 px-6 pt-4 overflow-y-auto relative w-full;
   &-info {
     @apply mt-4 opacity-75 justify-self-end text-xs;
   }
@@ -37,7 +37,7 @@
   &-links {
     @apply flex flex-col;
   }
-  &-divider {
-    @apply mt-4;
+  &-tabs {
+    @apply w-full;
   }
 }
