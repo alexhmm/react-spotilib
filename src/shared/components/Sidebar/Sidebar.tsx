@@ -199,33 +199,40 @@ const Sidebar = () => {
             {t('app.sidebar.library')}
           </SidebarItem>
         </div>
-        <Tabs
-          aria-label="basic tabs example"
-          className={styles['sidebar-nav-tabs']}
-          value={tabActive}
-          sx={{
-            '.MuiTab-root': {
-              padding: 0,
-              width: '50%',
-            },
-          }}
-          onChange={onTabChange}
-        >
-          <Tab
-            label={
-              <Tooltip title={t('collections.title')}>
-                <IconButton classes="tab-icon" icon={['fas', 'record-vinyl']} />
-              </Tooltip>
-            }
-          />
-          <Tab
-            label={
-              <Tooltip title={t('playlists.title')}>
-                <IconButton classes="tab-icon" icon={['fas', 'music']} />
-              </Tooltip>
-            }
-          />
-        </Tabs>
+        {token && (
+          <>
+            <Tabs
+              aria-label="basic tabs example"
+              className={styles['sidebar-nav-tabs']}
+              value={tabActive}
+              sx={{
+                '.MuiTab-root': {
+                  padding: 0,
+                  width: '50%',
+                },
+              }}
+              onChange={onTabChange}
+            >
+              <Tab
+                label={
+                  <Tooltip title={t('collections.title')}>
+                    <IconButton
+                      classes="tab-icon"
+                      icon={['fas', 'record-vinyl']}
+                    />
+                  </Tooltip>
+                }
+              />
+              <Tab
+                label={
+                  <Tooltip title={t('playlists.title')}>
+                    <IconButton classes="tab-icon" icon={['fas', 'music']} />
+                  </Tooltip>
+                }
+              />
+            </Tabs>
+          </>
+        )}
       </div>
       <div className={styles['sidebar-content']} id="content">
         <InfiniteScroll

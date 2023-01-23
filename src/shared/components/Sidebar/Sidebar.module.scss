@@ -1,10 +1,10 @@
 .sidebar {
-  @apply hidden flex-col justify-between h-[calc(100vh-64px)] sticky top-[64px] w-64;
+  @apply hidden flex-col justify-between h-[calc(100vh-64px)] px-6 shrink-0 sticky top-[64px] w-64;
   @apply lg:flex;
 }
 
 .sidebar-content {
-  @apply box-border flex flex-col h-[calc(100vh-256px)] pb-8 px-6 pt-4 overflow-y-auto relative w-full;
+  @apply box-border flex flex-col h-[calc(100vh-256px)] pb-8 pt-4 overflow-y-auto relative w-full;
   &-info {
     @apply mt-4 opacity-75 justify-self-end text-xs;
   }
@@ -30,7 +30,7 @@
 }
 
 .sidebar-nav {
-  @apply box-border flex flex-col grow h-40 justify-between pt-8 px-6 relative;
+  @apply box-border flex flex-col grow h-40 justify-between pt-8 relative;
   &-bg {
     @apply absolute h-4 left-0 -bottom-4 w-full z-10;
   }

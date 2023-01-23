@@ -147,14 +147,8 @@ const HeaderMenu = () => {
         onClose={() => setAnchor(null)}
       >
         <Box
-          className={clsx(
-            styles['header-menu-popover-content'],
-            theme === Theme.Dark && 'border border-solid'
-          )}
-          sx={{
-            backgroundColor: 'background.default',
-            borderColor: theme === Theme.Dark ? 'border.app' : undefined,
-          }}
+          className={styles['header-menu-popover-content']}
+          sx={{ backgroundColor: 'background.paper' }}
         >
           {profile && (
             <>
