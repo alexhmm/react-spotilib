@@ -4,6 +4,16 @@
     @apply flex grow h-full items-center justify-between px-2 relative truncate;
     @apply sm:px-4;
     @apply lg:px-8;
+    &-actions {
+      @apply flex items-center z-10;
+      &-search {
+        @apply grow w-full;
+      }
+      &-title {
+        @apply duration-500 font-semibold pr-2 text-lg transition-all truncate;
+        @apply lg:pr-4 lg:text-xl;
+      }
+    }
     &-bg {
       @apply absolute duration-500 h-full left-0 top-0 transition-all w-full;
     }
@@ -11,13 +21,9 @@
       @apply flex items-center min-w-0 shrink-0 z-10;
       @apply sm:max-w-[200px] md:max-w-xs;
     }
-    &-title {
-      @apply duration-500 font-semibold pr-2 text-lg transition-all truncate z-10;
-      @apply lg:pr-4 lg:text-xl;
-    }
   }
   &-logo {
-    @apply flex font-bold h-full items-center px-2 shrink-0 w-32;
+    @apply flex font-bold h-full items-center px-2 shrink-0;
     @apply sm:px-4;
     @apply lg:px-6 lg:w-64;
   }

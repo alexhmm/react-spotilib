@@ -11,6 +11,7 @@ declare module '@mui/material/styles' {
     '2xl': true;
     '3xl': true;
     '4xl': true;
+    '5xl': true;
   }
 
   interface Palette {
@@ -63,6 +64,7 @@ const breakpoints = {
     '2xl': 1536,
     '3xl': 1920,
     '4xl': 2560,
+    '5xl': 3840,
   },
 };
 

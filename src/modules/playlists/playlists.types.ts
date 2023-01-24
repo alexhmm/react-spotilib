@@ -2,6 +2,7 @@
 import {
   SpotifyAlbum,
   SpotifyArtist,
+  SpotifyDataGetResponse,
   SpotifyPlaylist,
   SpotifyTrack,
   TrackMetaData,
@@ -28,18 +29,8 @@ export interface PlaylistsGetParams {
   offset: number;
 }
 
-export interface PlaylistsGetResponse {
-  href: string;
-  items: SpotifyPlaylist[];
-  limit: number;
-  next: string;
-  offset: number;
-  previous: string;
-  total: number;
-}
-
 export type Playlists = Pick<
-  PlaylistsGetResponse,
+  SpotifyDataGetResponse<SpotifyPlaylist[]>,
   'items' | 'limit' | 'offset' | 'total'
 >;
 

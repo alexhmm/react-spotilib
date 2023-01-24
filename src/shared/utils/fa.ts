@@ -16,6 +16,7 @@ import {
   faRecordVinyl as fasRecordVinyl,
   faRightFromBracket as fasRightFromBracket,
   faSun as fasSun,
+  faTimes as fasTimes,
   faUser as fasUser,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -36,5 +37,6 @@ library.add(
   fasRecordVinyl,
   fasRightFromBracket,
   fasSun,
+  fasTimes,
   fasUser
 );

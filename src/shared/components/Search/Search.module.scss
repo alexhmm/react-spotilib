@@ -1,0 +1,18 @@
+.search {
+  @apply p-0 rounded-md w-full sm:w-96;
+  &-adornment-end {
+    @apply mr-2;
+  }
+  &-adornment-start {
+    @apply mx-4;
+  }
+  &-input {
+    @apply text-sm truncate;
+    &::placeholder {
+      @apply opacity-100;
+    }
+  }
+  &-outline {
+    @apply border-0;
+  }
+}

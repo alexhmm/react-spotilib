@@ -1,18 +1,20 @@
-export enum AlbumTypeEnum {
+export enum ReleaseDatePrecision {
+  Day = 'day',
+}
+
+export enum SpotifyAlbumType {
   Album = 'album',
   Compilation = 'compilation',
   Single = 'single',
 }
 
-export enum ArtistType {
+export enum SpotifyItemType {
+  Album = 'album',
   Artist = 'artist',
-}
-
-export enum ReleaseDatePrecision {
-  Day = 'day',
-}
-
-export enum TrackType {
+  Audiobook = 'audiobook',
+  Episode = 'episode',
+  Playlist = 'playlist',
+  Show = 'show',
   Track = 'track',
 }
 
@@ -41,8 +43,8 @@ export interface Owner {
 }
 
 export interface SpotifyAlbum {
-  album_type: AlbumTypeEnum;
-  artists: Owner[];
+  album_type: SpotifyAlbumType;
+  artists: SpotifyArtist[];
   available_markets: string[];
   external_urls: ExternalUrls;
   href: string;
@@ -52,7 +54,7 @@ export interface SpotifyAlbum {
   release_date: string;
   release_date_precision: ReleaseDatePrecision;
   total_tracks: number;
-  type: AlbumTypeEnum;
+  type: SpotifyItemType;
   uri: string;
 }
 
@@ -65,8 +67,18 @@ export interface SpotifyArtist {
   images: Image[];
   name: string;
   popularity: number;
-  type: ArtistType;
+  type: SpotifyItemType;
   uri: string;
+}
+
+export interface SpotifyDataGetResponse<T> {
+  href: string;
+  items: T;
+  limit: number;
+  next: string;
+  offset: number;
+  previous: null;
+  total: number;
 }
 
 export interface SpotifyPlaylist {
@@ -83,7 +95,7 @@ export interface SpotifyPlaylist {
   public: boolean;
   snapshot_id: string;
   tracks: SpotifyPlaylistTracks;
-  type: string;
+  type: SpotifyItemType;
   uri: string;
 }
 
@@ -111,7 +123,7 @@ export interface SpotifyTrack {
   preview_url: string;
   track: boolean;
   track_number: number;
-  type: string;
+  type: SpotifyItemType;
   uri: string;
 }
 

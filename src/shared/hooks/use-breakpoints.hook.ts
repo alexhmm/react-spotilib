@@ -6,6 +6,7 @@ declare module '@mui/material/styles' {
     '2xl': true;
     '3xl': true;
     '4xl': true;
+    '5xl': true;
   }
 }
 
@@ -35,6 +36,12 @@ export const useBreakpoints = () => {
   const xxxl = useMediaQuery(theme.breakpoints.up('3xl'));
   const xxxlDown = useMediaQuery(theme.breakpoints.down('3xl'));
   const xxxlUp = useMediaQuery(theme.breakpoints.up('3xl'));
+  const xxxxl = useMediaQuery(theme.breakpoints.up('4xl'));
+  const xxxxlDown = useMediaQuery(theme.breakpoints.down('4xl'));
+  const xxxxlUp = useMediaQuery(theme.breakpoints.up('4xl'));
+  const xxxxxl = useMediaQuery(theme.breakpoints.up('5xl'));
+  const xxxxxlDown = useMediaQuery(theme.breakpoints.down('5xl'));
+  const xxxxxlUp = useMediaQuery(theme.breakpoints.up('5xl'));
 
   return {
     xs,
@@ -57,5 +64,11 @@ export const useBreakpoints = () => {
     xxxl,
     xxxlDown,
     xxxlUp,
+    xxxxl,
+    xxxxlDown,
+    xxxxlUp,
+    xxxxxl,
+    xxxxxlDown,
+    xxxxxlUp,
   };
 };

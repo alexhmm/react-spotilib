@@ -5,6 +5,9 @@ import { IconName, IconPrefix } from '@fortawesome/free-solid-svg-icons';
 import { Box, Button, Divider, Popover, Switch } from '@mui/material';
 import clsx from 'clsx';
 
+// Components
+import Search from '../Search/Search';
+
 // Hooks
 import { useAuth } from '../../../modules/auth/use-auth.hook';
 import { useBreakpoints } from '../../hooks/use-breakpoints.hook';
@@ -13,6 +16,7 @@ import { useLogout } from '../../hooks/use-logout.hook';
 
 // Stores
 import { useAuthStore } from '../../../modules/auth/use-auth.store';
+import useSearchStore from '../../../modules/search/use-search.store';
 import { useSharedStore } from '../../stores/use-shared.store';
 import { useThemeStore } from '../../stores/use-theme.store';
 import { useUserStore } from '../../../modules/user/use-user.store';
@@ -193,8 +197,11 @@ const Header = () => {
   const { t } = useTranslation();
 
   // Refs
-  const headerBgRef = useRef<HTMLElement>(null);
-  const headerTitleRef = useRef<HTMLElement>(null);
+  const headerBgRef = useRef<HTMLDivElement>(null);
+  const headerTitleRef = useRef<HTMLDivElement>(null);
+
+  // Auth store state
+  const [token] = useAuthStore((state) => [state.token]);
 
   // User store state
   const [profile, setProfile] = useUserStore((state) => [
@@ -202,8 +209,12 @@ const Header = () => {
     state.setProfile,
   ]);
 
-  // Auth store state
-  const [token] = useAuthStore((state) => [state.token]);
+  // Search store state
+  const [search, searchElem, setSearch] = useSearchStore((state) => [
+    state.search,
+    state.searchElem,
+    state.setSearch,
+  ]);
 
   // Shared store state
   const [headerTitle] = useSharedStore((state) => [state.headerTitle]);
@@ -275,9 +286,21 @@ const Header = () => {
         Spotilib
       </Box>
       <div className={styles['header-info']}>
-        <Box className={styles['header-info-title']} ref={headerTitleRef}>
-          {headerTitle ?? ''}
-        </Box>
+        <div className={styles['header-info-actions']}>
+          {searchElem && (
+            <Search
+              classes={styles['header-info-actions-search']}
+              value={search}
+              onChange={setSearch}
+            />
+          )}
+          <div
+            className={styles['header-info-actions-title']}
+            ref={headerTitleRef}
+          >
+            {headerTitle ?? ''}
+          </div>
+        </div>
         <div className={styles['header-info-content']}>
           {/*
           <Button

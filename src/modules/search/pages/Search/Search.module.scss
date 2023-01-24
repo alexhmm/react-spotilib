@@ -1,0 +1,15 @@
+.search {
+  @apply flex flex-col @container;
+}
+
+.search-albums {
+  @apply gap-2 grid grid-cols-2 grid-rows-2 pb-4;
+  @apply lg:pb-8;
+  @apply @lg:gap-4 @lg:grid-cols-3;
+  @apply @2xl:grid-cols-4;
+  @apply @4xl:grid-cols-5;
+  @apply @6xl:grid-cols-6;
+  @apply @8xl:gap-6 @8xl:grid-cols-7;
+  @apply @10xl:grid-cols-8;
+  @apply @12xl:grid-cols-9;
+}

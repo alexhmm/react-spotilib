@@ -1,0 +1,18 @@
+.album-card {
+  @apply cursor-pointer duration-200 flex flex-col p-4 rounded-md transition-colors w-full;
+  &-data {
+    @apply h-10 text-sm overflow-hidden text-ellipsis w-full;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    &-artist {
+      @apply duration-200 transition-colors;
+    }
+  }
+  &-image {
+    @apply aspect-square object-cover rounded-md shadow-xl w-full;
+  }
+  &-name {
+    @apply font-semibold mb-2 mt-4 text-sm truncate;
+  }
+}
