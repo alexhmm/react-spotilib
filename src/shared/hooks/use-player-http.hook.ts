@@ -1,11 +1,84 @@
+import { useMutation, useQuery } from 'react-query';
+
 // Hooks
 import { useFetch } from './use-fetch.hook';
 
 // Types
-import { PlayPutParams, PlayPutRequest } from '../types/player.types';
+import {
+  DevicesGetResponse,
+  PlayPutParams,
+  PlayPutRequest,
+} from '../types/player.types';
 
 export const usePlayerHttp = () => {
-  const { fetchData } = useFetch();
+  const { fetchData, handleError, handleRetry } = useFetch();
+
+  // ####### //
+  // QUERIES //
+  // ####### //
+
+  /**
+   * GET (non active) devices
+   */
+  const devicesQuery = useQuery(
+    'devices',
+    () => fetchData('me/player/devices'),
+    {
+      enabled: false,
+      onError: (error: unknown) => {
+        console.error('Error on getting devices:', error);
+      },
+    }
+  );
+
+  // ######### //
+  // MUTATIONS //
+  // ######### //
+
+  /**
+   * Play put mutation
+   */
+  const playPutMutation = useMutation(
+    (data: { body?: PlayPutRequest; params?: PlayPutParams }) => play(data),
+    {
+      onError: async (
+        error: any,
+        data: {
+          body?: PlayPutRequest | undefined;
+          params?: PlayPutParams | undefined;
+        }
+      ) => {
+        const errRes = error?.response;
+        if (errRes) {
+          handleError(errRes.status);
+        }
+        const json = await error?.response.json();
+        if (json.error.reason === 'NO_ACTIVE_DEVICE') {
+          // Check for non active devices
+          const devices: DevicesGetResponse = (await devicesQuery.refetch())
+            .data;
+          const device = devices.devices[0];
+          // Start playing from main device
+          if (device) {
+            playPutMutation.mutate({
+              body: {
+                context_uri: data.body?.context_uri,
+                uris: data.body?.uris,
+              },
+              params: {
+                device_id: device.id,
+              },
+            });
+          }
+        }
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
+  // ####### //
+  // METHODS //
+  // ####### //
 
   /**
    * PUT Start a new context or resume current playback on the user's active device.
@@ -28,6 +101,7 @@ export const usePlayerHttp = () => {
   };
 
   return {
-    play,
+    devicesQuery,
+    playPutMutation,
   };
 };

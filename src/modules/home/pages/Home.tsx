@@ -1,5 +1,5 @@
 import { memo, useCallback, useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Skeleton } from '@mui/material';
 
@@ -20,11 +20,6 @@ import styles from './Home.module.scss';
 
 // Types
 import { TopArtistsGetResponse } from '../../artists/artists.types';
-import {
-  DevicesGetResponse,
-  PlayPutParams,
-  PlayPutRequest,
-} from '../../../shared/types/player.types';
 import { Theme } from '../../../shared/types/shared.types';
 import { TopTracksGetResponse } from '../../tracks/tracks.types';
 
@@ -35,8 +30,8 @@ import { Icon } from '../../../shared/ui/Icon/Icon';
 import Popover from '../../../shared/ui/Popover/Popover';
 
 const Home = () => {
-  const { fetchData, handleRetry } = useFetch();
-  const { play } = usePlayerHttp();
+  const { fetchData } = useFetch();
+  const { playPutMutation } = usePlayerHttp();
   const { i18n, t } = useTranslation();
 
   // Auth store state
@@ -69,18 +64,6 @@ const Home = () => {
   // QUERIES //
   // ####### //
 
-  // Get (non active) devices
-  const devicesQuery = useQuery(
-    'devices',
-    () => fetchData('me/player/devices'),
-    {
-      enabled: false,
-      onError: (error: unknown) => {
-        console.error('Error on getting devices:', error);
-      },
-    }
-  );
-
   // Get profile on access token change.
   // eslint-disable-next-line
   const topArtistsQuery = useQuery(
@@ -110,44 +93,6 @@ const Home = () => {
       onSuccess: (data: TopTracksGetResponse) => {
         setTopTracks(data);
       },
-    }
-  );
-
-  // ######### //
-  // MUTATIONS //
-  // ######### //
-
-  // PUT Play mutation
-  const playPutMutation = useMutation(
-    (data: { body?: PlayPutRequest; params?: PlayPutParams }) => play(data),
-    {
-      onError: async (
-        error: any,
-        data: {
-          body?: PlayPutRequest | undefined;
-          params?: PlayPutParams | undefined;
-        }
-      ) => {
-        const json = await error?.response.json();
-        if (json.error.reason === 'NO_ACTIVE_DEVICE') {
-          // Check for non active devices
-          const devices: DevicesGetResponse = (await devicesQuery.refetch())
-            .data;
-          const device = devices.devices[0];
-          // Start playing from main device
-          if (device) {
-            playPutMutation.mutate({
-              body: {
-                uris: data.body?.uris,
-              },
-              params: {
-                device_id: device.id,
-              },
-            });
-          }
-        }
-      },
-      retry: (failureCount, error: any) => handleRetry(failureCount, error),
     }
   );
 

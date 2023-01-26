@@ -23,11 +23,6 @@ import { useSharedStore } from '../../../../shared/stores/use-shared.store';
 
 // Types
 import {
-  DevicesGetResponse,
-  PlayPutParams,
-  PlayPutRequest,
-} from '../../../../shared/types/player.types';
-import {
   PlaylistsGetParams,
   Playlist as IPlaylist,
 } from '../../playlists.types';
@@ -40,10 +35,10 @@ import { IconButton } from '../../../../shared/ui/IconButton/IconButton';
 import { playlistCreate } from '../../playlists.utils';
 
 const Playlist = () => {
-  const { fetchData, handleError, handleRetry } = useFetch();
+  const { handleError, handleRetry } = useFetch();
   const { objectURL, setObject } = useObjectURL(null);
   const { id } = useParams();
-  const { play } = usePlayerHttp();
+  const { playPutMutation } = usePlayerHttp();
   const { playlistTracksGetEffect } = usePlaylists();
   const { playlistGet, playlistTracksGet } = usePlaylistsHttp();
   const { i18n, t } = useTranslation();
@@ -58,24 +53,16 @@ const Playlist = () => {
   // QUERIES //
   // ####### //
 
-  // Get (non active) devices
-  const devicesQuery = useQuery(
-    'devices',
-    () => fetchData('me/player/devices'),
-    {
-      enabled: false,
-      onError: (error: unknown) => {
-        console.error('Error on getting devices:', error);
-      },
-    }
-  );
-
   // Get playlist on component mount.
   // eslint-disable-next-line
   const playlistQuery = useQuery(['playlist', id], () => playlistGet(id), {
     refetchOnWindowFocus: false,
-    onError: (error: unknown) => {
-      console.error('Error on getting profile:', error);
+    onError: (error: any) => {
+      const errRes = error?.response;
+      if (errRes) {
+        console.error('Error on getting profile:', error);
+        handleError(errRes.status);
+      }
     },
     onSuccess: (data) => {
       if (data) {
@@ -111,40 +98,6 @@ const Playlist = () => {
         data &&
           playlist &&
           setPlaylist(playlistTracksGetEffect(data.items, playlist));
-      },
-      retry: (failureCount, error: any) => handleRetry(failureCount, error),
-    }
-  );
-
-  // PUT Play mutation
-  const playPutMutation = useMutation(
-    (data: { body?: PlayPutRequest; params?: PlayPutParams }) => play(data),
-    {
-      onError: async (
-        error: any,
-        data: {
-          body?: PlayPutRequest | undefined;
-          params?: PlayPutParams | undefined;
-        }
-      ) => {
-        const json = await error?.response.json();
-        if (json.error.reason === 'NO_ACTIVE_DEVICE') {
-          // Check for non active devices
-          const devices: DevicesGetResponse = (await devicesQuery.refetch())
-            .data;
-          const device = devices.devices[0];
-          // Start playing from main device
-          if (device) {
-            playPutMutation.mutate({
-              body: {
-                uris: data.body?.uris,
-              },
-              params: {
-                device_id: device.id,
-              },
-            });
-          }
-        }
       },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),
     }
