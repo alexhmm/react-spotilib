@@ -64,6 +64,8 @@ export const usePlayerHttp = () => {
               body: {
                 context_uri: data.body?.context_uri,
                 uris: data.body?.uris,
+                offset: data.body?.offset,
+                position_ms: data.body?.position_ms,
               },
               params: {
                 device_id: device.id,

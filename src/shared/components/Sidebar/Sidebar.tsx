@@ -1,4 +1,11 @@
-import { memo, ReactNode, useCallback, useEffect, useState } from 'react';
+import {
+  forwardRef,
+  memo,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { useTranslation } from 'react-i18next';
@@ -31,7 +38,6 @@ import { PlaylistsGetParams } from '../../../modules/playlists/playlists.types';
 
 // UI
 import { Icon } from '../../ui/Icon/Icon';
-import { IconButton } from '../../ui/IconButton/IconButton';
 
 type SidebarItemProps = {
   children: ReactNode;
@@ -64,6 +70,18 @@ const SidebarItem = (props: SidebarItemProps) => {
     </Box>
   );
 };
+
+type TabIconProps = {
+  icon: [IconPrefix, IconName];
+};
+
+const TabIcon = forwardRef<HTMLDivElement, TabIconProps>((props, ref) => {
+  return (
+    <div {...props} ref={ref}>
+      <Icon icon={props.icon} />
+    </div>
+  );
+});
 
 const Sidebar = () => {
   const { handleError, handleRetry } = useFetch();
@@ -216,17 +234,14 @@ const Sidebar = () => {
               <Tab
                 label={
                   <Tooltip title={t('collections.title')}>
-                    <IconButton
-                      classes="tab-icon"
-                      icon={['fas', 'record-vinyl']}
-                    />
+                    <TabIcon icon={['fas', 'record-vinyl']} />
                   </Tooltip>
                 }
               />
               <Tab
                 label={
                   <Tooltip title={t('playlists.title')}>
-                    <IconButton classes="tab-icon" icon={['fas', 'music']} />
+                    <TabIcon icon={['fas', 'music']} />
                   </Tooltip>
                 }
               />
