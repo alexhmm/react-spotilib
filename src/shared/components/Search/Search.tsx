@@ -78,6 +78,7 @@ const Search = (props: SearchProps) => {
       setSearchData(undefined);
       setSearch(undefined);
     };
+    // eslint-disable-next-line
   }, []);
 
   // Search after debounced input.

@@ -1,7 +1,7 @@
 .album-card {
-  @apply cursor-pointer duration-200 flex flex-col p-4 rounded-md transition-colors w-full;
+  @apply cursor-pointer duration-200 flex flex-col p-4 relative rounded-md transition-colors w-full;
   &-data {
-    @apply h-10 text-sm overflow-hidden text-ellipsis w-full;
+    @apply h-10 text-sm overflow-hidden text-ellipsis w-full z-10;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -12,7 +12,16 @@
   &-image {
     @apply aspect-square object-cover rounded-md shadow-xl w-full;
   }
+  &-link {
+    @apply absolute h-full left-0 top-0 w-full;
+  }
   &-name {
     @apply font-semibold mb-2 mt-4 text-sm truncate;
+  }
+  &-play {
+    @apply aspect-square flex items-center justify-center w-full;
+    & button {
+      @apply z-10;
+    }
   }
 }
