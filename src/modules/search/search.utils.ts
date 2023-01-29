@@ -1,11 +1,14 @@
-import { AlbumCard } from '../albums/albums.types';
+// Types
 import {
-  SearchArtist,
   SearchData,
   SearchGetResponse,
   SearchPlaylist,
   SearchTrack,
 } from './search.types';
+
+// Utils
+import { mapAlbumData } from '../albums/albums.utils';
+import { mapArtistData } from '../artists/artists.utils';
 
 /**
  * Map spotify search data.
@@ -18,31 +21,17 @@ export const searchDataCreate = (
   let searchData: SearchData = {};
 
   if (searchGetResponse.albums) {
-    const albums: AlbumCard[] = [];
-    for (const album of searchGetResponse.albums.items) {
-      albums.push({
-        id: album.id,
-        artists: album.artists,
-        images: album.images,
-        name: album.name,
-        release_date: album.release_date,
-        uri: album.uri,
-      });
-    }
-    searchData = { ...searchData, albums };
+    searchData = {
+      ...searchData,
+      albums: mapAlbumData(searchGetResponse.albums),
+    };
   }
 
   if (searchGetResponse.artists) {
-    const artists: SearchArtist[] = [];
-    for (const album of searchGetResponse.artists.items) {
-      artists.push({
-        id: album.id,
-        images: album.images,
-        name: album.name,
-        uri: album.uri,
-      });
-    }
-    searchData = { ...searchData, artists };
+    searchData = {
+      ...searchData,
+      artists: mapArtistData(searchGetResponse.artists),
+    };
   }
 
   if (searchGetResponse.playlists) {

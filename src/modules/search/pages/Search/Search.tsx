@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 // Components
 import AlbumCard from '../../../albums/components/AlbumCard/AlbumCard';
+import ArtistCard from '../../../artists/components/ArtistCard/ArtistCard';
 
 // Hooks
 import { usePlayerHttp } from '../../../../shared/hooks/use-player-http.hook';
@@ -45,6 +46,9 @@ const Search = () => {
   // CALLBACKS //
   // ######### //
 
+  /**
+   * @param context_uri Spotify URI of the context to play
+   */
   const onPlayContextUri = useCallback((context_uri: string) => {
     playPutMutation.mutate({
       body: {
@@ -60,12 +64,22 @@ const Search = () => {
       {searchData?.albums && (
         <>
           <H3>{t('albums.title')}</H3>
-          <div className={styles['search-albums']}>
+          <div className={styles['search-context']}>
             {searchData.albums.map((album) => (
               <AlbumCard
                 key={album.id}
                 album={album}
                 onPlay={() => onPlayContextUri(album.uri)}
+              />
+            ))}
+          </div>
+          <H3>{t('artists.title')}</H3>
+          <div className={styles['search-context']}>
+            {searchData.artists?.map((artist) => (
+              <ArtistCard
+                key={artist.id}
+                artist={artist}
+                onPlay={() => onPlayContextUri(artist.uri)}
               />
             ))}
           </div>

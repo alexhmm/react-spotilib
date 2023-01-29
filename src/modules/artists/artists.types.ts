@@ -10,3 +10,5 @@ export interface TopArtistsGetResponse {
   previous: null;
   next: string;
 }
+
+export type ArtistCard = Pick<SpotifyArtist, 'id' | 'images' | 'name' | 'uri'>;

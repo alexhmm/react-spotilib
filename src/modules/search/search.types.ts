@@ -1,4 +1,6 @@
+// Types
 import { AlbumCard } from '../albums/albums.types';
+import { ArtistCard } from '../artists/artists.types';
 import {
   SpotifyItemType,
   SpotifyAlbum,
@@ -10,7 +12,7 @@ import {
 
 export interface SearchData {
   albums?: AlbumCard[];
-  artists?: SearchArtist[];
+  artists?: ArtistCard[];
   playlists?: SearchPlaylist[];
   tracks?: SearchTrack[];
 }
@@ -26,11 +28,6 @@ export interface SearchGetResponse {
   playlists: SpotifyDataGetResponse<SpotifyPlaylist[]>;
   tracks: SpotifyDataGetResponse<SpotifyTrack[]>;
 }
-
-export type SearchArtist = Pick<
-  SpotifyArtist,
-  'id' | 'images' | 'name' | 'uri'
->;
 
 export type SearchTrack = Pick<
   SpotifyTrack,

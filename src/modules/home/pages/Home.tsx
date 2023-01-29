@@ -19,8 +19,12 @@ import { useThemeStore } from '../../../shared/stores/use-theme.store';
 import styles from './Home.module.scss';
 
 // Types
-import { TopArtistsGetResponse } from '../../artists/artists.types';
+import { ArtistCard as IArtistCard } from '../../artists/artists.types';
 import { Theme } from '../../../shared/types/shared.types';
+import {
+  SpotifyArtist,
+  SpotifyDataGetResponse,
+} from '../../../shared/types/spotify.types';
 import { TopTracksGetResponse } from '../../tracks/tracks.types';
 
 // UI
@@ -28,6 +32,9 @@ import H2 from '../../../shared/ui/H2/H2';
 import H3 from '../../../shared/ui/H3/H3';
 import { Icon } from '../../../shared/ui/Icon/Icon';
 import Popover from '../../../shared/ui/Popover/Popover';
+
+// Utils
+import { mapArtistData } from '../../artists/artists.utils';
 
 const Home = () => {
   const { fetchData } = useFetch();
@@ -53,9 +60,7 @@ const Home = () => {
   const [anchorPopover3, setAnchorPopover3] = useState<
     HTMLButtonElement | undefined
   >(undefined);
-  const [topArtists, setTopArtists] = useState<
-    TopArtistsGetResponse | undefined
-  >(undefined);
+  const [topArtists, setTopArtists] = useState<IArtistCard[]>([]);
   const [topTracks, setTopTracks] = useState<TopTracksGetResponse | undefined>(
     undefined
   );
@@ -74,8 +79,8 @@ const Home = () => {
       onError: (error: unknown) => {
         console.error('Error on getting top artists:', error);
       },
-      onSuccess: (data: TopArtistsGetResponse) => {
-        setTopArtists(data);
+      onSuccess: (data: SpotifyDataGetResponse<SpotifyArtist[]>) => {
+        setTopArtists(mapArtistData(data));
       },
     }
   );
@@ -99,6 +104,18 @@ const Home = () => {
   // ######### //
   // CALLBACKS //
   // ######### //
+
+  /**
+   * @param context_uri Spotify URI of the context to play
+   */
+  const onPlayContextUri = useCallback((context_uri: string) => {
+    playPutMutation.mutate({
+      body: {
+        context_uri,
+      },
+    });
+    // eslint-disable-next-line
+  }, []);
 
   /**
    * Handler to play selected track.
@@ -129,8 +146,12 @@ const Home = () => {
               />
             );
           })}
-        {topArtists?.items.map((artist) => (
-          <ArtistCard key={artist.id} artist={artist} />
+        {topArtists?.map((artist) => (
+          <ArtistCard
+            key={artist.id}
+            artist={artist}
+            onPlay={() => onPlayContextUri(artist.uri)}
+          />
         ))}
       </div>
       <H3 classes="pt-2 lg:pt-4">{t('app.top_tracks')}</H3>

@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/material';
+import clsx from 'clsx';
 
 // Hooks
 import { useBreakpoints } from '../../../../shared/hooks/use-breakpoints.hook';
@@ -9,33 +10,56 @@ import { useBreakpoints } from '../../../../shared/hooks/use-breakpoints.hook';
 import styles from './ArtistCard.module.scss';
 
 // Types
-import { SpotifyArtist } from '../../../../shared/types/spotify.types';
+import { ArtistCard as IArtistCard } from '../../artists.types';
+
+// UI
+import { IconButton } from '../../../../shared/ui/IconButton/IconButton';
 
 type ArtistCardProps = {
-  artist: SpotifyArtist;
+  artist: IArtistCard;
+  onPlay: () => void;
 };
 
 const ArtistCard = (props: ArtistCardProps) => {
   const { lgDown } = useBreakpoints();
   return (
-    <Link className="app-link" to={`/artists/${props.artist.id}`}>
-      <Box
-        className={styles['artist-card']}
-        sx={{
-          backgroundColor: 'background.paper',
-          ':hover': {
-            backgroundColor: 'action.hover',
+    <Box
+      className={styles['artist-card']}
+      sx={{
+        backgroundColor: 'background.paper',
+        ':hover': {
+          backgroundColor: 'action.hover',
+          '.image': {
+            display: 'none',
           },
-        }}
-      >
-        <img
-          alt={props.artist.name}
-          className={styles['artist-card-image']}
-          src={lgDown ? props.artist.images[1].url : props.artist.images[0].url}
+          '.play': {
+            display: 'flex !important',
+          },
+        },
+        '.play': {
+          display: 'none !important',
+        },
+      }}
+    >
+      <img
+        alt={props.artist.name}
+        className={clsx(styles['artist-card-image'], 'image')}
+        src={lgDown ? props.artist.images[1]?.url : props.artist.images[0]?.url}
+      />
+      <div className={clsx(styles['artist-card-play'], 'play')}>
+        <IconButton
+          icon={['fas', 'play']}
+          iconSize="large"
+          padding="1rem"
+          onClick={props.onPlay}
         />
-        <div className={styles['artist-card-name']}>{props.artist.name}</div>
-      </Box>
-    </Link>
+      </div>
+      <div className={styles['artist-card-name']}>{props.artist.name}</div>
+      <Link
+        className={clsx(styles['artist-card-link'], 'app-link')}
+        to={`/artists/${props.artist.id}`}
+      />
+    </Box>
   );
 };
 
