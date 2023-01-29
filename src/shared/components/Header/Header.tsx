@@ -242,11 +242,12 @@ const Header = () => {
   // Set refs style by scroll position
   useEffect(() => {
     const onScroll = (event: any) => {
+      const headerBgThreshold = searchElem ? 50 : 150;
       const scrollTop = event.target.documentElement.scrollTop;
-      if (scrollTop < 150 && headerBgRef.current) {
+      if (scrollTop < headerBgThreshold && headerBgRef.current) {
         headerBgRef.current.style.opacity = '0%';
       }
-      if (scrollTop >= 150 && headerBgRef.current) {
+      if (scrollTop >= headerBgThreshold && headerBgRef.current) {
         headerBgRef.current.style.opacity = '100%';
       }
       if (scrollTop < 250 && headerTitleRef.current) {
@@ -272,7 +273,7 @@ const Header = () => {
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  }, [headerBgRef, headerTitle, headerTitleRef, lgDown]);
+  }, [headerBgRef, headerTitle, headerTitleRef, lgDown, searchElem]);
 
   return (
     <Box
