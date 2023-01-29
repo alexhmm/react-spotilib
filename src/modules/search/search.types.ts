@@ -9,12 +9,13 @@ import {
   SpotifyPlaylist,
   SpotifyTrack,
 } from '../../shared/types/spotify.types';
+import { TrackCard } from '../tracks/tracks.types';
 
 export interface SearchData {
   albums?: AlbumCard[];
   artists?: ArtistCard[];
   playlists?: SearchPlaylist[];
-  tracks?: SearchTrack[];
+  tracks?: TrackCard[];
 }
 
 export interface SearchGetParams {
@@ -28,11 +29,6 @@ export interface SearchGetResponse {
   playlists: SpotifyDataGetResponse<SpotifyPlaylist[]>;
   tracks: SpotifyDataGetResponse<SpotifyTrack[]>;
 }
-
-export type SearchTrack = Pick<
-  SpotifyTrack,
-  'duration_ms' | 'id' | 'name' | 'uri'
->;
 
 export type SearchPlaylist = Pick<
   SpotifyPlaylist,

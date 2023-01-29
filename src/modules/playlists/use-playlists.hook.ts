@@ -3,7 +3,7 @@ import { usePlaylistsStore } from './use-playlists.store';
 
 // Types
 import { Playlists, Playlist } from './playlists.types';
-import { TrackMetaData } from '../../shared/types/spotify.types';
+import { SpotifyTrackMetaData } from '../../shared/types/spotify.types';
 
 // Utils
 import { playlistTracksMap } from './playlists.utils';
@@ -70,7 +70,7 @@ export const usePlaylists = () => {
    * @returns Updated playlist
    */
   const playlistTracksGetEffect = (
-    fetchedTracks: TrackMetaData[],
+    fetchedTracks: SpotifyTrackMetaData[],
     playlist: Playlist
   ): Playlist => {
     const updatedPlaylist = { ...playlist };

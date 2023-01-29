@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 // Components
 import AlbumCard from '../../../albums/components/AlbumCard/AlbumCard';
 import ArtistCard from '../../../artists/components/ArtistCard/ArtistCard';
+import TrackCard from '../../../tracks/components/TrackCard/TrackCard';
 
 // Hooks
 import { usePlayerHttp } from '../../../../shared/hooks/use-player-http.hook';
@@ -47,12 +48,26 @@ const Search = () => {
   // ######### //
 
   /**
+   * Handler to play context by uri.
    * @param context_uri Spotify URI of the context to play
    */
-  const onPlayContextUri = useCallback((context_uri: string) => {
+  const onPlayContext = useCallback((context_uri: string) => {
     playPutMutation.mutate({
       body: {
         context_uri,
+      },
+    });
+    // eslint-disable-next-line
+  }, []);
+
+  /**
+   * Handler to play selected track.
+   * @param track_uri Spotify track URI to play
+   */
+  const onPlayTrack = useCallback((track_uri: string) => {
+    playPutMutation.mutate({
+      body: {
+        uris: [track_uri],
       },
     });
     // eslint-disable-next-line
@@ -69,7 +84,7 @@ const Search = () => {
               <AlbumCard
                 key={album.id}
                 album={album}
-                onPlay={() => onPlayContextUri(album.uri)}
+                onPlay={() => onPlayContext(album.uri)}
               />
             ))}
           </div>
@@ -79,7 +94,17 @@ const Search = () => {
               <ArtistCard
                 key={artist.id}
                 artist={artist}
-                onPlay={() => onPlayContextUri(artist.uri)}
+                onPlay={() => onPlayContext(artist.uri)}
+              />
+            ))}
+          </div>
+          <H3>{t('tracks.title')}</H3>
+          <div className={styles['search-tracks']}>
+            {searchData.tracks?.map((track) => (
+              <TrackCard
+                key={track.id}
+                track={track}
+                onPlay={() => onPlayTrack(track.uri)}
               />
             ))}
           </div>

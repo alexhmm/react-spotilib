@@ -13,3 +13,12 @@
   @apply @10xl:grid-cols-8;
   @apply @12xl:grid-cols-9;
 }
+
+.search-tracks {
+  @apply gap-2 grid grid-cols-1;
+  @apply @md:gap-2 @md:grid-cols-2;
+  @apply @2xl:gap-4;
+  @apply @4xl:grid-cols-3;
+  @apply @8xl:grid-cols-4;
+  @apply @12xl:grid-cols-5;
+}

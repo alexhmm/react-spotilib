@@ -6,7 +6,7 @@ import {
 } from './playlists.types';
 import {
   SpotifyPlaylist,
-  TrackMetaData,
+  SpotifyTrackMetaData,
 } from '../../shared/types/spotify.types';
 
 /**
@@ -37,7 +37,7 @@ export const playlistCreate = (fetchedPlaylist: SpotifyPlaylist): Playlist => {
  * @returns Mapped playlist tracks
  */
 export const playlistTracksMap = (
-  tracksSpotify: TrackMetaData[]
+  tracksSpotify: SpotifyTrackMetaData[]
 ): PlaylistTrack[] => {
   const tracks: PlaylistTrack[] = [];
 

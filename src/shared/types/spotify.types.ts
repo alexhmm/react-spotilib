@@ -101,7 +101,7 @@ export interface SpotifyPlaylist {
 
 export interface SpotifyPlaylistTracks {
   href: string;
-  items: TrackMetaData[];
+  items: SpotifyTrackMetaData[];
   total: number;
 }
 
@@ -127,7 +127,7 @@ export interface SpotifyTrack {
   uri: string;
 }
 
-export interface TrackMetaData {
+export interface SpotifyTrackMetaData {
   added_at: string;
   added_by: {
     external_urls: ExternalUrls;

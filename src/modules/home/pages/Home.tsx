@@ -106,9 +106,10 @@ const Home = () => {
   // ######### //
 
   /**
+   * Handler to play context by uri.
    * @param context_uri Spotify URI of the context to play
    */
-  const onPlayContextUri = useCallback((context_uri: string) => {
+  const onContextPlay = useCallback((context_uri: string) => {
     playPutMutation.mutate({
       body: {
         context_uri,
@@ -119,7 +120,7 @@ const Home = () => {
 
   /**
    * Handler to play selected track.
-   * @param trackUri Track uri
+   * @param trackUri Spotify track URI to play
    */
   const onTrackPlay = useCallback((trackUri: string) => {
     playPutMutation.mutate({
@@ -150,7 +151,7 @@ const Home = () => {
           <ArtistCard
             key={artist.id}
             artist={artist}
-            onPlay={() => onPlayContextUri(artist.uri)}
+            onPlay={() => onContextPlay(artist.uri)}
           />
         ))}
       </div>

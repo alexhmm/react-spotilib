@@ -5,7 +5,7 @@ import {
   SpotifyDataGetResponse,
   SpotifyPlaylist,
   SpotifyTrack,
-  TrackMetaData,
+  SpotifyTrackMetaData,
 } from '../../shared/types/spotify.types';
 
 export interface PlaylistTracks {
@@ -45,7 +45,7 @@ export type PlaylistTrack = Pick<
   SpotifyTrack,
   'duration_ms' | 'id' | 'name' | 'uri'
 > &
-  Pick<TrackMetaData, 'added_at' | 'added_by'> &
+  Pick<SpotifyTrackMetaData, 'added_at' | 'added_by'> &
   PlaylistTrackAlbum &
   PlaylistTrackArtists;
 

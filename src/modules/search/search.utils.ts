@@ -1,14 +1,10 @@
 // Types
-import {
-  SearchData,
-  SearchGetResponse,
-  SearchPlaylist,
-  SearchTrack,
-} from './search.types';
+import { SearchData, SearchGetResponse, SearchPlaylist } from './search.types';
 
 // Utils
 import { mapAlbumData } from '../albums/albums.utils';
 import { mapArtistData } from '../artists/artists.utils';
+import { mapTrackData } from '../tracks/tracks.utils';
 
 /**
  * Map spotify search data.
@@ -49,16 +45,10 @@ export const searchDataCreate = (
   }
 
   if (searchGetResponse.tracks) {
-    const tracks: SearchTrack[] = [];
-    for (const track of searchGetResponse.tracks.items) {
-      tracks.push({
-        id: track.id,
-        duration_ms: track.duration_ms,
-        name: track.name,
-        uri: track.uri,
-      });
-    }
-    searchData = { ...searchData, tracks };
+    searchData = {
+      ...searchData,
+      tracks: mapTrackData(searchGetResponse.tracks),
+    };
   }
 
   return searchData;
