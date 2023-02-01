@@ -10,7 +10,6 @@ import { ProtectedRoute } from './ProtectedRoute';
 const Auth = lazy(() => import('../../modules/auth/pages/Auth/Auth'));
 const Home = lazy(() => import('../../modules/home/pages/Home'));
 const Login = lazy(() => import('../../modules/auth/pages/Login/Login'));
-const Notes = lazy(() => import('../../modules/notes/pages/Notes'));
 const Search = lazy(() => import('../../modules/search/pages/Search/Search'));
 
 export const AppRouter = () => {
@@ -40,16 +39,6 @@ export const AppRouter = () => {
           <Suspense fallback={<CircularProgress />}>
             <Login />
           </Suspense>
-        }
-      />
-      <Route
-        path="/notes"
-        element={
-          <ProtectedRoute>
-            <Suspense fallback={<CircularProgress />}>
-              <Notes />
-            </Suspense>
-          </ProtectedRoute>
         }
       />
       <Route
