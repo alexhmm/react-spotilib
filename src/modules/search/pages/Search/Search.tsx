@@ -3,7 +3,7 @@ import { memo, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // Components
-import AlbumCard from '../../../albums/components/AlbumCard/AlbumCard';
+import AlbumCard from '../../../album/components/AlbumCard/AlbumCard';
 import ArtistCard from '../../../artist/components/ArtistCard/ArtistCard';
 import PlaylistCard from '../../../playlist/components/PlaylistCard/PlaylistCard';
 import TrackCard from '../../../tracks/components/TrackCard/TrackCard';

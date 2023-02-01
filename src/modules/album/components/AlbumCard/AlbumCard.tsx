@@ -10,7 +10,7 @@ import { useBreakpoints } from '../../../../shared/hooks/use-breakpoints.hook';
 import styles from './AlbumCard.module.scss';
 
 // Types
-import { AlbumCard as IAlbumCard } from '../../albums.types';
+import { AlbumCard as IAlbumCard } from '../../album.types';
 
 // UI
 import { IconButton } from '../../../../shared/ui/IconButton/IconButton';
