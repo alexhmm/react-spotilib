@@ -21,7 +21,7 @@ export const usePlaylistHttp = () => {
     params?: PlaylistsGetParams
   ): Promise<SpotifyDataGetResponse<SpotifyPlaylist[]> | undefined> => {
     return await fetchData(
-      'me/playlist',
+      'me/playlists',
       params && {
         params: new URLSearchParams({
           limit: params.limit.toString(),
