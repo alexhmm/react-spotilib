@@ -1,17 +1,17 @@
-import { albumsTranslationsEN } from './en/albums.translations.en';
+import { albumsTranslationsEN } from './en/album.translations.en';
 import { appTranslationsEN } from './en/app.translations.en';
-import { artistsTranslationsEN } from './en/artists.translations.en';
+import { artistTranslationsEN } from './en/artist.translations.en';
 import { authTranslationsEN } from './en/auth.translations.en';
-import { collectionsTranslationsEN } from './en/collections.translations.en';
+import { collectionTranslationsEN } from './en/collection.translations.en';
 import { playlistTranslationsEN } from './en/playlist.translations.en';
-import { tracksTranslationsEN } from './en/tracks.translation.en';
+import { trackTranslationsEN } from './en/track.translation.en';
 
 export const translationsEn = {
-  albums: albumsTranslationsEN,
+  album: albumsTranslationsEN,
   app: appTranslationsEN,
-  artists: artistsTranslationsEN,
+  artist: artistTranslationsEN,
   auth: authTranslationsEN,
-  collections: collectionsTranslationsEN,
+  collection: collectionTranslationsEN,
   playlist: playlistTranslationsEN,
-  tracks: tracksTranslationsEN,
+  track: trackTranslationsEN,
 };

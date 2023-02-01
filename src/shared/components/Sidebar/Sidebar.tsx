@@ -233,7 +233,7 @@ const Sidebar = () => {
             >
               <Tab
                 label={
-                  <Tooltip title={t('collections.title')}>
+                  <Tooltip title={t('collection.title')}>
                     <TabIcon icon={['fas', 'record-vinyl']} />
                   </Tooltip>
                 }

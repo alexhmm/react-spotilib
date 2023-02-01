@@ -76,7 +76,7 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
               styles['playlist-track-title-data-name'],
               'app-link'
             )}
-            to={`/tracks/${props.track.id}`}
+            to={`/track/${props.track.id}`}
           >
             {props.track.name}
           </Link>
@@ -93,7 +93,7 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
                     styles['playlist-track-title-data-artists-item-link'],
                     'app-link'
                   )}
-                  to={`/artists/${artist.id}`}
+                  to={`/artist/${artist.id}`}
                 >{`${artist.name}`}</Link>
                 {`${index < props.track.artists.length - 1 ? ',\xa0' : ''}`}
               </Box>
@@ -105,7 +105,7 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
         className={styles['playlist-track-album']}
         sx={{ color: 'text.secondary' }}
       >
-        <Link className="app-link" to={`/albums/${props.track.album.id}`}>
+        <Link className="app-link" to={`/album/${props.track.album.id}`}>
           {props.track.album.name}
         </Link>
       </Box>

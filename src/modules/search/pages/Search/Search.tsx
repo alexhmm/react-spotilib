@@ -79,7 +79,7 @@ const Search = () => {
       {searchLoading && <CircularProgress />}
       {searchData?.albums && (
         <>
-          <H3>{t('albums.title')}</H3>
+          <H3>{t('album.title')}</H3>
           <div className={styles['search-context']}>
             {searchData.albums.map((album) => (
               <AlbumCard
@@ -89,7 +89,7 @@ const Search = () => {
               />
             ))}
           </div>
-          <H3>{t('artists.title')}</H3>
+          <H3>{t('artist.title')}</H3>
           <div className={styles['search-context']}>
             {searchData.artists?.map((artist) => (
               <ArtistCard
@@ -109,7 +109,7 @@ const Search = () => {
               />
             ))}
           </div>
-          <H3>{t('tracks.title')}</H3>
+          <H3>{t('track.title')}</H3>
           <div className={styles['search-tracks']}>
             {searchData.tracks?.map((track) => (
               <TrackCard

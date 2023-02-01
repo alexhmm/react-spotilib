@@ -58,7 +58,7 @@ const TrackCard = (props: TrackCardProps) => {
       >
         <Link
           className={clsx(styles['track-card-info-track'], 'app-link', 'link')}
-          to={`/tracks/${props.track.id}`}
+          to={`/track/${props.track.id}`}
         >
           {props.track.name}
         </Link>
@@ -75,7 +75,7 @@ const TrackCard = (props: TrackCardProps) => {
                   styles['track-card-info-artists-item-link'],
                   'app-link'
                 )}
-                to={`/artists/${artist.id}`}
+                to={`/artist/${artist.id}`}
               >{`${artist.name}`}</Link>
               {`${index < props.track.artists.length - 1 ? ',\xa0' : ''}`}
             </Box>

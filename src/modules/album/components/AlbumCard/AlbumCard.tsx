@@ -74,7 +74,7 @@ const AlbumCard = (props: AlbumCardProps) => {
             <> </>
             <Link
               className={clsx(styles['album-card-data-artist'], 'app-link')}
-              to={`/artists/${artist.id}`}
+              to={`/artist/${artist.id}`}
               onClick={() => {
                 return false;
               }}

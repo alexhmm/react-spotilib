@@ -57,7 +57,7 @@ const ArtistCard = (props: ArtistCardProps) => {
       <div className={styles['artist-card-name']}>{props.artist.name}</div>
       <Link
         className={clsx(styles['artist-card-link'], 'app-link')}
-        to={`/artists/${props.artist.id}`}
+        to={`/artist/${props.artist.id}`}
       />
     </Box>
   );
