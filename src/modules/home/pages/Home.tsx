@@ -10,6 +10,7 @@ import TrackCard from '../../tracks/components/TrackCard/TrackCard';
 // Hooks
 import { useFetch } from '../../../shared/hooks/use-fetch.hook';
 import { usePlayerHttp } from '../../../shared/hooks/use-player-http.hook';
+import useShared from '../../../shared/hooks/use-shared.hook';
 
 // Stores
 import { useAuthStore } from '../../auth/use-auth.store';
@@ -24,8 +25,12 @@ import { Theme } from '../../../shared/types/shared.types';
 import {
   SpotifyArtist,
   SpotifyDataGetResponse,
+  SpotifyTopTimeRange,
 } from '../../../shared/types/spotify.types';
-import { TopTracksGetResponse } from '../../tracks/tracks.types';
+import {
+  TopTracksGetResponse,
+  TrackCard as ITrackCard,
+} from '../../tracks/tracks.types';
 
 // UI
 import H2 from '../../../shared/ui/H2/H2';
@@ -35,10 +40,12 @@ import Popover from '../../../shared/ui/Popover/Popover';
 
 // Utils
 import { artistDataMap } from '../../artists/artists.utils';
+import { trackDataMap } from '../../tracks/tracks.utils';
 
 const Home = () => {
   const { fetchData } = useFetch();
   const { playPutMutation } = usePlayerHttp();
+  const { topTitleByTimeRangeGet } = useShared();
   const { i18n, t } = useTranslation();
 
   // Auth store state
@@ -61,9 +68,11 @@ const Home = () => {
     HTMLButtonElement | undefined
   >(undefined);
   const [topArtists, setTopArtists] = useState<IArtistCard[]>([]);
-  const [topTracks, setTopTracks] = useState<TopTracksGetResponse | undefined>(
-    undefined
-  );
+  const [topArtistsTimeRange, setTopArtistsTimeRange] =
+    useState<SpotifyTopTimeRange>(SpotifyTopTimeRange.LONG_TERM);
+  const [topTracks, setTopTracks] = useState<ITrackCard[]>([]);
+  const [topTracksTimeRange, setTopTracksTimeRange] =
+    useState<SpotifyTopTimeRange>(SpotifyTopTimeRange.LONG_TERM);
 
   // ####### //
   // QUERIES //
@@ -72,8 +81,11 @@ const Home = () => {
   // Get profile on access token change.
   // eslint-disable-next-line
   const topArtistsQuery = useQuery(
-    ['top-artists', token],
-    () => fetchData('me/top/artists?limit=20&offset=0&time_range=long_term'),
+    ['top-artists', token, topArtistsTimeRange],
+    () =>
+      fetchData(
+        `me/top/artists?limit=20&offset=0&time_range=${topArtistsTimeRange}`
+      ),
     {
       refetchOnWindowFocus: false,
       onError: (error: unknown) => {
@@ -88,15 +100,18 @@ const Home = () => {
   // Get profile on access token change.
   // eslint-disable-next-line
   const topTracksQuery = useQuery(
-    ['top-tracks', token],
-    () => fetchData('me/top/tracks?limit=20&offset=0&time_range=long_term'),
+    ['top-tracks', token, topTracksTimeRange],
+    () =>
+      fetchData(
+        `me/top/tracks?limit=20&offset=0&time_range=${topTracksTimeRange}`
+      ),
     {
       refetchOnWindowFocus: false,
       onError: (error: unknown) => {
         console.error('Error on getting top tracks:', error);
       },
       onSuccess: (data: TopTracksGetResponse) => {
-        setTopTracks(data);
+        setTopTracks(trackDataMap(data));
       },
     }
   );
@@ -131,10 +146,57 @@ const Home = () => {
     // eslint-disable-next-line
   }, []);
 
+  /**
+   * Handler to change top artists time range.
+   * @param timeRange SpotifyTopTimeRange
+   */
+  const onTopArtistsTimeRangeChange = useCallback(
+    (timeRange: SpotifyTopTimeRange) => {
+      if (timeRange !== topArtistsTimeRange) {
+        setTopArtists([]);
+        setTopArtistsTimeRange(timeRange);
+      }
+    },
+    [topArtistsTimeRange]
+  );
+
+  /**
+   * Handler to change top tracks time range.
+   * @param timeRange SpotifyTopTimeRange
+   */
+  const onTopTracksTimeRangeChange = useCallback(
+    (timeRange: SpotifyTopTimeRange) => {
+      if (timeRange !== topTracksTimeRange) {
+        setTopTracks([]);
+        setTopTracksTimeRange(timeRange);
+      }
+    },
+    [topTracksTimeRange]
+  );
+
   return (
     <div className={styles['home']}>
       <H2>{t('app.hello')}</H2>
-      <H3>{t('app.top_artists')}</H3>
+      <H3
+        menuItems={[
+          {
+            action: SpotifyTopTimeRange.LONG_TERM,
+            title: t('app.top.long_term'),
+          },
+          {
+            action: SpotifyTopTimeRange.MEDIUM_TERM,
+            title: t('app.top.medium_term'),
+          },
+          {
+            action: SpotifyTopTimeRange.SHORT_TERM,
+            title: t('app.top.short_term'),
+          },
+        ]}
+        menuTitle={topTitleByTimeRangeGet(topArtistsTimeRange)}
+        onMenuAction={onTopArtistsTimeRangeChange}
+      >
+        {t('app.top.artists')}
+      </H3>
       <div className={styles['home-top-artists']}>
         {(topArtistsQuery.isLoading || topArtistsQuery.isRefetching) &&
           [...Array(20)].map((element, index) => {
@@ -155,7 +217,27 @@ const Home = () => {
           />
         ))}
       </div>
-      <H3 classes="pt-2 lg:pt-4">{t('app.top_tracks')}</H3>
+      <H3
+        classes="pt-2 lg:pt-4"
+        menuItems={[
+          {
+            action: SpotifyTopTimeRange.LONG_TERM,
+            title: t('app.top.long_term'),
+          },
+          {
+            action: SpotifyTopTimeRange.MEDIUM_TERM,
+            title: t('app.top.medium_term'),
+          },
+          {
+            action: SpotifyTopTimeRange.SHORT_TERM,
+            title: t('app.top.short_term'),
+          },
+        ]}
+        menuTitle={topTitleByTimeRangeGet(topTracksTimeRange)}
+        onMenuAction={onTopTracksTimeRangeChange}
+      >
+        {t('app.top.tracks')}
+      </H3>
       <div className={styles['home-top-tracks']}>
         {(topTracksQuery.isLoading || topTracksQuery.isRefetching) &&
           [...Array(20)].map((element, index) => {
@@ -168,7 +250,7 @@ const Home = () => {
               />
             );
           })}
-        {topTracks?.items.map((track) => (
+        {topTracks?.map((track) => (
           <TrackCard
             key={track.id}
             track={track}

@@ -18,6 +18,11 @@ export const appTranslationsDE: AppTranslations = {
   theme: {
     toggle: 'Theme wechseln',
   },
-  top_artists: 'Deine Lieblingskünstli',
-  top_tracks: 'Deine Lieblingssongs',
+  top: {
+    artists: 'Deine Lieblingskünstli',
+    long_term: 'Insgesamt',
+    medium_term: 'Letzte 6 Monate',
+    short_term: 'Letzter Monat',
+    tracks: 'Deine Lieblingssongs',
+  },
 };

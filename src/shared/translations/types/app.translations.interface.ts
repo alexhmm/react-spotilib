@@ -16,6 +16,11 @@ export interface AppTranslations {
   theme: {
     toggle: string;
   };
-  top_artists: string;
-  top_tracks: string;
+  top: {
+    artists: string;
+    long_term: string;
+    medium_term: string;
+    short_term: string;
+    tracks: string;
+  };
 }

@@ -18,6 +18,11 @@ export const appTranslationsEN: AppTranslations = {
   theme: {
     toggle: 'Toggle theme',
   },
-  top_artists: 'Your top artists',
-  top_tracks: 'Your top tracks',
+  top: {
+    artists: 'Your top artists',
+    long_term: 'Alltime',
+    medium_term: 'Last 6 months',
+    short_term: 'Last month',
+    tracks: 'Your top tracks',
+  },
 };
