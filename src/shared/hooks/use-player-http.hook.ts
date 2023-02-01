@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from 'react-query';
 
 // Hooks
-import { useFetch } from './use-fetch.hook';
+import useFetch from './use-fetch.hook';
 
 // Types
 import {
@@ -10,7 +10,7 @@ import {
   PlayPutRequest,
 } from '../types/player.types';
 
-export const usePlayerHttp = () => {
+const usePlayerHttp = () => {
   const { fetchData, handleError, handleRetry } = useFetch();
 
   // ####### //
@@ -107,3 +107,5 @@ export const usePlayerHttp = () => {
     playPutMutation,
   };
 };
+
+export default usePlayerHttp;

@@ -9,7 +9,7 @@ import PlaylistCard from '../../../playlist/components/PlaylistCard/PlaylistCard
 import TrackCard from '../../../track/components/TrackCard/TrackCard';
 
 // Hooks
-import { usePlayerHttp } from '../../../../shared/hooks/use-player-http.hook';
+import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';
 
 // Stores
 import useSearchStore from '../../use-search.store';

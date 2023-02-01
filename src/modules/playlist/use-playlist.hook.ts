@@ -1,5 +1,5 @@
 // Stores
-import { usePlaylistStore } from './use-playlist.store';
+import usePlaylistStore from './use-playlist.store';
 
 // Types
 import { Playlists, Playlist } from './playlist.types';
@@ -8,7 +8,7 @@ import { SpotifyTrackMetaData } from '../../shared/types/spotify.types';
 // Utils
 import { playlistTracksMap } from './playlist.utils';
 
-export const usePlaylist = () => {
+const usePlaylist = () => {
   // Playlists store state
   const [playlists, setPlaylists] = usePlaylistStore((state) => [
     state.playlists,
@@ -87,3 +87,5 @@ export const usePlaylist = () => {
     playlistTracksGetEffect,
   };
 };
+
+export default usePlaylist;

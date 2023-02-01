@@ -4,8 +4,8 @@ import { InputAdornment, OutlinedInput } from '@mui/material';
 import clsx from 'clsx';
 
 // Hooks
-import { useDebouncedEffect } from '../../hooks/use-debounced-effect.hook';
-import { useFetch } from '../../hooks/use-fetch.hook';
+import useDebouncedEffect from '../../hooks/use-debounced-effect.hook';
+import useFetch from '../../hooks/use-fetch.hook';
 import useSearchHttp from '../../../modules/search/use-search-http.hook';
 
 // Stores

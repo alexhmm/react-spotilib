@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
 // Hooks
-import { useAuth } from '../../modules/auth/use-auth.hook';
+import useAuth from '../../modules/auth/use-auth.hook';
 
 // A wrapper for <Route> that navigates to the login screen if you're not yet authorized.
 type ProtectedRouteProps = {

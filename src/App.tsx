@@ -11,7 +11,7 @@ import Header from './shared/components/Header/Header';
 import Sidebar from './shared/components/Sidebar/Sidebar';
 
 // Hooks
-import { useTheme } from './shared/hooks/use-theme.hook';
+import useTheme from './shared/hooks/use-theme.hook';
 
 // Router
 import { AppRouter } from './shared/router/AppRouter';

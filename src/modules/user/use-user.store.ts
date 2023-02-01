@@ -13,10 +13,12 @@ const intialUserState = {
   profile: undefined,
 };
 
-export const useUserStore = create<UserState>((set) => ({
+const useUserStore = create<UserState>((set) => ({
   ...intialUserState,
   resetState: () => {
     set(intialUserState);
   },
   setProfile: (profile: UserProfile | undefined) => set({ profile }),
 }));
+
+export default useUserStore;

@@ -11,7 +11,7 @@ const initialSharedState = {
   headerTitle: undefined,
 };
 
-export const useSharedStore = create<SharedState>((set) => ({
+const useSharedStore = create<SharedState>((set) => ({
   ...initialSharedState,
   resetState: () => {
     set(initialSharedState);
@@ -20,3 +20,5 @@ export const useSharedStore = create<SharedState>((set) => ({
     set({ headerTitle });
   },
 }));
+
+export default useSharedStore;

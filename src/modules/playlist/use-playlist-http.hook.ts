@@ -1,5 +1,5 @@
 // Hooks
-import { useFetch } from '../../shared/hooks/use-fetch.hook';
+import useFetch from '../../shared/hooks/use-fetch.hook';
 
 // Types
 import { PlaylistsGetParams } from './playlist.types';
@@ -9,7 +9,7 @@ import {
 } from '../../shared/types/spotify.types';
 import { TracksGetResponse } from '../track/track.types';
 
-export const usePlaylistHttp = () => {
+const usePlaylistHttp = () => {
   const { fetchData } = useFetch();
 
   /**
@@ -72,3 +72,5 @@ export const usePlaylistHttp = () => {
     playlistTracksGet,
   };
 };
+
+export default usePlaylistHttp;

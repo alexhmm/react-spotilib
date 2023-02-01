@@ -9,17 +9,17 @@ import clsx from 'clsx';
 import Search from '../Search/Search';
 
 // Hooks
-import { useAuth } from '../../../modules/auth/use-auth.hook';
-import { useBreakpoints } from '../../hooks/use-breakpoints.hook';
-import { useFetch } from '../../hooks/use-fetch.hook';
-import { useLogout } from '../../hooks/use-logout.hook';
+import useAuth from '../../../modules/auth/use-auth.hook';
+import useBreakpoints from '../../hooks/use-breakpoints.hook';
+import useFetch from '../../hooks/use-fetch.hook';
+import useLogout from '../../hooks/use-logout.hook';
 
 // Stores
-import { useAuthStore } from '../../../modules/auth/use-auth.store';
+import useAuthStore from '../../../modules/auth/use-auth.store';
 import useSearchStore from '../../../modules/search/use-search.store';
-import { useSharedStore } from '../../stores/use-shared.store';
-import { useThemeStore } from '../../stores/use-theme.store';
-import { useUserStore } from '../../../modules/user/use-user.store';
+import useSharedStore from '../../stores/use-shared.store';
+import useThemeStore from '../../stores/use-theme.store';
+import useUserStore from '../../../modules/user/use-user.store';
 
 // Styles
 import styles from './Header.module.scss';

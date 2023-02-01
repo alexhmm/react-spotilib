@@ -15,7 +15,7 @@ const initialAuthState: Pick<AuthState, 'token'> = {
     : undefined,
 };
 
-export const useAuthStore = create<AuthState>((set, get) => ({
+const useAuthStore = create<AuthState>((set, get) => ({
   ...initialAuthState,
   resetState: () => {
     set(initialAuthState);
@@ -57,3 +57,5 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 }));
+
+export default useAuthStore;

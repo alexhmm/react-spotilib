@@ -9,7 +9,7 @@ export interface ThemeState {
   setTheme: (theme: Theme) => void;
 }
 
-export const useThemeStore = create<ThemeState>((set) => ({
+const useThemeStore = create<ThemeState>((set) => ({
   theme: (localStorage.getItem('app:theme') as Theme) || Theme.Light,
   setTheme: (theme: Theme) => {
     set({ theme });
@@ -17,3 +17,5 @@ export const useThemeStore = create<ThemeState>((set) => ({
     localStorage.setItem('app:theme', theme);
   },
 }));
+
+export default useThemeStore;

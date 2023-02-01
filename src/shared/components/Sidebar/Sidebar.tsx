@@ -22,13 +22,13 @@ import clsx from 'clsx';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 // Hooks
-import { useFetch } from '../../hooks/use-fetch.hook';
-import { usePlaylist } from '../../../modules/playlist/use-playlist.hook';
-import { usePlaylistHttp } from '../../../modules/playlist/use-playlist-http.hook';
+import useFetch from '../../hooks/use-fetch.hook';
+import usePlaylist from '../../../modules/playlist/use-playlist.hook';
+import usePlaylistHttp from '../../../modules/playlist/use-playlist-http.hook';
 
 // Stores
-import { useAuthStore } from '../../../modules/auth/use-auth.store';
-import { usePlaylistStore } from '../../../modules/playlist/use-playlist.store';
+import useAuthStore from '../../../modules/auth/use-auth.store';
+import usePlaylistStore from '../../../modules/playlist/use-playlist.store';
 
 // Styles
 import styles from './Sidebar.module.scss';

@@ -4,10 +4,10 @@ import { useQuery } from 'react-query';
 import { CircularProgress } from '@mui/material';
 
 // Hooks
-import { useAuth } from '../../use-auth.hook';
+import useAuth from '../../use-auth.hook';
 
 // Stores
-import { useAuthStore } from '../../use-auth.store';
+import useAuthStore from '../../use-auth.store';
 
 const Auth = () => {
   const { tokenGet } = useAuth();

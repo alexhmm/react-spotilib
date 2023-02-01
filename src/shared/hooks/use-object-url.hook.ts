@@ -7,9 +7,7 @@ import { useEffect, useState } from 'react';
  * unmount or parameter changes.
  * @param initialObject - `null` or an instance of `File`, `Blob` or `MediaSource`.
  */
-export const useObjectURL = (
-  initialObject: null | File | Blob | MediaSource
-) => {
+const useObjectURL = (initialObject: null | File | Blob | MediaSource) => {
   const [object, setObject] = useState<null | File | Blob | MediaSource>(
     initialObject
   );
@@ -34,3 +32,5 @@ export const useObjectURL = (
     setObject,
   };
 };
+
+export default useObjectURL;

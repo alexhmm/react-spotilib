@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 import clsx from 'clsx';
 
 // Hooks
-import { useBreakpoints } from '../../../../shared/hooks/use-breakpoints.hook';
+import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
 
 // Styles
 import styles from './ArtistCard.module.scss';

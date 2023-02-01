@@ -14,7 +14,7 @@ declare module '@mui/material/styles' {
  * Custom hook to get current used breakpoint.
  * @returns Theme breakpoints with current usage status
  */
-export const useBreakpoints = () => {
+const useBreakpoints = () => {
   const theme = useTheme();
   const xs = useMediaQuery(theme.breakpoints.between('xs', 'md'));
   const xsUp = useMediaQuery(theme.breakpoints.up('xs'));
@@ -72,3 +72,5 @@ export const useBreakpoints = () => {
     xxxxxlUp,
   };
 };
+
+export default useBreakpoints;

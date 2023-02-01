@@ -1,4 +1,7 @@
-import { useFetch } from '../../shared/hooks/use-fetch.hook';
+// Hooks
+import useFetch from '../../shared/hooks/use-fetch.hook';
+
+// Types
 import { SearchGetParams, SearchGetResponse } from './search.types';
 
 const useSearchHttp = () => {

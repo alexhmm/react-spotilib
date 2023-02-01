@@ -1,8 +1,8 @@
 // Hooks
-import { useLogout } from './use-logout.hook';
+import useLogout from './use-logout.hook';
 
 // Stores
-import { useAuthStore } from '../../modules/auth/use-auth.store';
+import useAuthStore from '../../modules/auth/use-auth.store';
 
 // Types
 import { FetchDataOptions } from '../types/fetch-data.types';
@@ -13,7 +13,7 @@ class FetchError extends Error {
   }
 }
 
-export const useFetch = () => {
+const useFetch = () => {
   const { logout } = useLogout();
 
   // Auth store state
@@ -103,3 +103,5 @@ export const useFetch = () => {
     handleRetry,
   };
 };
+
+export default useFetch;

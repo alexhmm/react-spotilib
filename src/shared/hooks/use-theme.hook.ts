@@ -1,7 +1,7 @@
 import { createTheme, Theme } from '@mui/material/styles';
 
 // Stores
-import { useThemeStore } from '../stores/use-theme.store';
+import useThemeStore from '../stores/use-theme.store';
 
 // Types
 import { Theme as ETheme } from '../types/shared.types';
@@ -140,7 +140,7 @@ export const themeLight = createTheme({
   typography,
 });
 
-export const useTheme = () => {
+const useTheme = () => {
   // Theme store state
   const [theme] = useThemeStore((state) => [state.theme]);
 
@@ -161,3 +161,5 @@ export const useTheme = () => {
     activeThemeGet,
   };
 };
+
+export default useTheme;

@@ -17,9 +17,10 @@ const initialPlaylistState = {
     total: 0,
   },
 };
-
-export const usePlaylistStore = create<PlaylistState>((set) => ({
+const usePlaylistStore = create<PlaylistState>((set) => ({
   ...initialPlaylistState,
   resetState: () => set(initialPlaylistState),
   setPlaylists: (playlists: Playlists) => set({ playlists }),
 }));
+
+export default usePlaylistStore;

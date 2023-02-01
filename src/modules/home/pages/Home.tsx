@@ -8,13 +8,13 @@ import ArtistCard from '../../artist/components/ArtistCard/ArtistCard';
 import TrackCard from '../../track/components/TrackCard/TrackCard';
 
 // Hooks
-import { useFetch } from '../../../shared/hooks/use-fetch.hook';
-import { usePlayerHttp } from '../../../shared/hooks/use-player-http.hook';
+import useFetch from '../../../shared/hooks/use-fetch.hook';
+import usePlayerHttp from '../../../shared/hooks/use-player-http.hook';
 import useShared from '../../../shared/hooks/use-shared.hook';
 
 // Stores
-import { useAuthStore } from '../../auth/use-auth.store';
-import { useThemeStore } from '../../../shared/stores/use-theme.store';
+import useAuthStore from '../../auth/use-auth.store';
+import useThemeStore from '../../../shared/stores/use-theme.store';
 
 // Styles
 import styles from './Home.module.scss';

@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
 // Stores
-import { useAuthStore } from '../../modules/auth/use-auth.store';
-import { useSharedStore } from '../stores/use-shared.store';
-import { useUserStore } from '../../modules/user/use-user.store';
+import useAuthStore from '../../modules/auth/use-auth.store';
+import useSharedStore from '../stores/use-shared.store';
+import useUserStore from '../../modules/user/use-user.store';
 
-export const useLogout = () => {
+const useLogout = () => {
   const navigate = useNavigate();
 
   // Auth store state
@@ -37,3 +37,5 @@ export const useLogout = () => {
     logout,
   };
 };
+
+export default useLogout;

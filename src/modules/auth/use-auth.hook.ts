@@ -1,8 +1,8 @@
 // Hooks
-import { useLogout } from '../../shared/hooks/use-logout.hook';
+import useLogout from '../../shared/hooks/use-logout.hook';
 
 // Stores
-import { useAuthStore } from './use-auth.store';
+import useAuthStore from './use-auth.store';
 
 // Types
 import { Token } from './auth.types';
@@ -18,7 +18,7 @@ export const regExpSpecial = new RegExp(
 );
 export const regExpUpper = new RegExp('.*[A-Z].*');
 
-export const useAuth = () => {
+const useAuth = () => {
   const { logout } = useLogout();
 
   // Auth store state
@@ -115,3 +115,5 @@ export const useAuth = () => {
     tokenGet,
   };
 };
+
+export default useAuth;

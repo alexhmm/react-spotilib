@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 // Hooks
-import { useAuth } from '../../use-auth.hook';
+import useAuth from '../../use-auth.hook';
 
 // Styles
 import styles from './Login.module.scss';

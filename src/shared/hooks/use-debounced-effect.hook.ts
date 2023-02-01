@@ -6,7 +6,7 @@ import { useEffect } from 'react';
  * @param dependencies Dependencies
  * @param delay Delay (ms)
  */
-export const useDebouncedEffect = (
+const useDebouncedEffect = (
   effect: Function,
   dependencies: any[],
   delay: number
@@ -18,3 +18,5 @@ export const useDebouncedEffect = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...(dependencies || []), delay]);
 };
+
+export default useDebouncedEffect;
