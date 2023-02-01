@@ -10,7 +10,7 @@ import { useBreakpoints } from '../../../../shared/hooks/use-breakpoints.hook';
 import styles from './ArtistCard.module.scss';
 
 // Types
-import { ArtistCard as IArtistCard } from '../../artists.types';
+import { ArtistCard as IArtistCard } from '../../artist.types';
 
 // UI
 import { IconButton } from '../../../../shared/ui/IconButton/IconButton';

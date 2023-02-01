@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Button, Skeleton } from '@mui/material';
 
 // Components
-import ArtistCard from '../../artists/components/ArtistCard/ArtistCard';
+import ArtistCard from '../../artist/components/ArtistCard/ArtistCard';
 import TrackCard from '../../tracks/components/TrackCard/TrackCard';
 
 // Hooks
@@ -20,7 +20,7 @@ import { useThemeStore } from '../../../shared/stores/use-theme.store';
 import styles from './Home.module.scss';
 
 // Types
-import { ArtistCard as IArtistCard } from '../../artists/artists.types';
+import { ArtistCard as IArtistCard } from '../../artist/artist.types';
 import { Theme } from '../../../shared/types/shared.types';
 import {
   SpotifyArtist,
@@ -39,7 +39,7 @@ import { Icon } from '../../../shared/ui/Icon/Icon';
 import Popover from '../../../shared/ui/Popover/Popover';
 
 // Utils
-import { artistDataMap } from '../../artists/artists.utils';
+import { artistDataMap } from '../../artist/artist.utils';
 import { trackDataMap } from '../../tracks/tracks.utils';
 
 const Home = () => {

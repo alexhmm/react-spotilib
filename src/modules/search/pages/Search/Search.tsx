@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 // Components
 import AlbumCard from '../../../albums/components/AlbumCard/AlbumCard';
-import ArtistCard from '../../../artists/components/ArtistCard/ArtistCard';
+import ArtistCard from '../../../artist/components/ArtistCard/ArtistCard';
 import PlaylistCard from '../../../playlist/components/PlaylistCard/PlaylistCard';
 import TrackCard from '../../../tracks/components/TrackCard/TrackCard';
 

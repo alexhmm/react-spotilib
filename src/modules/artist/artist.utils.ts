@@ -1,5 +1,5 @@
 // Types
-import { ArtistCard } from './artists.types';
+import { ArtistCard } from './artist.types';
 import {
   SpotifyArtist,
   SpotifyDataGetResponse,
