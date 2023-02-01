@@ -29,7 +29,7 @@ import {
 
 // UI
 import H2 from '../../../../shared/ui/H2/H2';
-import { IconButton } from '../../../../shared/ui/IconButton/IconButton';
+import IconButton from '../../../../shared/ui/IconButton/IconButton';
 
 // Utils
 import { playlistCreate } from '../../playlist.utils';

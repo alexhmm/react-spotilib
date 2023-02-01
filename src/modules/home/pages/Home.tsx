@@ -35,7 +35,7 @@ import {
 // UI
 import H2 from '../../../shared/ui/H2/H2';
 import H3 from '../../../shared/ui/H3/H3';
-import { Icon } from '../../../shared/ui/Icon/Icon';
+import Icon from '../../../shared/ui/Icon/Icon';
 import Popover from '../../../shared/ui/Popover/Popover';
 
 // Utils

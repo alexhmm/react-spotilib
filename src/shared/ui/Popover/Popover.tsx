@@ -15,7 +15,7 @@ import styles from './Popover.module.scss';
 import { ButtonType } from '../../types/ui.types';
 
 // UI
-import { Icon } from '../Icon/Icon';
+import Icon from '../Icon/Icon';
 
 type PopoverProps = {
   anchor?: HTMLButtonElement;

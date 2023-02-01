@@ -37,7 +37,7 @@ import styles from './Sidebar.module.scss';
 import { PlaylistsGetParams } from '../../../modules/playlist/playlist.types';
 
 // UI
-import { Icon } from '../../ui/Icon/Icon';
+import Icon from '../../ui/Icon/Icon';
 
 type SidebarItemProps = {
   children: ReactNode;

@@ -13,7 +13,7 @@ import styles from './AlbumCard.module.scss';
 import { AlbumCard as IAlbumCard } from '../../album.types';
 
 // UI
-import { IconButton } from '../../../../shared/ui/IconButton/IconButton';
+import IconButton from '../../../../shared/ui/IconButton/IconButton';
 
 type AlbumCardProps = {
   album: IAlbumCard;

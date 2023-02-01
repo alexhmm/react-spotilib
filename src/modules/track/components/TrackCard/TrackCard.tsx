@@ -10,7 +10,7 @@ import styles from './TrackCard.module.scss';
 import { TrackCard as ITrackCard } from '../../track.types';
 
 // UI
-import { IconButton } from '../../../../shared/ui/IconButton/IconButton';
+import IconButton from '../../../../shared/ui/IconButton/IconButton';
 
 type TrackCardProps = {
   track: ITrackCard;

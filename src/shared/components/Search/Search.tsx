@@ -19,8 +19,8 @@ import { SearchGetParams } from '../../../modules/search/search.types';
 import { SpotifyItemType } from '../../types/spotify.types';
 
 // UI
-import { Icon } from '../../ui/Icon/Icon';
-import { IconButton } from '../../ui/IconButton/IconButton';
+import Icon from '../../ui/Icon/Icon';
+import IconButton from '../../ui/IconButton/IconButton';
 
 // Utils
 import { searchDataCreate } from '../../../modules/search/search.utils';

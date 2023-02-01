@@ -10,7 +10,7 @@ import styles from './PlaylistTrack.module.scss';
 import { PlaylistTrack as IPlaylistTrack } from '../../playlist.types';
 
 // UI
-import { IconButton } from '../../../../shared/ui/IconButton/IconButton';
+import IconButton from '../../../../shared/ui/IconButton/IconButton';
 
 // Utils
 import { minutesSecondsByMillisecondsGet } from '../../../../shared/utils/shared.utils';

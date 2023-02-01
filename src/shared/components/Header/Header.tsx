@@ -28,7 +28,7 @@ import styles from './Header.module.scss';
 import { Theme } from '../../types/shared.types';
 
 // UI
-import { Icon } from '../../ui/Icon/Icon';
+import Icon from '../../ui/Icon/Icon';
 import TextButtonOutlined from '../../ui/TextButtonOutlined/TextButtonOutlined';
 
 type HeaderMenuButtonItemProps = {

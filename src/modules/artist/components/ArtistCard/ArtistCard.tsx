@@ -13,7 +13,7 @@ import styles from './ArtistCard.module.scss';
 import { ArtistCard as IArtistCard } from '../../artist.types';
 
 // UI
-import { IconButton } from '../../../../shared/ui/IconButton/IconButton';
+import IconButton from '../../../../shared/ui/IconButton/IconButton';
 
 type ArtistCardProps = {
   artist: IArtistCard;

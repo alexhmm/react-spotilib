@@ -13,7 +13,7 @@ import styles from './PlaylistCard.module.scss';
 import { PlaylistCard as IPlaylistCard } from '../../playlist.types';
 
 // UI
-import { IconButton } from '../../../../shared/ui/IconButton/IconButton';
+import IconButton from '../../../../shared/ui/IconButton/IconButton';
 
 type PlaylistCardProps = {
   playlist: IPlaylistCard;

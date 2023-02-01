@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode } from 'react';
+import { forwardRef, memo, ReactNode } from 'react';
 import { Button } from '@mui/material';
 import { IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
 import clsx from 'clsx';
@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import styles from './IconButton.module.scss';
 
 // UI
-import { Icon } from '../Icon/Icon';
+import Icon from '../Icon/Icon';
 
 type IconButtonProps = {
   children?: ReactNode;
@@ -28,7 +28,7 @@ type IconButtonProps = {
   onClick?: (event?: any) => void;
 };
 
-export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
+const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
   (props, ref) => {
     // Warning: React does not recognize the xxx prop on a DOM element.
     // If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase xxx instead.
@@ -65,3 +65,5 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
     );
   }
 );
+
+export default memo(IconButton);

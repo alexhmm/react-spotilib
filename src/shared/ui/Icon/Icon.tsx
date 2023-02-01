@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 import { SxProps, Theme } from '@mui/material';
 import { SvgIcon } from '@mui/material';
 import {
@@ -30,7 +30,7 @@ type IconProps = {
   sx?: SxProps<Theme> | undefined;
 };
 
-export const Icon = forwardRef(
+const Icon = forwardRef(
   (
     props: IconProps,
     ref:
@@ -86,3 +86,5 @@ export const Icon = forwardRef(
 Icon.propTypes = {
   icon: PropTypes.any.isRequired,
 };
+
+export default memo(Icon);
