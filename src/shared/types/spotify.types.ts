@@ -19,9 +19,9 @@ export enum SpotifyItemType {
 }
 
 export enum SpotifyTopTimeRange {
-  LONG_TERM = 'long_term',
-  MEDIUM_TERM = 'medium_term',
-  SHORT_TERM = 'short_term',
+  Long_Term = 'long_term',
+  Medium_Term = 'medium_term',
+  Short_Term = 'short_term',
 }
 
 export interface ExternalUrls {

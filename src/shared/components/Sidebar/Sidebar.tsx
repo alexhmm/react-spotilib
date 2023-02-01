@@ -35,6 +35,7 @@ import styles from './Sidebar.module.scss';
 
 // Types
 import { PlaylistsGetParams } from '../../../modules/playlist/playlist.types';
+import { SidebarTabType } from '../../types/shared.types';
 
 // UI
 import Icon from '../../ui/Icon/Icon';
@@ -97,7 +98,9 @@ const Sidebar = () => {
   const [playlists] = usePlaylistStore((state) => [state.playlists]);
 
   // Component state
-  const [tabActive, setTabActive] = useState<number>(1);
+  const [tabActive, setTabActive] = useState<SidebarTabType>(
+    SidebarTabType.Playlists
+  );
 
   // ######### //
   // MUTATIONS //
@@ -187,7 +190,7 @@ const Sidebar = () => {
   }, [playlists]);
 
   const onTabChange = useCallback(
-    (event: React.SyntheticEvent, newValue: number) => {
+    (event: React.SyntheticEvent, newValue: SidebarTabType) => {
       setTabActive(newValue);
     },
     []
@@ -237,6 +240,7 @@ const Sidebar = () => {
                     <TabIcon icon={['fas', 'record-vinyl']} />
                   </Tooltip>
                 }
+                value={SidebarTabType.Collections}
               />
               <Tab
                 label={
@@ -244,6 +248,7 @@ const Sidebar = () => {
                     <TabIcon icon={['fas', 'music']} />
                   </Tooltip>
                 }
+                value={SidebarTabType.Playlists}
               />
             </Tabs>
           </>
@@ -261,8 +266,10 @@ const Sidebar = () => {
         >
           {token && (
             <>
-              {tabActive === 0 && <>{t('app.coming_soon')}</>}
-              {tabActive === 1 &&
+              {tabActive === SidebarTabType.Collections && (
+                <>{t('app.coming_soon')}</>
+              )}
+              {tabActive === SidebarTabType.Playlists &&
                 playlists &&
                 playlists.items.length > 0 &&
                 playlists.items.map((playlist) => (

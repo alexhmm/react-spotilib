@@ -13,11 +13,11 @@ const useShared = () => {
    */
   const topTitleByTimeRangeGet = (timeRange: SpotifyTopTimeRange): string => {
     switch (timeRange) {
-      case SpotifyTopTimeRange.LONG_TERM:
+      case SpotifyTopTimeRange.Long_Term:
         return t('app.top.long_term');
-      case SpotifyTopTimeRange.MEDIUM_TERM:
+      case SpotifyTopTimeRange.Medium_Term:
         return t('app.top.medium_term');
-      case SpotifyTopTimeRange.SHORT_TERM:
+      case SpotifyTopTimeRange.Short_Term:
         return t('app.top.short_term');
       default:
         return '';

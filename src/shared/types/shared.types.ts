@@ -1,3 +1,8 @@
+export enum SidebarTabType {
+  Collections = 'COLLECTIONS',
+  Playlists = 'PLAYLISTS',
+}
+
 export enum Theme {
   Dark = 'Dark',
   Light = 'Light',
