@@ -1,10 +1,12 @@
 // Types
 import {
   Playlist,
+  PlaylistCard,
   PlaylistTrack,
   PlaylistTrackArtist,
 } from './playlists.types';
 import {
+  SpotifyDataGetResponse,
   SpotifyPlaylist,
   SpotifyTrackMetaData,
 } from '../../shared/types/spotify.types';
@@ -29,6 +31,25 @@ export const playlistCreate = (fetchedPlaylist: SpotifyPlaylist): Playlist => {
     tracks_total: fetchedPlaylist.tracks.total,
     uri: fetchedPlaylist.uri,
   };
+};
+
+/**
+ * Map spotify playlist data.
+ * @param playlists Playlists
+ * @returns Mapped playlists.
+ */
+export const playlistDataMap = (
+  playlists: SpotifyDataGetResponse<SpotifyPlaylist[]>
+): PlaylistCard[] => {
+  return playlists.items.map((playlist) => {
+    return {
+      id: playlist.id,
+      images: playlist.images,
+      name: playlist.name,
+      owner: playlist.owner,
+      uri: playlist.uri,
+    };
+  });
 };
 
 /**

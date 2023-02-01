@@ -10,7 +10,7 @@ import {
  * @param artists Artists
  * @returns Mapped artists.
  */
-export const mapArtistData = (
+export const artistDataMap = (
   artists: SpotifyDataGetResponse<SpotifyArtist[]>
 ): ArtistCard[] => {
   return artists.items.map((artist) => {

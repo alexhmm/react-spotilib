@@ -58,7 +58,7 @@ const TrackCard = (props: TrackCardProps) => {
       >
         <Link
           className={clsx(styles['track-card-info-track'], 'app-link', 'link')}
-          to={`tracks/${props.track.id}`}
+          to={`/tracks/${props.track.id}`}
         >
           {props.track.name}
         </Link>

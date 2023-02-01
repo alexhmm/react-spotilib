@@ -34,7 +34,7 @@ import { Icon } from '../../../shared/ui/Icon/Icon';
 import Popover from '../../../shared/ui/Popover/Popover';
 
 // Utils
-import { mapArtistData } from '../../artists/artists.utils';
+import { artistDataMap } from '../../artists/artists.utils';
 
 const Home = () => {
   const { fetchData } = useFetch();
@@ -80,7 +80,7 @@ const Home = () => {
         console.error('Error on getting top artists:', error);
       },
       onSuccess: (data: SpotifyDataGetResponse<SpotifyArtist[]>) => {
-        setTopArtists(mapArtistData(data));
+        setTopArtists(artistDataMap(data));
       },
     }
   );

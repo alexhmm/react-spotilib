@@ -10,7 +10,7 @@ import { TrackCard, TrackCardArtist } from './tracks.types';
  * @param tracks Tracks
  * @returns Mapped tracks
  */
-export const mapTrackData = (
+export const trackDataMap = (
   tracks: SpotifyDataGetResponse<SpotifyTrack[]>
 ): TrackCard[] => {
   return tracks.items.map((track) => {

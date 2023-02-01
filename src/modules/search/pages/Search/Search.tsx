@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 // Components
 import AlbumCard from '../../../albums/components/AlbumCard/AlbumCard';
 import ArtistCard from '../../../artists/components/ArtistCard/ArtistCard';
+import PlaylistCard from '../../../playlists/components/PlaylistCard/PlaylistCard';
 import TrackCard from '../../../tracks/components/TrackCard/TrackCard';
 
 // Hooks
@@ -95,6 +96,16 @@ const Search = () => {
                 key={artist.id}
                 artist={artist}
                 onPlay={() => onPlayContext(artist.uri)}
+              />
+            ))}
+          </div>
+          <H3>{t('playlists.title')}</H3>
+          <div className={styles['search-context']}>
+            {searchData.playlists?.map((playlist) => (
+              <PlaylistCard
+                key={playlist.id}
+                playlist={playlist}
+                onPlay={() => onPlayContext(playlist.uri)}
               />
             ))}
           </div>

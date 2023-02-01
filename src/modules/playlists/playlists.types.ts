@@ -41,6 +41,11 @@ export type Playlist = Pick<
   PlaylistTracks &
   PlaylistTracksTotal;
 
+export type PlaylistCard = Pick<
+  SpotifyPlaylist,
+  'id' | 'images' | 'name' | 'owner' | 'uri'
+>;
+
 export type PlaylistTrack = Pick<
   SpotifyTrack,
   'duration_ms' | 'id' | 'name' | 'uri'

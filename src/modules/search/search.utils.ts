@@ -1,10 +1,11 @@
 // Types
-import { SearchData, SearchGetResponse, SearchPlaylist } from './search.types';
+import { SearchData, SearchGetResponse } from './search.types';
 
 // Utils
-import { mapAlbumData } from '../albums/albums.utils';
-import { mapArtistData } from '../artists/artists.utils';
-import { mapTrackData } from '../tracks/tracks.utils';
+import { albumDataMap } from '../albums/albums.utils';
+import { artistDataMap } from '../artists/artists.utils';
+import { playlistDataMap } from '../playlists/playlists.utils';
+import { trackDataMap } from '../tracks/tracks.utils';
 
 /**
  * Map spotify search data.
@@ -19,35 +20,28 @@ export const searchDataCreate = (
   if (searchGetResponse.albums) {
     searchData = {
       ...searchData,
-      albums: mapAlbumData(searchGetResponse.albums),
+      albums: albumDataMap(searchGetResponse.albums),
     };
   }
 
   if (searchGetResponse.artists) {
     searchData = {
       ...searchData,
-      artists: mapArtistData(searchGetResponse.artists),
+      artists: artistDataMap(searchGetResponse.artists),
     };
   }
 
   if (searchGetResponse.playlists) {
-    const playlists: SearchPlaylist[] = [];
-    for (const playlist of searchGetResponse.playlists.items) {
-      playlists.push({
-        id: playlist.id,
-        images: playlist.images,
-        name: playlist.name,
-        owner: playlist.owner,
-        uri: playlist.uri,
-      });
-    }
-    searchData = { ...searchData, playlists };
+    searchData = {
+      ...searchData,
+      playlists: playlistDataMap(searchGetResponse.playlists),
+    };
   }
 
   if (searchGetResponse.tracks) {
     searchData = {
       ...searchData,
-      tracks: mapTrackData(searchGetResponse.tracks),
+      tracks: trackDataMap(searchGetResponse.tracks),
     };
   }
 

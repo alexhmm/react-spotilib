@@ -10,7 +10,7 @@ import {
  * @param albums Albums
  * @returns Mapped albums.
  */
-export const mapAlbumData = (
+export const albumDataMap = (
   albums: SpotifyDataGetResponse<SpotifyAlbum[]>
 ): AlbumCard[] => {
   return albums.items.map((album) => {
