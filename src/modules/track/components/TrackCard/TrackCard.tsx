@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import styles from './TrackCard.module.scss';
 
 // Types
-import { TrackCard as ITrackCard } from '../../tracks.types';
+import { TrackCard as ITrackCard } from '../../track.types';
 
 // UI
 import { IconButton } from '../../../../shared/ui/IconButton/IconButton';

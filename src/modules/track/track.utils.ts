@@ -3,7 +3,7 @@ import {
   SpotifyDataGetResponse,
   SpotifyTrack,
 } from '../../shared/types/spotify.types';
-import { TrackCard, TrackCardArtist } from './tracks.types';
+import { TrackCard, TrackCardArtist } from './track.types';
 
 /**
  * Map spotify track data.
