@@ -9,7 +9,7 @@ type ProtectedRouteProps = {
   children: ReactNode;
 };
 
-export const ProtectedRoute = (props: ProtectedRouteProps) => {
+const ProtectedRoute = (props: ProtectedRouteProps) => {
   let { isAuthorized } = useAuth();
   const location = useLocation();
 
@@ -34,3 +34,5 @@ export const ProtectedRoute = (props: ProtectedRouteProps) => {
     </>
   );
 };
+
+export default ProtectedRoute;

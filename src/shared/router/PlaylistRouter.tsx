@@ -7,7 +7,7 @@ const Playlist = lazy(
   () => import('../../modules/playlist/pages/Playlist/Playlist')
 );
 
-export const PlaylistRouter = () => {
+const PlaylistRouter = () => {
   return (
     <Routes>
       <Route
@@ -22,3 +22,5 @@ export const PlaylistRouter = () => {
     </Routes>
   );
 };
+
+export default PlaylistRouter;

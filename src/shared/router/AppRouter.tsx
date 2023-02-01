@@ -3,8 +3,8 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
 // Router
-import { PlaylistRouter } from './PlaylistRouter';
-import { ProtectedRoute } from './ProtectedRoute';
+import PlaylistRouter from './PlaylistRouter';
+import ProtectedRoute from './ProtectedRoute';
 
 // Lazy-load pages
 const Auth = lazy(() => import('../../modules/auth/pages/Auth/Auth'));
