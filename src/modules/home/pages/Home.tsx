@@ -43,7 +43,7 @@ import { artistDataMap } from '../../artist/artist.utils';
 import { trackDataMap } from '../../track/track.utils';
 
 const Home = () => {
-  const { fetchData } = useFetch();
+  const { fetchData, handleError } = useFetch();
   const { playPutMutation } = usePlayerHttp();
   const { topTitleByTimeRangeGet } = useShared();
   const { i18n, t } = useTranslation();
@@ -88,8 +88,12 @@ const Home = () => {
       ),
     {
       refetchOnWindowFocus: false,
-      onError: (error: unknown) => {
-        console.error('Error on getting top artists:', error);
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          console.error('Error on getting top artists:', error);
+          handleError(errRes.status);
+        }
       },
       onSuccess: (data: SpotifyDataGetResponse<SpotifyArtist[]>) => {
         setTopArtists(artistDataMap(data));
@@ -107,8 +111,12 @@ const Home = () => {
       ),
     {
       refetchOnWindowFocus: false,
-      onError: (error: unknown) => {
-        console.error('Error on getting top tracks:', error);
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          console.error('Error on getting top tracks:', error);
+          handleError(errRes.status);
+        }
       },
       onSuccess: (data: TopTracksGetResponse) => {
         setTopTracks(trackDataMap(data));
