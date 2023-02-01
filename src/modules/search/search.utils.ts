@@ -4,7 +4,7 @@ import { SearchData, SearchGetResponse } from './search.types';
 // Utils
 import { albumDataMap } from '../albums/albums.utils';
 import { artistDataMap } from '../artists/artists.utils';
-import { playlistDataMap } from '../playlists/playlists.utils';
+import { playlistDataMap } from '../playlist/playlist.utils';
 import { trackDataMap } from '../tracks/tracks.utils';
 
 /**

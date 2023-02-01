@@ -4,7 +4,7 @@ import {
   PlaylistCard,
   PlaylistTrack,
   PlaylistTrackArtist,
-} from './playlists.types';
+} from './playlist.types';
 import {
   SpotifyDataGetResponse,
   SpotifyPlaylist,

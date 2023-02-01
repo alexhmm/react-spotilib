@@ -23,18 +23,18 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 // Hooks
 import { useFetch } from '../../hooks/use-fetch.hook';
-import { usePlaylists } from '../../../modules/playlists/use-playlists.hook';
-import { usePlaylistsHttp } from '../../../modules/playlists/use-playlists-http.hook';
+import { usePlaylist } from '../../../modules/playlist/use-playlist.hook';
+import { usePlaylistHttp } from '../../../modules/playlist/use-playlist-http.hook';
 
 // Stores
 import { useAuthStore } from '../../../modules/auth/use-auth.store';
-import { usePlaylistsStore } from '../../../modules/playlists/use-playlists.store';
+import { usePlaylistStore } from '../../../modules/playlist/use-playlist.store';
 
 // Styles
 import styles from './Sidebar.module.scss';
 
 // Types
-import { PlaylistsGetParams } from '../../../modules/playlists/playlists.types';
+import { PlaylistsGetParams } from '../../../modules/playlist/playlist.types';
 
 // UI
 import { Icon } from '../../ui/Icon/Icon';
@@ -85,8 +85,8 @@ const TabIcon = forwardRef<HTMLDivElement, TabIconProps>((props, ref) => {
 
 const Sidebar = () => {
   const { handleError, handleRetry } = useFetch();
-  const { playlistsAddEffect, playlistsGetEffect } = usePlaylists();
-  const { playlistsGet } = usePlaylistsHttp();
+  const { playlistsAddEffect, playlistsGetEffect } = usePlaylist();
+  const { playlistsGet } = usePlaylistHttp();
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -94,7 +94,7 @@ const Sidebar = () => {
   const [token] = useAuthStore((state) => [state.token]);
 
   // Playlists store state
-  const [playlists] = usePlaylistsStore((state) => [state.playlists]);
+  const [playlists] = usePlaylistStore((state) => [state.playlists]);
 
   // Component state
   const [tabActive, setTabActive] = useState<number>(1);
@@ -240,7 +240,7 @@ const Sidebar = () => {
               />
               <Tab
                 label={
-                  <Tooltip title={t('playlists.title')}>
+                  <Tooltip title={t('playlist.title')}>
                     <TabIcon icon={['fas', 'music']} />
                   </Tooltip>
                 }
@@ -269,7 +269,7 @@ const Sidebar = () => {
                   <SidebarItem
                     key={playlist.id}
                     classes={'mb-2'}
-                    to={`/playlists/${playlist.id}`}
+                    to={`/playlist/${playlist.id}`}
                   >
                     {playlist.name}
                   </SidebarItem>

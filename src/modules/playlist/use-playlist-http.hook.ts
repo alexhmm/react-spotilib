@@ -2,14 +2,14 @@
 import { useFetch } from '../../shared/hooks/use-fetch.hook';
 
 // Types
-import { PlaylistsGetParams } from './playlists.types';
+import { PlaylistsGetParams } from './playlist.types';
 import {
   SpotifyDataGetResponse,
   SpotifyPlaylist,
 } from '../../shared/types/spotify.types';
 import { TracksGetResponse } from '../tracks/tracks.types';
 
-export const usePlaylistsHttp = () => {
+export const usePlaylistHttp = () => {
   const { fetchData } = useFetch();
 
   /**
@@ -21,7 +21,7 @@ export const usePlaylistsHttp = () => {
     params?: PlaylistsGetParams
   ): Promise<SpotifyDataGetResponse<SpotifyPlaylist[]> | undefined> => {
     return await fetchData(
-      'me/playlists',
+      'me/playlist',
       params && {
         params: new URLSearchParams({
           limit: params.limit.toString(),

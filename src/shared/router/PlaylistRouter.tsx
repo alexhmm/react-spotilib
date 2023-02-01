@@ -4,10 +4,10 @@ import { CircularProgress } from '@mui/material';
 
 // Lazy-load pages
 const Playlist = lazy(
-  () => import('../../modules/playlists/pages/Playlist/Playlist')
+  () => import('../../modules/playlist/pages/Playlist/Playlist')
 );
 
-export const PlaylistsRouter = () => {
+export const PlaylistRouter = () => {
   return (
     <Routes>
       <Route

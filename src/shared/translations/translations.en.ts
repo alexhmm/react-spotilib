@@ -3,7 +3,7 @@ import { appTranslationsEN } from './en/app.translations.en';
 import { artistsTranslationsEN } from './en/artists.translations.en';
 import { authTranslationsEN } from './en/auth.translations.en';
 import { collectionsTranslationsEN } from './en/collections.translations.en';
-import { playlistsTranslationsEN } from './en/playlists.translations.en';
+import { playlistTranslationsEN } from './en/playlist.translations.en';
 import { tracksTranslationsEN } from './en/tracks.translation.en';
 
 export const translationsEn = {
@@ -12,6 +12,6 @@ export const translationsEn = {
   artists: artistsTranslationsEN,
   auth: authTranslationsEN,
   collections: collectionsTranslationsEN,
-  playlists: playlistsTranslationsEN,
+  playlist: playlistTranslationsEN,
   tracks: tracksTranslationsEN,
 };

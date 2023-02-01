@@ -12,8 +12,8 @@ import PlaylistTrack from '../../components/PlaylistTrack/PlaylistTrack';
 import { useFetch } from '../../../../shared/hooks/use-fetch.hook';
 import { useObjectURL } from '../../../../shared/hooks/use-object-url.hook';
 import { usePlayerHttp } from '../../../../shared/hooks/use-player-http.hook';
-import { usePlaylists } from '../../use-playlists.hook';
-import { usePlaylistsHttp } from '../../use-playlists-http.hook';
+import { usePlaylist } from '../../use-playlist.hook';
+import { usePlaylistHttp } from '../../use-playlist-http.hook';
 
 // Styles
 import styles from './Playlist.module.scss';
@@ -25,22 +25,22 @@ import { useSharedStore } from '../../../../shared/stores/use-shared.store';
 import {
   PlaylistsGetParams,
   Playlist as IPlaylist,
-} from '../../playlists.types';
+} from '../../playlist.types';
 
 // UI
 import H2 from '../../../../shared/ui/H2/H2';
 import { IconButton } from '../../../../shared/ui/IconButton/IconButton';
 
 // Utils
-import { playlistCreate } from '../../playlists.utils';
+import { playlistCreate } from '../../playlist.utils';
 
 const Playlist = () => {
   const { handleError, handleRetry } = useFetch();
   const { objectURL, setObject } = useObjectURL(null);
   const { id } = useParams();
   const { playPutMutation } = usePlayerHttp();
-  const { playlistTracksGetEffect } = usePlaylists();
-  const { playlistGet, playlistTracksGet } = usePlaylistsHttp();
+  const { playlistTracksGetEffect } = usePlaylist();
+  const { playlistGet, playlistTracksGet } = usePlaylistHttp();
   const { i18n, t } = useTranslation();
 
   // Component state
@@ -173,7 +173,7 @@ const Playlist = () => {
           <div className={styles['playlist-header']}>
             <div className={styles['playlist-header-img']}>
               <img
-                alt={`${t('playlists.detail.title')} ${playlist.name}`}
+                alt={`${t('playlist.detail.title')} ${playlist.name}`}
                 src={playlist.images[0].url}
                 onClick={onPlaylistMetaDataDownload}
               />
@@ -181,12 +181,12 @@ const Playlist = () => {
             <div className={styles['playlist-header-info']}>
               <div className={styles['playlist-header-info-meta']}>
                 <div className={styles['playlist-header-info-meta-type']}>
-                  {t('playlists.detail.title')}
+                  {t('playlist.detail.title')}
                 </div>
                 <div className={styles['playlist-header-info-meta-public']}>
                   {playlist.public
-                    ? t('playlists.detail.public.true')
-                    : t('playlists.detail.public.false')}
+                    ? t('playlist.detail.public.true')
+                    : t('playlist.detail.public.false')}
                 </div>
               </div>
               <H2>{playlist.name}</H2>
@@ -195,7 +195,7 @@ const Playlist = () => {
               </div>
               <div className={styles['playlist-header-info-tracks']}>
                 {playlist.owner.display_name} • {playlist.tracks_total}{' '}
-                {t('playlists.detail.tracks')}
+                {t('playlist.detail.tracks')}
                 {objectURL && (
                   <a
                     className="app-link"

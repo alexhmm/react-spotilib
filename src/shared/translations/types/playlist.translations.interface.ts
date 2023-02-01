@@ -1,4 +1,4 @@
-export interface PlaylistsTranslations {
+export interface PlaylistTranslations {
   detail: {
     public: {
       false: string;

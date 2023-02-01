@@ -1,7 +1,7 @@
 // Types
 import { AlbumCard } from '../albums/albums.types';
 import { ArtistCard } from '../artists/artists.types';
-import { PlaylistCard } from '../playlists/playlists.types';
+import { PlaylistCard } from '../playlist/playlist.types';
 import {
   SpotifyItemType,
   SpotifyAlbum,

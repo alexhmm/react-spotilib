@@ -1,6 +1,6 @@
-import { PlaylistsTranslations } from '../types/playlists.translations.interface';
+import { PlaylistTranslations } from '../types/playlist.translations.interface';
 
-export const playlistsTranslationsEN: PlaylistsTranslations = {
+export const playlistTranslationsEN: PlaylistTranslations = {
   detail: {
     public: {
       false: 'Private',

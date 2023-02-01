@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import styles from './PlaylistTrack.module.scss';
 
 // Types
-import { PlaylistTrack as IPlaylistTrack } from '../../playlists.types';
+import { PlaylistTrack as IPlaylistTrack } from '../../playlist.types';
 
 // UI
 import { IconButton } from '../../../../shared/ui/IconButton/IconButton';

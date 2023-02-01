@@ -1,16 +1,16 @@
 // Stores
-import { usePlaylistsStore } from './use-playlists.store';
+import { usePlaylistStore } from './use-playlist.store';
 
 // Types
-import { Playlists, Playlist } from './playlists.types';
+import { Playlists, Playlist } from './playlist.types';
 import { SpotifyTrackMetaData } from '../../shared/types/spotify.types';
 
 // Utils
-import { playlistTracksMap } from './playlists.utils';
+import { playlistTracksMap } from './playlist.utils';
 
-export const usePlaylists = () => {
+export const usePlaylist = () => {
   // Playlists store state
-  const [playlists, setPlaylists] = usePlaylistsStore((state) => [
+  const [playlists, setPlaylists] = usePlaylistStore((state) => [
     state.playlists,
     state.setPlaylists,
   ]);

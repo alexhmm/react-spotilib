@@ -10,7 +10,7 @@ import { useBreakpoints } from '../../../../shared/hooks/use-breakpoints.hook';
 import styles from './PlaylistCard.module.scss';
 
 // Types
-import { PlaylistCard as IPlaylistCard } from '../../playlists.types';
+import { PlaylistCard as IPlaylistCard } from '../../playlist.types';
 
 // UI
 import { IconButton } from '../../../../shared/ui/IconButton/IconButton';

@@ -1,15 +1,15 @@
 import create from 'zustand';
 
 // Types
-import { Playlists } from './playlists.types';
+import { Playlists } from './playlist.types';
 
-export interface PlaylistsState {
+export interface PlaylistState {
   playlists: Playlists;
   resetState: () => void;
   setPlaylists: (playlists: Playlists) => void;
 }
 
-const initialPlaylistsState = {
+const initialPlaylistState = {
   playlists: {
     items: [],
     limit: 0,
@@ -18,8 +18,8 @@ const initialPlaylistsState = {
   },
 };
 
-export const usePlaylistsStore = create<PlaylistsState>((set) => ({
-  ...initialPlaylistsState,
-  resetState: () => set(initialPlaylistsState),
+export const usePlaylistStore = create<PlaylistState>((set) => ({
+  ...initialPlaylistState,
+  resetState: () => set(initialPlaylistState),
   setPlaylists: (playlists: Playlists) => set({ playlists }),
 }));
