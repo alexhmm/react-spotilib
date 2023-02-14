@@ -7,7 +7,7 @@ import {
   SpotifyDataGetResponse,
   SpotifyPlaylist,
 } from '../../shared/types/spotify.types';
-import { TracksGetResponse } from '../track/track.types';
+import { TracksGetResponse } from '../../shared/types/track.types';
 
 const usePlaylistHttp = () => {
   const { fetchData } = useFetch();

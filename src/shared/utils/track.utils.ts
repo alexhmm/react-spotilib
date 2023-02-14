@@ -1,9 +1,6 @@
 // Types
-import {
-  SpotifyDataGetResponse,
-  SpotifyTrack,
-} from '../../shared/types/spotify.types';
-import { TrackCard, TrackCardArtist } from './track.types';
+import { SpotifyDataGetResponse, SpotifyTrack } from '../types/spotify.types';
+import { TrackCard, TrackCardArtist } from '../types/track.types';
 
 /**
  * Map spotify track data.

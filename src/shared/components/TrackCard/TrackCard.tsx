@@ -7,10 +7,10 @@ import clsx from 'clsx';
 import styles from './TrackCard.module.scss';
 
 // Types
-import { TrackCard as ITrackCard } from '../../track.types';
+import { TrackCard as ITrackCard } from '../../types/track.types';
 
 // UI
-import IconButton from '../../../../shared/ui/IconButton/IconButton';
+import IconButton from '../../ui/IconButton/IconButton';
 
 type TrackCardProps = {
   track: ITrackCard;
@@ -56,12 +56,9 @@ const TrackCard = (props: TrackCardProps) => {
           },
         }}
       >
-        <Link
-          className={clsx(styles['track-card-info-track'], 'app-link', 'link')}
-          to={`/track/${props.track.id}`}
-        >
+        <div className={styles['track-card-info-track']}>
           {props.track.name}
-        </Link>
+        </div>
         <div className={styles['track-card-info-artists']}>
           {props.track.artists.map((artist, index) => (
             <Box

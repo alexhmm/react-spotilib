@@ -71,15 +71,9 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
           onClick={props.onPlay}
         />
         <Box className={styles['playlist-track-title-data']}>
-          <Link
-            className={clsx(
-              styles['playlist-track-title-data-name'],
-              'app-link'
-            )}
-            to={`/track/${props.track.id}`}
-          >
+          <div className={styles['playlist-track-title-data-name']}>
             {props.track.name}
-          </Link>
+          </div>
           <div className={styles['playlist-track-title-data-artists']}>
             {props.track.artists.map((artist, index) => (
               <Box

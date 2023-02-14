@@ -4,7 +4,7 @@ import {
   SpotifyArtist,
   SpotifyTrack,
   SpotifyTrackMetaData,
-} from '../../shared/types/spotify.types';
+} from './spotify.types';
 
 export interface TrackCardAlbumData {
   album: Pick<SpotifyAlbum, 'images' | 'name'>;

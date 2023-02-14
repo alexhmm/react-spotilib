@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import AlbumCard from '../../../album/components/AlbumCard/AlbumCard';
 import ArtistCard from '../../../artist/components/ArtistCard/ArtistCard';
 import PlaylistCard from '../../../playlist/components/PlaylistCard/PlaylistCard';
-import TrackCard from '../../../track/components/TrackCard/TrackCard';
+import TrackCard from '../../../../shared/components/TrackCard/TrackCard';
 
 // Hooks
 import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';

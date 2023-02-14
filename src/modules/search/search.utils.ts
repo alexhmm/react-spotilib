@@ -5,7 +5,7 @@ import { SearchData, SearchGetResponse } from './search.types';
 import { albumDataMap } from '../album/album.utils';
 import { artistDataMap } from '../artist/artist.utils';
 import { playlistDataMap } from '../playlist/playlist.utils';
-import { trackDataMap } from '../track/track.utils';
+import { trackDataMap } from '../../shared/utils/track.utils';
 
 /**
  * Map spotify search data.

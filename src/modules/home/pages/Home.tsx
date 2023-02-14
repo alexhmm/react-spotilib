@@ -5,7 +5,7 @@ import { Box, Button, Skeleton } from '@mui/material';
 
 // Components
 import ArtistCard from '../../artist/components/ArtistCard/ArtistCard';
-import TrackCard from '../../track/components/TrackCard/TrackCard';
+import TrackCard from '../../../shared/components/TrackCard/TrackCard';
 
 // Hooks
 import useFetch from '../../../shared/hooks/use-fetch.hook';
@@ -30,7 +30,7 @@ import {
 import {
   TopTracksGetResponse,
   TrackCard as ITrackCard,
-} from '../../track/track.types';
+} from '../../../shared/types/track.types';
 
 // UI
 import H2 from '../../../shared/ui/H2/H2';
@@ -40,7 +40,7 @@ import Popover from '../../../shared/ui/Popover/Popover';
 
 // Utils
 import { artistDataMap } from '../../artist/artist.utils';
-import { trackDataMap } from '../../track/track.utils';
+import { trackDataMap } from '../../../shared/utils/track.utils';
 
 const Home = () => {
   const { fetchData, handleError } = useFetch();
