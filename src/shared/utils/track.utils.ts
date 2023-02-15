@@ -1,5 +1,5 @@
 // Types
-import { SpotifyDataGetResponse, SpotifyTrack } from '../types/spotify.types';
+import { SpotifyTrack } from '../types/spotify.types';
 import { TrackCard, TrackCardArtist } from '../types/track.types';
 
 /**
@@ -7,10 +7,8 @@ import { TrackCard, TrackCardArtist } from '../types/track.types';
  * @param tracks Tracks
  * @returns Mapped tracks
  */
-export const trackDataMap = (
-  tracks: SpotifyDataGetResponse<SpotifyTrack[]>
-): TrackCard[] => {
-  return tracks.items.map((track) => {
+export const trackDataMap = (tracks: SpotifyTrack[]): TrackCard[] => {
+  return tracks.map((track) => {
     const artists: TrackCardArtist[] = track.artists.map((artist) => {
       return {
         id: artist.id,

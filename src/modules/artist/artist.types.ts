@@ -1,5 +1,13 @@
 // Types
-import { SpotifyArtist } from '../../shared/types/spotify.types';
+import { SpotifyArtist, SpotifyTrack } from '../../shared/types/spotify.types';
+
+export interface ArtistRelatedArtistsGetResponse {
+  artists: SpotifyArtist[];
+}
+
+export interface ArtistTopTracksGetResponse {
+  tracks: SpotifyTrack[];
+}
 
 export interface TopArtistsGetResponse {
   items: SpotifyArtist[];

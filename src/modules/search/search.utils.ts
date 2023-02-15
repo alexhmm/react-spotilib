@@ -20,28 +20,28 @@ export const searchDataCreate = (
   if (searchGetResponse.albums) {
     searchData = {
       ...searchData,
-      albums: albumDataMap(searchGetResponse.albums),
+      albums: albumDataMap(searchGetResponse.albums.items),
     };
   }
 
   if (searchGetResponse.artists) {
     searchData = {
       ...searchData,
-      artists: artistDataMap(searchGetResponse.artists),
+      artists: artistDataMap(searchGetResponse.artists.items),
     };
   }
 
   if (searchGetResponse.playlists) {
     searchData = {
       ...searchData,
-      playlists: playlistDataMap(searchGetResponse.playlists),
+      playlists: playlistDataMap(searchGetResponse.playlists.items),
     };
   }
 
   if (searchGetResponse.tracks) {
     searchData = {
       ...searchData,
-      tracks: trackDataMap(searchGetResponse.tracks),
+      tracks: trackDataMap(searchGetResponse.tracks.items),
     };
   }
 

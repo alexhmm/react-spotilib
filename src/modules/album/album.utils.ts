@@ -1,19 +1,14 @@
 // Types
 import { AlbumCard } from './album.types';
-import {
-  SpotifyAlbum,
-  SpotifyDataGetResponse,
-} from '../../shared/types/spotify.types';
+import { SpotifyAlbum } from '../../shared/types/spotify.types';
 
 /**
  * Map spotify album data.
  * @param albums Albums
  * @returns Mapped albums.
  */
-export const albumDataMap = (
-  albums: SpotifyDataGetResponse<SpotifyAlbum[]>
-): AlbumCard[] => {
-  return albums.items.map((album) => {
+export const albumDataMap = (albums: SpotifyAlbum[]): AlbumCard[] => {
+  return albums.map((album) => {
     return {
       id: album.id,
       artists: album.artists,

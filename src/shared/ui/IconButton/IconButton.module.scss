@@ -1,5 +1,5 @@
 .icon-button {
-  @apply min-w-0 rounded-md;
+  @apply min-w-0 w-fit;
   &-disabled {
     @apply opacity-25;
   }

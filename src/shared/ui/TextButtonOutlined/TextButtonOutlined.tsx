@@ -22,6 +22,18 @@ const TextButtonOutlined = (props: TextButtonOutlinedProps) => {
   // Set button sx by preset
   useEffect(() => {
     switch (props.preset) {
+      case ButtonType.Selected:
+        setSx({
+          ...props.sx,
+          backgroundColor: 'background.default',
+          borderColor: 'text.primary',
+          color: 'text.primary',
+          '&:hover': {
+            backgroundColor: 'background.default',
+            borderColor: 'text.primary',
+          },
+        });
+        break;
       case ButtonType.Primary:
         setSx({
           ...props.sx,
@@ -36,11 +48,12 @@ const TextButtonOutlined = (props: TextButtonOutlinedProps) => {
       default:
         setSx({
           ...props.sx,
+          backgroundColor: 'background.default',
+          borderColor: 'action.selected',
           color: 'text.primary',
           '&:hover': {
-            backgroundColor: 'text.primary',
+            backgroundColor: 'background.default',
             borderColor: 'text.primary',
-            color: 'background.default',
           },
         });
         break;

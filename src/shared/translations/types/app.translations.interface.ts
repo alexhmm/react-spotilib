@@ -8,6 +8,10 @@ export interface AppTranslations {
   logout: string;
   profile: string;
   settings: string;
+  show: {
+    less: string;
+    more: string;
+  };
   sidebar: {
     home: string;
     library: string;

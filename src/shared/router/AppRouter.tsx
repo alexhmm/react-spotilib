@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
 // Router
+import ArtistRouter from './ArtistRouter';
 import PlaylistRouter from './PlaylistRouter';
 import ProtectedRoute from './ProtectedRoute';
 
@@ -31,6 +32,14 @@ export const AppRouter = () => {
           <Suspense fallback={<CircularProgress />}>
             <Auth />
           </Suspense>
+        }
+      />
+      <Route
+        path="/artist/*"
+        element={
+          <ProtectedRoute>
+            <ArtistRouter />
+          </ProtectedRoute>
         }
       />
       <Route

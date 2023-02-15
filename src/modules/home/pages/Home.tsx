@@ -96,7 +96,7 @@ const Home = () => {
         }
       },
       onSuccess: (data: SpotifyDataGetResponse<SpotifyArtist[]>) => {
-        setTopArtists(artistDataMap(data));
+        setTopArtists(artistDataMap(data.items));
       },
     }
   );
@@ -119,7 +119,7 @@ const Home = () => {
         }
       },
       onSuccess: (data: TopTracksGetResponse) => {
-        setTopTracks(trackDataMap(data));
+        setTopTracks(trackDataMap(data.items));
       },
     }
   );

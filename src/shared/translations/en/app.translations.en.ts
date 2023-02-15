@@ -10,6 +10,10 @@ export const appTranslationsEN: AppTranslations = {
   logout: 'Logout',
   profile: 'Profile',
   settings: 'Settings',
+  show: {
+    less: 'Show less',
+    more: 'Show more',
+  },
   sidebar: {
     home: 'Home',
     library: 'Library',

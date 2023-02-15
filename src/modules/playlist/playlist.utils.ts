@@ -6,7 +6,6 @@ import {
   PlaylistTrackArtist,
 } from './playlist.types';
 import {
-  SpotifyDataGetResponse,
   SpotifyPlaylist,
   SpotifyTrackMetaData,
 } from '../../shared/types/spotify.types';
@@ -39,9 +38,9 @@ export const playlistCreate = (fetchedPlaylist: SpotifyPlaylist): Playlist => {
  * @returns Mapped playlists.
  */
 export const playlistDataMap = (
-  playlists: SpotifyDataGetResponse<SpotifyPlaylist[]>
+  playlists: SpotifyPlaylist[]
 ): PlaylistCard[] => {
-  return playlists.items.map((playlist) => {
+  return playlists.map((playlist) => {
     return {
       id: playlist.id,
       images: playlist.images,

@@ -10,18 +10,12 @@ import {
 } from '@fortawesome/fontawesome-svg-core';
 import PropTypes from 'prop-types';
 
+// Types
+import { ColorType } from '../../types/mui.types';
+
 type IconProps = {
   classes?: string;
-  color?:
-    | 'inherit'
-    | 'action'
-    | 'disabled'
-    | 'primary'
-    | 'secondary'
-    | 'error'
-    | 'info'
-    | 'success'
-    | 'warning';
+  color?: ColorType;
   htmlColor?: string;
   icon: [IconPrefix, IconName];
   id?: string;

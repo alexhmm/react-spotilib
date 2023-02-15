@@ -1,0 +1,52 @@
+.artist {
+  @apply flex flex-col w-full;
+}
+
+.artist-actions {
+  @apply flex items-center mb-4 lg:mb-8;
+  &-follow {
+    @apply ml-4 lg:ml-8;
+  }
+}
+
+.artist-discography {
+  &-types {
+    @apply flex flex-wrap mb-4;
+    &-button {
+      &:not(:last-of-type) {
+        @apply mr-2;
+      }
+    }
+  }
+}
+
+.artist-header {
+  @apply flex mb-4 w-full lg:items-end lg:mb-8;
+  &-image {
+    @apply h-32 relative shrink-0 w-32 lg:h-48 lg:w-48;
+    & img {
+      @apply h-full object-cover rounded-full w-full;
+    }
+  }
+  &-info {
+    @apply flex flex-col pl-4 lg:pl-8;
+    &-followers {
+      @apply flex items-center text-sm;
+    }
+  }
+}
+
+.artist-section {
+  @apply flex flex-col w-full mb-4 lg:mb-8 @container;
+  &-items {
+    @apply gap-2 grid grid-cols-2  pb-4;
+    @apply lg:pb-8;
+    @apply @lg:gap-4 @lg:grid-cols-3;
+    @apply @2xl:grid-cols-4;
+    @apply @4xl:grid-cols-5;
+    @apply @6xl:grid-cols-6;
+    @apply @8xl:gap-6 @8xl:grid-cols-7;
+    @apply @10xl:grid-cols-8;
+    @apply @12xl:grid-cols-9;
+  }
+}

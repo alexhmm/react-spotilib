@@ -116,11 +116,16 @@ export const themeLight = createTheme({
     sidebar: '#f9f9f9',
   },
   palette: {
+    action: {
+      hover: 'rgba(0, 0, 0, 0.08)',
+      selected: 'rgba(0, 0, 0, 0.16)',
+    },
     background: {
       default: '#fcfcfc',
+      paper: '#f2f2f2',
     },
     bg: {
-      sidebar: '#f9f9f9',
+      sidebar: '#f2f3f5',
     },
     border: {
       app: '#eaeaea',

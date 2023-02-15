@@ -43,11 +43,11 @@ const Playlist = () => {
   const { playlistGet, playlistTracksGet } = usePlaylistHttp();
   const { i18n, t } = useTranslation();
 
-  // Component state
-  const [playlist, setPlaylist] = useState<IPlaylist | undefined>(undefined);
-
   // Shared store state
   const [setHeaderTitle] = useSharedStore((state) => [state.setHeaderTitle]);
+
+  // Component state
+  const [playlist, setPlaylist] = useState<IPlaylist | undefined>(undefined);
 
   // ####### //
   // QUERIES //
@@ -60,7 +60,7 @@ const Playlist = () => {
     onError: (error: any) => {
       const errRes = error?.response;
       if (errRes) {
-        console.error('Error on getting profile:', error);
+        console.error('Error on getting playlist:', error);
         handleError(errRes.status);
       }
     },
