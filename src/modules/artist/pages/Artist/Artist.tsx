@@ -217,16 +217,20 @@ const Artist = () => {
 
   /**
    * Handler to play context by uri.
-   * @param context_uri Spotify URI of the context to play
+   * @param contextUri Spotify URI of the context to play
+   *
    */
-  const onPlayContext = useCallback((context_uri: string) => {
-    playPutMutation.mutate({
-      body: {
-        context_uri,
-      },
-    });
+  const onPlayContext = useCallback(
+    (contextUri: string) => {
+      playPutMutation.mutate({
+        body: {
+          context_uri: contextUri,
+        },
+      });
+    },
     // eslint-disable-next-line
-  }, []);
+    []
+  );
 
   /**
    * Handler to play top track from artist starting from selected index.
@@ -235,7 +239,6 @@ const Artist = () => {
     (index: number) => {
       const uris: string[] = [];
       for (let i = index; i < topTracks.length; i++) {
-        console.log(i, topTracks[i].uri);
         uris.push(topTracks[i].uri);
       }
       playPutMutation.mutate({
@@ -282,7 +285,7 @@ const Artist = () => {
                   transform: 'translateX(2px)',
                 },
               }}
-              onClick={() => onPlayTopTrack(0)}
+              onClick={() => onPlayContext(artist.uri)}
             />
             <TextButtonOutlined classes={styles['artist-actions-follow']}>
               {t('artist.detail.follow.inactive')}
@@ -296,8 +299,8 @@ const Artist = () => {
                   return (
                     <ArtistTopTrack
                       key={track.id}
-                      onPlay={() => onPlayTopTrack(index)}
                       track={track}
+                      onPlay={() => onPlayTopTrack(index)}
                     />
                   );
                 }

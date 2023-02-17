@@ -130,12 +130,12 @@ const Home = () => {
 
   /**
    * Handler to play context by uri.
-   * @param context_uri Spotify URI of the context to play
+   * @param contextUri Spotify URI of the context to play
    */
-  const onContextPlay = useCallback((context_uri: string) => {
+  const onContextPlay = useCallback((contextUri: string) => {
     playPutMutation.mutate({
       body: {
-        context_uri,
+        context_uri: contextUri,
       },
     });
     // eslint-disable-next-line

@@ -135,12 +135,13 @@ const Playlist = () => {
   }, [playlist]);
 
   /**
-   * Handler to play track from playlist.
+   * @param contextUri Spotify URI of the context to play
+   * @param trackUri Track URI
    */
-  const onTrackPlay = useCallback((playlistUri: string, trackUri: string) => {
+  const onTrackPlay = useCallback((contextUri: string, trackUri?: string) => {
     playPutMutation.mutate({
       body: {
-        context_uri: playlistUri,
+        context_uri: contextUri,
         offset: { uri: trackUri },
       },
     });

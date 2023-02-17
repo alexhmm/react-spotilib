@@ -137,14 +137,14 @@ const Album = () => {
 
   /**
    * Handler to play album (starting from custom selection).
-   * @param albumUri Album uri
-   * @track trackUri Track uri
+   * @param contextUri Spotify URI of the context to play
+   * @param trackUri TrackUri
    */
   const onPlayContext = useCallback(
-    (albumUri: string, trackUri?: string) => {
+    (contextUri: string, trackUri?: string) => {
       playPutMutation.mutate({
         body: {
-          context_uri: albumUri,
+          context_uri: contextUri,
           offset: trackUri ? { uri: trackUri } : undefined,
         },
       });
