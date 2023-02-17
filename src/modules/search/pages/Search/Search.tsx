@@ -80,7 +80,7 @@ const Search = () => {
       {searchData?.albums && (
         <>
           <H3>{t('album.title')}</H3>
-          <div className={styles['search-context']}>
+          <div className="context-grid">
             {searchData.albums.map((album) => (
               <AlbumCard
                 key={album.id}
@@ -90,7 +90,7 @@ const Search = () => {
             ))}
           </div>
           <H3>{t('artist.title')}</H3>
-          <div className={styles['search-context']}>
+          <div className="context-grid">
             {searchData.artists?.map((artist) => (
               <ArtistCard
                 key={artist.id}

@@ -11,6 +11,11 @@ module.exports = {
         '11xl': '140rem',
         '12xl': '160rem',
       },
+      screens: {
+        '3xl': '1920px',
+        '4xl': '2560px',
+        '5xl': '3840px',
+      },
     },
   },
   plugins: [require('@tailwindcss/container-queries')],

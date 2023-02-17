@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
 // Router
+import AlbumRouter from './AlbumRouter';
 import ArtistRouter from './ArtistRouter';
 import PlaylistRouter from './PlaylistRouter';
 import ProtectedRoute from './ProtectedRoute';
@@ -23,6 +24,14 @@ export const AppRouter = () => {
             <Suspense fallback={<CircularProgress />}>
               <Home />
             </Suspense>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/album/*"
+        element={
+          <ProtectedRoute>
+            <AlbumRouter />
           </ProtectedRoute>
         }
       />

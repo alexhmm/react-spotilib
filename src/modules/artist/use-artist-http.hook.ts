@@ -7,9 +7,9 @@ import {
   ArtistTopTracksGetResponse,
 } from './artist.types';
 import {
-  SpotifyAlbum,
   SpotifyAlbumType,
   SpotifyArtist,
+  SpotifyArtistAlbum,
   SpotifyDataGetResponse,
 } from '../../shared/types/spotify.types';
 
@@ -40,7 +40,7 @@ const useArtistHttp = () => {
     id?: string,
     country?: string,
     type?: SpotifyAlbumType
-  ): Promise<SpotifyDataGetResponse<SpotifyAlbum[]> | undefined> => {
+  ): Promise<SpotifyDataGetResponse<SpotifyArtistAlbum[]> | undefined> => {
     if (id && country) {
       return await fetchData(`artists/${id}/albums`, {
         params: new URLSearchParams({

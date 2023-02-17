@@ -1,0 +1,51 @@
+.album {
+  @apply flex flex-col;
+  overflow: hidden !important;
+}
+
+.album-actions {
+  @apply flex items-center mb-4 lg:mb-8;
+}
+
+.album-content {
+  @apply flex flex-col mb-4 w-full lg:mb-8 4xl:w-3/4 5xl:w-1/2;
+}
+
+.album-header {
+  @apply flex mb-4 w-full lg:items-end lg:mb-8;
+  &-image {
+    @apply h-32 relative shrink-0 w-32 lg:h-48 lg:w-48;
+    & img {
+      @apply h-full object-cover w-full;
+    }
+  }
+  &-info {
+    @apply flex flex-col pl-4 lg:pl-8;
+    &-data {
+      @apply flex items-center text-sm;
+      &-artist {
+        @apply text-sm;
+        &-link {
+          @apply duration-200 transition-colors;
+        }
+      }
+    }
+    &-type {
+      @apply text-sm uppercase;
+    }
+  }
+}
+
+.album-label {
+  @apply flex flex-col mb-4 lg:mb-8 w-full;
+  &-copyright {
+    @apply text-xs;
+  }
+  &-release {
+    @apply text-sm;
+  }
+}
+
+.album-more-by {
+  @apply flex flex-col w-full @container;
+}

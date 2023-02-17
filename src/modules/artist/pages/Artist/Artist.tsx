@@ -37,14 +37,14 @@ import { ButtonType } from '../../../../shared/types/ui.types';
 // UI
 import H2 from '../../../../shared/ui/H2/H2';
 import H3 from '../../../../shared/ui/H3/H3';
+import IconButton from '../../../../shared/ui/IconButton/IconButton';
 import TextButton from '../../../../shared/ui/TextButton/TextButton';
 import TextButtonContained from '../../../../shared/ui/TextButtonContained/TextButtonContained';
+import TextButtonOutlined from '../../../../shared/ui/TextButtonOutlined/TextButtonOutlined';
 
 // Utils
 import { albumDataMap } from '../../../album/album.utils';
 import { artistDataMap } from '../../artist.utils';
-import IconButton from '../../../../shared/ui/IconButton/IconButton';
-import TextButtonOutlined from '../../../../shared/ui/TextButtonOutlined/TextButtonOutlined';
 
 type ArtistAlbumsTypeButtonProps = {
   currentType: SpotifyAlbumType | undefined;
@@ -338,7 +338,7 @@ const Artist = () => {
                 onClick={() => setAlbumsType(SpotifyAlbumType.Compilation)}
               />
             </div>
-            <div className={styles['artist-section-items']}>
+            <div className="context-grid">
               {albums.map((album) => (
                 <AlbumCard
                   key={album.id}
@@ -350,7 +350,7 @@ const Artist = () => {
           </section>
           <section className={styles['artist-section']}>
             <H3>{t('artist.detail.related_artists')}</H3>
-            <div className={styles['artist-section-items']}>
+            <div className="context-grid">
               {relatedArtists.map((artist) => (
                 <ArtistCard
                   key={artist.id}
@@ -362,7 +362,7 @@ const Artist = () => {
           </section>
           <section className={styles['artist-section']}>
             <H3>{t('artist.detail.appears_on')}</H3>
-            <div className={styles['artist-section-items']}>
+            <div className="context-grid">
               {appearsOn.map((album) => (
                 <AlbumCard
                   key={album.id}

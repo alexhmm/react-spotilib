@@ -1,5 +1,5 @@
 /**
- * GET Minutes and seconds by milliseconds.
+ * GET Minutes and seconds by milliseconds with two digits.
  * @param ms Milliseconds
  * @returns Minutes and seconds with two digits.
  */

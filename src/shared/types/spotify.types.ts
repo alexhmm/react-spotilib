@@ -1,3 +1,6 @@
+// Types
+import { AlbumTrack } from '../../modules/album/album.types';
+
 export enum ReleaseDatePrecision {
   Day = 'day',
 }
@@ -244,10 +247,12 @@ export interface SpotifyAlbum {
   href: string;
   id: string;
   images: Image[];
+  label: string;
   name: string;
   release_date: string;
   release_date_precision: ReleaseDatePrecision;
   total_tracks: number;
+  tracks: SpotifyDataGetResponse<AlbumTrack[]>;
   type: SpotifyItemType;
   uri: string;
 }
@@ -339,3 +344,5 @@ export interface SpotifyTrackMetaData {
 export interface VideoThumbnail {
   url: null;
 }
+
+export type SpotifyArtistAlbum = Omit<SpotifyAlbum, 'label' | 'track'>;
