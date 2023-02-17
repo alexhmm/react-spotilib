@@ -171,7 +171,7 @@ const Playlist = () => {
           scrollThreshold={1}
         >
           <div className={styles['playlist-header']}>
-            <div className={styles['playlist-header-img']}>
+            <div className={styles['playlist-header-image']}>
               <img
                 alt={`${t('playlist.detail.title')} ${playlist.name}`}
                 src={playlist.images[0].url}
