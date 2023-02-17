@@ -1,4 +1,4 @@
-import { memo, ReactNode, useEffect, useState } from 'react';
+import { memo, ReactNode } from 'react';
 import { Button, SxProps, Theme } from '@mui/material';
 import clsx from 'clsx';
 
@@ -18,52 +18,42 @@ type TextButtonContainedProps = {
 };
 
 const TextButtonContained = (props: TextButtonContainedProps) => {
-  const [sx, setSx] = useState<SxProps<Theme> | undefined>(undefined);
-
-  // Set button sx by preset
-  useEffect(() => {
-    switch (props.preset) {
-      case ButtonType.Primary:
-        setSx({
-          ...props.sx,
-          backgroundColor: 'background.paper',
-          color: 'primary.main',
-          '&:hover': {
-            backgroundColor: 'primary.main',
-            color: 'white',
-          },
-        });
-        break;
-      case ButtonType.Selected:
-        setSx({
-          ...props.sx,
-          backgroundColor: 'action.selected',
-          color: 'text.primary',
-          '&:hover': {
-            backgroundColor: 'action.selected',
-          },
-        });
-        break;
-      default:
-        setSx({
-          ...props.sx,
-          backgroundColor: 'background.paper',
-          color: 'text.primary',
-          '&:hover': {
-            backgroundColor: 'action.hover',
-          },
-        });
-        break;
-    }
-  }, [props.preset, props.sx]);
-
+  // Set button color and sx by preset
   let color: ColorType = 'inherit';
+  let sx: SxProps<Theme> | undefined = undefined;
 
   switch (props.preset) {
     case ButtonType.Primary:
       color = 'primary';
+      sx = {
+        ...props.sx,
+        backgroundColor: 'background.paper',
+        color: 'primary.main',
+        '&:hover': {
+          backgroundColor: 'primary.main',
+          color: 'white',
+        },
+      };
+      break;
+    case ButtonType.Selected:
+      sx = {
+        ...props.sx,
+        backgroundColor: 'action.selected',
+        color: 'text.primary',
+        '&:hover': {
+          backgroundColor: 'action.selected',
+        },
+      };
       break;
     default:
+      sx = {
+        ...props.sx,
+        backgroundColor: 'background.paper',
+        color: 'text.primary',
+        '&:hover': {
+          backgroundColor: 'action.hover',
+        },
+      };
       break;
   }
 

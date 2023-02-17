@@ -1,4 +1,4 @@
-import { memo, ReactNode, useEffect, useState } from 'react';
+import { memo, ReactNode } from 'react';
 import { Button, SxProps, Theme } from '@mui/material';
 import clsx from 'clsx';
 
@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import styles from './TextButtonOutlined.module.scss';
 
 // Types
+import { ColorType } from '../../types/mui.types';
 import { ButtonType } from '../../types/ui.types';
 
 type TextButtonOutlinedProps = {
@@ -17,48 +18,47 @@ type TextButtonOutlinedProps = {
 };
 
 const TextButtonOutlined = (props: TextButtonOutlinedProps) => {
-  const [sx, setSx] = useState<SxProps<Theme> | undefined>(undefined);
+  // Set button color and sx by preset
+  let color: ColorType = 'inherit';
+  let sx: SxProps<Theme> | undefined = undefined;
 
-  // Set button sx by preset
-  useEffect(() => {
-    switch (props.preset) {
-      case ButtonType.Selected:
-        setSx({
-          ...props.sx,
+  switch (props.preset) {
+    case ButtonType.Selected:
+      sx = {
+        ...props.sx,
+        backgroundColor: 'background.default',
+        borderColor: 'text.primary',
+        color: 'text.primary',
+        '&:hover': {
           backgroundColor: 'background.default',
           borderColor: 'text.primary',
-          color: 'text.primary',
-          '&:hover': {
-            backgroundColor: 'background.default',
-            borderColor: 'text.primary',
-          },
-        });
-        break;
-      case ButtonType.Primary:
-        setSx({
-          ...props.sx,
-          color: 'primary.main',
-          '&:hover': {
-            backgroundColor: 'primary.main',
-            borderColor: 'primary.main',
-            color: 'white',
-          },
-        });
-        break;
-      default:
-        setSx({
-          ...props.sx,
+        },
+      };
+      break;
+    case ButtonType.Primary:
+      sx = {
+        ...props.sx,
+        color: 'primary.main',
+        '&:hover': {
+          backgroundColor: 'primary.main',
+          borderColor: 'primary.main',
+          color: 'white',
+        },
+      };
+      break;
+    default:
+      sx = {
+        ...props.sx,
+        backgroundColor: 'background.default',
+        borderColor: 'action.selected',
+        color: 'text.primary',
+        '&:hover': {
           backgroundColor: 'background.default',
-          borderColor: 'action.selected',
-          color: 'text.primary',
-          '&:hover': {
-            backgroundColor: 'background.default',
-            borderColor: 'text.primary',
-          },
-        });
-        break;
-    }
-  }, [props.preset, props.sx]);
+          borderColor: 'text.primary',
+        },
+      };
+      break;
+  }
 
   return (
     <>
@@ -70,7 +70,7 @@ const TextButtonOutlined = (props: TextButtonOutlinedProps) => {
               props.classes && props.classes
             ),
           }}
-          color="inherit"
+          color={color}
           variant="outlined"
           sx={{ ...sx }}
           onClick={props.onClick && props.onClick}
