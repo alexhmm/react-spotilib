@@ -4,6 +4,7 @@ import { useMutation, useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { CircularProgress } from '@mui/material';
+import clsx from 'clsx';
 
 // Components
 import PlaylistTrack from '../../components/PlaylistTrack/PlaylistTrack';
@@ -172,14 +173,22 @@ const Playlist = () => {
           scrollThreshold={1}
         >
           <div className={styles['playlist-header']}>
-            <div className={styles['playlist-header-image']}>
-              <img
-                alt={`${t('playlist.detail.title')} ${playlist.name}`}
-                src={playlist.images[0].url}
-                onClick={onPlaylistMetaDataDownload}
-              />
-            </div>
-            <div className={styles['playlist-header-info']}>
+            {playlist.images[0]?.url && (
+              <div className={styles['playlist-header-image']}>
+                <img
+                  alt={`${t('playlist.detail.title')} ${playlist.name}`}
+                  src={playlist.images[0].url}
+                  onClick={onPlaylistMetaDataDownload}
+                />
+              </div>
+            )}
+            <div
+              className={clsx(
+                styles['playlist-header-info'],
+                playlist.images[0]?.url &&
+                  styles['playlist-header-info-padding']
+              )}
+            >
               <div className={styles['playlist-header-info-meta']}>
                 <div className={styles['playlist-header-info-meta-type']}>
                   {t('playlist.detail.title')}

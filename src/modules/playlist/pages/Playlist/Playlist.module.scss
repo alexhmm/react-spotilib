@@ -16,7 +16,7 @@
     }
   }
   &-info {
-    @apply flex flex-col pl-4 lg:pl-8;
+    @apply flex flex-col;
     &-description {
       @apply opacity-75 mb-2 text-sm;
     }
@@ -28,6 +28,9 @@
       &-type {
         @apply font-bold;
       }
+    }
+    &-padding {
+      @apply pl-4 lg:pl-8;
     }
     &-tracks {
       @apply flex items-center text-sm;
