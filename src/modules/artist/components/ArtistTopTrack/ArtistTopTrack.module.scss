@@ -1,5 +1,5 @@
 .artist-top-track {
-  @apply duration-200 grid grid-cols-12 items-center px-2 py-1 rounded-md transition-colors mb-2;
+  @apply duration-200 grid grid-cols-12 items-center py-1 rounded-md transition-colors mb-2 md:px-2;
   &-album {
     @apply hidden text-sm lg:col-span-4 lg:flex lg:px-2;
   }
@@ -12,7 +12,7 @@
       @apply object-cover shrink-0;
     }
     &-name {
-      @apply duration-200 pl-2 pr-1 transition-colors truncate lg:pl-4 lg:pr-2;
+      @apply duration-200 pl-2 transition-colors truncate lg:pl-4 lg:pr-2;
     }
     &-play {
       @apply h-9 shrink-0 w-9;
