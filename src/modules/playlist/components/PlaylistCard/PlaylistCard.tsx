@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
+import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
 
@@ -27,20 +28,22 @@ const PlaylistCard = (props: PlaylistCardProps) => {
       className={styles['playlist-card']}
       sx={{
         backgroundColor: 'background.paper',
-        ':hover': {
-          backgroundColor: 'action.hover',
-          '.image': {
-            display: 'none',
+        '@media (hover: hover)': {
+          ':hover': {
+            backgroundColor: 'action.hover',
+            '.image': {
+              display: 'none',
+            },
+            '.play': {
+              display: 'flex !important',
+            },
+          },
+          '.app-link:hover': {
+            color: 'primary.main',
           },
           '.play': {
-            display: 'flex !important',
+            display: 'none !important',
           },
-        },
-        '.app-link:hover': {
-          color: 'primary.main',
-        },
-        '.play': {
-          display: 'none !important',
         },
       }}
     >
@@ -51,14 +54,16 @@ const PlaylistCard = (props: PlaylistCardProps) => {
           lgDown ? props.playlist.images[1]?.url : props.playlist.images[0]?.url
         }
       />
-      <div className={clsx(styles['playlist-card-play'], 'play')}>
-        <IconButton
-          icon={['fas', 'play']}
-          iconSize="large"
-          padding="1rem"
-          onClick={props.onPlay}
-        />
-      </div>
+      {!isMobile && (
+        <div className={clsx(styles['playlist-card-play'], 'play')}>
+          <IconButton
+            icon={['fas', 'play']}
+            iconSize="large"
+            padding="1rem"
+            onClick={props.onPlay}
+          />
+        </div>
+      )}
       <div className={styles['playlist-card-name']}>{props.playlist.name}</div>
       <Link
         className={clsx(styles['playlist-card-owner'], 'app-link')}

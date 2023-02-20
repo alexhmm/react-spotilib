@@ -100,7 +100,7 @@ const Search = () => {
             ))}
           </div>
           <H3>{t('playlist.title')}</H3>
-          <div className={styles['search-context']}>
+          <div className="context-grid">
             {searchData.playlists?.map((playlist) => (
               <PlaylistCard
                 key={playlist.id}
