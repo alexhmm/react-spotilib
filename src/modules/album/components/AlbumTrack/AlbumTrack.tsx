@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
+import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
 
@@ -36,36 +37,44 @@ const AlbumTrack = (props: PlaylistTrackProps) => {
     <Box
       className={styles['album-track']}
       sx={{
-        ':hover': {
-          backgroundColor: 'action.hover',
-          '.index': {
-            display: 'none',
+        '@media (hover: hover)': {
+          ':hover': {
+            backgroundColor: 'action.hover',
+            '.index': {
+              display: 'none',
+            },
+            '.play': {
+              display: 'flex !important',
+            },
+          },
+          '.app-link:hover': {
+            color: 'primary.main',
           },
           '.play': {
-            display: 'flex !important',
+            display: 'none !important',
           },
-        },
-        '.app-link:hover': {
-          color: 'primary.main',
-        },
-        '.play': {
-          display: 'none !important',
         },
       }}
     >
-      <div className={styles['album-track-title']}>
-        <Box
-          className={clsx(styles['album-track-title-index'], 'index')}
-          sx={{ color: 'text.secondary' }}
-        >
-          {props.index + 1}
-        </Box>
-
-        <IconButton
-          classes={clsx(styles['album-track-title-index'], 'play')}
-          icon={['fas', 'play']}
-          onClick={props.onPlay}
-        />
+      <div
+        className={styles['album-track-title']}
+        onClick={() => isMobile && props.onPlay()}
+      >
+        {!isMobile && (
+          <>
+            <Box
+              className={clsx(styles['album-track-title-index'], 'index')}
+              sx={{ color: 'text.secondary' }}
+            >
+              {props.index + 1}
+            </Box>
+            <IconButton
+              classes={clsx(styles['album-track-title-index'], 'play')}
+              icon={['fas', 'play']}
+              onClick={props.onPlay}
+            />
+          </>
+        )}
         <Box className={styles['album-track-title-data']}>
           <div className={styles['album-track-title-data-name']}>
             {props.track.name}
@@ -77,14 +86,20 @@ const AlbumTrack = (props: PlaylistTrackProps) => {
                 className={styles['album-track-title-data-artists-item']}
                 sx={{ color: 'text.secondary' }}
               >
-                <Link
-                  key={artist.id}
-                  className={clsx(
-                    styles['album-track-title-data-artists-item-link'],
-                    'app-link'
-                  )}
-                  to={`/artist/${artist.id}`}
-                >{`${artist.name}`}</Link>
+                {isMobile ? (
+                  <>{artist.name}</>
+                ) : (
+                  <Link
+                    key={artist.id}
+                    className={clsx(
+                      styles['album-track-title-data-artists-item-link'],
+                      'app-link'
+                    )}
+                    to={`/artist/${artist.id}`}
+                  >
+                    {artist.name}
+                  </Link>
+                )}
                 {`${index < props.track.artists.length - 1 ? ',\xa0' : ''}`}
               </Box>
             ))}

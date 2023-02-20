@@ -20,7 +20,7 @@
     }
   }
   &-info {
-    @apply flex flex-col justify-end pl-4 lg:pl-8;
+    @apply flex flex-col justify-end md:pl-4 lg:pl-8;
     &-data {
       @apply flex flex-col text-sm md:flex-row;
       &-artist {
