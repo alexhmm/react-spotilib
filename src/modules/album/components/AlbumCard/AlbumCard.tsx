@@ -1,5 +1,6 @@
 import { Fragment, memo } from 'react';
 import { Link } from 'react-router-dom';
+import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
 
@@ -25,20 +26,22 @@ const AlbumCard = (props: AlbumCardProps) => {
 
   return (
     <Box
-      className={styles['album-card']}
+      className={clsx(styles['album-card'], 'no-highlight')}
       sx={{
         backgroundColor: 'background.paper',
-        ':hover': {
-          backgroundColor: 'action.hover',
-          '.image': {
-            display: 'none',
+        '@media (hover: hover)': {
+          ':hover': {
+            backgroundColor: 'action.hover',
+            '.image': {
+              display: 'none',
+            },
+            '.play': {
+              display: 'flex !important',
+            },
           },
           '.play': {
-            display: 'flex !important',
+            display: 'none !important',
           },
-        },
-        '.play': {
-          display: 'none !important',
         },
       }}
     >
@@ -47,14 +50,16 @@ const AlbumCard = (props: AlbumCardProps) => {
         className={clsx(styles['album-card-image'], 'image')}
         src={xxxxxlDown ? props.album.images[1].url : props.album.images[0].url}
       />
-      <div className={clsx(styles['album-card-play'], 'play')}>
-        <IconButton
-          icon={['fas', 'play']}
-          iconSize="large"
-          padding="1rem"
-          onClick={props.onPlay}
-        />
-      </div>
+      {!isMobile && (
+        <div className={clsx(styles['album-card-play'], 'play')}>
+          <IconButton
+            icon={['fas', 'play']}
+            iconSize="large"
+            padding="1rem"
+            onClick={props.onPlay}
+          />
+        </div>
+      )}
       <div className={styles['album-card-name']}>{props.album.name}</div>
       <Box
         className={styles['album-card-data']}
