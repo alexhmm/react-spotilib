@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
+import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
 
@@ -35,22 +36,25 @@ const ArtistTopTrack = (props: ArtistTopTrackProps) => {
     <Box
       className={styles['artist-top-track']}
       sx={{
-        ':hover': {
-          backgroundColor: 'action.hover',
-          '.image': {
-            display: 'none',
+        '@media (hover: hover)': {
+          ':hover': {
+            backgroundColor: 'action.hover',
+            '.image': {
+              display: 'none',
+            },
+            '.play': {
+              display: 'flex !important',
+            },
+          },
+          '.app-link:hover': {
+            color: 'primary.main',
           },
           '.play': {
-            display: 'flex !important',
+            display: 'none !important',
           },
         },
-        '.app-link:hover': {
-          color: 'primary.main',
-        },
-        '.play': {
-          display: 'none !important',
-        },
       }}
+      onClick={() => isMobile && props.onPlay()}
     >
       <div className={styles['artist-top-track-title']}>
         <img
@@ -61,11 +65,13 @@ const ArtistTopTrack = (props: ArtistTopTrackProps) => {
           width={36}
           loading="lazy"
         />
-        <IconButton
-          classes={clsx(styles['artist-top-track-title-play'], 'play')}
-          icon={['fas', 'play']}
-          onClick={props.onPlay}
-        />
+        {!isMobile && (
+          <IconButton
+            classes={clsx(styles['artist-top-track-title-play'], 'play')}
+            icon={['fas', 'play']}
+            onClick={props.onPlay}
+          />
+        )}
         <div className={styles['artist-top-track-title-name']}>
           {props.track.name}
         </div>
