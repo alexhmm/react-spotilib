@@ -12,27 +12,33 @@
 }
 
 .album-header {
-  @apply flex mb-4 w-full lg:items-end lg:mb-8;
+  @apply flex flex-col mb-4 w-full md:flex-row lg:items-end lg:mb-8;
   &-image {
-    @apply h-32 relative shrink-0 w-32 lg:h-48 lg:w-48;
+    @apply h-48 relative self-center shrink-0 w-48;
     & img {
-      @apply h-full object-cover w-full;
+      @apply h-full object-cover shadow-lg w-full;
     }
   }
   &-info {
-    @apply flex flex-col pl-4 lg:pl-8;
+    @apply flex flex-col justify-end pl-4 lg:pl-8;
     &-data {
-      @apply flex items-center text-sm;
+      @apply flex flex-col text-sm md:flex-row;
       &-artist {
         @apply text-sm;
         &-link {
           @apply duration-200 transition-colors;
         }
       }
+      &-section {
+        @apply flex flex-wrap items-center mt-1 md:mt-0;
+      }
     }
     &-type {
       @apply text-sm uppercase;
     }
+  }
+  &-title {
+    @apply mt-4;
   }
 }
 

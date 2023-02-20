@@ -13,6 +13,7 @@ import AlbumTrack from '../../components/AlbumTrack/AlbumTrack';
 import useAlbum from '../../use-album.hook';
 import useAlbumHttp from '../../use-album-http.hook';
 import useArtistHttp from '../../../artist/use-artist-http.hook';
+import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
 import useFetch from '../../../../shared/hooks/use-fetch.hook';
 import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';
 import useShared from '../../../../shared/hooks/use-shared.hook';
@@ -40,6 +41,7 @@ const Album = () => {
   const { typeTranslationByTypeGet } = useAlbum();
   const { albumGet } = useAlbumHttp();
   const { albumsGet } = useArtistHttp();
+  const { mdDown } = useBreakpoints();
   const { handleError, handleRetry } = useFetch();
   const { id } = useParams();
   const { playPutMutation } = usePlayerHttp();
@@ -173,38 +175,59 @@ const Album = () => {
               />
             </div>
             <div className={styles['album-header-info']}>
-              <Box
-                className={styles['album-header-info-type']}
-                sx={{ color: 'text.secondary' }}
-              >
-                {typeTranslationByTypeGet(album.album_type)}
-              </Box>
-              <H2>{album.name}</H2>
+              {!mdDown && (
+                <Box
+                  className={styles['album-header-info-type']}
+                  sx={{ color: 'text.secondary' }}
+                >
+                  {typeTranslationByTypeGet(album.album_type)}
+                </Box>
+              )}
+              {mdDown ? (
+                <H3 classes={styles['album-header-title']}>{album.name}</H3>
+              ) : (
+                <H2>{album.name}</H2>
+              )}
               <div className={styles['album-header-info-data']}>
-                {album.artists.map((artist, index) => (
-                  <div
-                    key={artist.id}
-                    className={styles['album-header-info-data-artist']}
-                  >
-                    <Link
+                <div className={styles['album-header-info-data-section']}>
+                  {album.artists.map((artist, index) => (
+                    <div
                       key={artist.id}
-                      className={clsx(
-                        styles['album-header-info-data-artist-link'],
-                        'app-link'
-                      )}
-                      to={`/artist/${artist.id}`}
-                    >{`${artist.name}`}</Link>
-                    {`${index < album.artists.length - 1 ? ',\xa0' : ''}`}
-                  </div>
-                ))}
-                <span className="whitespace-pre-wrap"> </span>
-                {' • '}
-                {new Intl.DateTimeFormat(i18n.language, {
-                  year: 'numeric',
-                }).format(new Date(album.release_date))}
-                <Box sx={{ color: 'text.secondary' }}>
+                      className={styles['album-header-info-data-artist']}
+                    >
+                      <Link
+                        key={artist.id}
+                        className={clsx(
+                          styles['album-header-info-data-artist-link'],
+                          'app-link'
+                        )}
+                        to={`/artist/${artist.id}`}
+                      >{`${artist.name}`}</Link>
+                      {`${index < album.artists.length - 1 ? ',\xa0' : ''}`}
+                    </div>
+                  ))}
+                </div>
+                <Box
+                  className={styles['album-header-info-data-section']}
+                  sx={{ color: 'text.secondary' }}
+                >
+                  {mdDown && typeTranslationByTypeGet(album.album_type)}{' '}
                   <span className="whitespace-pre-wrap"> </span>
-                  {'• '}
+                  {' • '}
+                  {new Intl.DateTimeFormat(i18n.language, {
+                    year: 'numeric',
+                  }).format(new Date(album.release_date))}
+                </Box>
+                <Box
+                  className={styles['album-header-info-data-section']}
+                  sx={{ color: 'text.secondary' }}
+                >
+                  {!mdDown && (
+                    <>
+                      <span className="whitespace-pre-wrap"> </span>
+                      {'• '}
+                    </>
+                  )}
                   {album.total_tracks} {`${t('track.title')}, `}
                   {durationByMillisecondsGet(album.duration_ms)}
                 </Box>
