@@ -1,7 +1,7 @@
 import { memo, useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { CircularProgress } from '@mui/material';
 
 // Components
@@ -30,6 +30,7 @@ import {
 import {
   SpotifyAlbumType,
   SpotifyArtist,
+  SpotifyFollowType,
   SpotifyTrack,
 } from '../../../../shared/types/spotify.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
@@ -45,6 +46,12 @@ import TextButtonOutlined from '../../../../shared/ui/TextButtonOutlined/TextBut
 // Utils
 import { albumDataMap } from '../../../album/album.utils';
 import { artistDataMap } from '../../artist.utils';
+import useUserHttp from '../../../user/use-user-http.hook';
+import {
+  FollowingStateParamsRequest,
+  FollowingStatePutDeleteRequest,
+} from '../../../user/user.types';
+import { RequestMethod } from '../../../../shared/types/shared.types';
 
 type ArtistAlbumsTypeButtonProps = {
   currentType: SpotifyAlbumType | undefined;
@@ -74,6 +81,7 @@ const Artist = () => {
   const { id } = useParams();
   const { playPutMutation } = usePlayerHttp();
   const { t, i18n } = useTranslation();
+  const { followingStateGet, followingStatePutDelete } = useUserHttp();
 
   // Shared store state
   const [setHeaderTitle] = useSharedStore((state) => [state.setHeaderTitle]);
@@ -88,6 +96,9 @@ const Artist = () => {
   );
   const [appearsOn, setAppearsOn] = useState<IAlbumCard[]>([]);
   const [artist, setArtist] = useState<SpotifyArtist | undefined>(undefined);
+  const [followingState, setFollingState] = useState<boolean | undefined>(
+    undefined
+  );
   const [relatedArtists, setRelatedArtists] = useState<IArtistCard[]>([]);
   const [topTracks, setTopTracks] = useState<SpotifyTrack[]>([]);
   const [topTracksMore, setTopTracksMore] = useState<boolean>(false);
@@ -165,6 +176,33 @@ const Artist = () => {
     retry: (failureCount, error: any) => handleRetry(failureCount, error),
   });
 
+  // Get artist follow state by id.
+  // eslint-disable-next-line
+  const followingStateQuery = useQuery(
+    ['following', id],
+    () =>
+      followingStateGet({
+        ids: [id ?? ''],
+        type: SpotifyFollowType.Artist,
+      }),
+    {
+      refetchOnWindowFocus: false,
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          console.error('Error on getting following state for artist:', error);
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data) => {
+        if (data) {
+          setFollingState(data[0]);
+        }
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
   // Get related artists by artist id.
   // eslint-disable-next-line
   const relatedArtistsQuery = useQuery(
@@ -212,8 +250,51 @@ const Artist = () => {
   );
 
   // ######### //
+  // MUTATIONS //
+  // ######### //
+
+  // PUT / DELETE Following state mutation
+  const followingStatePutDeleteMutation = useMutation(
+    (data: {
+      body: FollowingStatePutDeleteRequest;
+      method: RequestMethod;
+      params: FollowingStateParamsRequest;
+    }) => followingStatePutDelete(data),
+    {
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data, variables) => {
+        setFollingState(variables.method === RequestMethod.Put ? true : false);
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
+  // ######### //
   // CALLBACKS //
   // ######### //
+
+  /**
+   * Handler to change following state.
+   */
+  const onFollowStateChange = useCallback(() => {
+    id &&
+      followingStatePutDeleteMutation.mutate({
+        body: {
+          ids: [id],
+        },
+        method: followingState ? RequestMethod.Delete : RequestMethod.Put,
+        params: {
+          ids: [id],
+          type: SpotifyFollowType.Artist,
+        },
+      });
+    // eslint-disable-next-line
+  }, [followingState, id]);
 
   /**
    * Handler to play context by uri.
@@ -287,9 +368,16 @@ const Artist = () => {
               }}
               onClick={() => onPlayContext(artist.uri)}
             />
-            <TextButtonOutlined classes={styles['artist-actions-follow']}>
-              {t('artist.detail.follow.inactive')}
-            </TextButtonOutlined>
+            {followingState !== undefined && (
+              <TextButtonOutlined
+                classes={styles['artist-actions-follow']}
+                onClick={onFollowStateChange}
+              >
+                {followingState
+                  ? t('artist.detail.follow.active')
+                  : t('artist.detail.follow.inactive')}
+              </TextButtonOutlined>
+            )}
           </div>
           <section className={styles['artist-section']}>
             <H3>{t('artist.detail.top_tracks')}</H3>

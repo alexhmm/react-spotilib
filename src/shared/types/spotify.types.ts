@@ -12,6 +12,11 @@ export enum SpotifyAlbumType {
   Single = 'single',
 }
 
+export enum SpotifyFollowType {
+  Artist = 'artist',
+  User = 'user',
+}
+
 export enum SpotifyItemType {
   Album = 'album',
   Artist = 'artist',

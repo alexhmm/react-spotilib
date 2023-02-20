@@ -1,3 +1,10 @@
+export enum RequestMethod {
+  Delete = 'DELETE',
+  Get = 'GET',
+  Patch = 'PATCH',
+  Put = 'PUT',
+}
+
 export enum SidebarTabType {
   Collections = 'COLLECTIONS',
   Playlists = 'PLAYLISTS',

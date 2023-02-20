@@ -1,3 +1,11 @@
+// Types
+import { SpotifyFollowType } from '../../shared/types/spotify.types';
+
+export interface FollowingStateParamsRequest {
+  ids: string[];
+  type: SpotifyFollowType;
+}
+
 export interface UserImage {
   height: null;
   url: string;
@@ -26,3 +34,8 @@ export interface UserProfile {
   type: string;
   uri: string;
 }
+
+export type FollowingStatePutDeleteRequest = Pick<
+  FollowingStateParamsRequest,
+  'ids'
+>;
