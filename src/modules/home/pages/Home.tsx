@@ -69,10 +69,10 @@ const Home = () => {
   >(undefined);
   const [topArtists, setTopArtists] = useState<IArtistCard[]>([]);
   const [topArtistsTimeRange, setTopArtistsTimeRange] =
-    useState<SpotifyTopTimeRange>(SpotifyTopTimeRange.Long_Term);
+    useState<SpotifyTopTimeRange>(SpotifyTopTimeRange.Short_Term);
   const [topTracks, setTopTracks] = useState<ITrackCard[]>([]);
   const [topTracksTimeRange, setTopTracksTimeRange] =
-    useState<SpotifyTopTimeRange>(SpotifyTopTimeRange.Long_Term);
+    useState<SpotifyTopTimeRange>(SpotifyTopTimeRange.Short_Term);
 
   // ####### //
   // QUERIES //
@@ -188,16 +188,16 @@ const Home = () => {
       <H3
         menuItems={[
           {
-            action: SpotifyTopTimeRange.Long_Term,
-            title: t('app.top.long_term'),
+            action: SpotifyTopTimeRange.Short_Term,
+            title: t('app.top.short_term'),
           },
           {
             action: SpotifyTopTimeRange.Medium_Term,
             title: t('app.top.medium_term'),
           },
           {
-            action: SpotifyTopTimeRange.Short_Term,
-            title: t('app.top.short_term'),
+            action: SpotifyTopTimeRange.Long_Term,
+            title: t('app.top.long_term'),
           },
         ]}
         menuTitle={topTitleByTimeRangeGet(topArtistsTimeRange)}
@@ -229,16 +229,16 @@ const Home = () => {
         classes="pt-2 lg:pt-4"
         menuItems={[
           {
-            action: SpotifyTopTimeRange.Long_Term,
-            title: t('app.top.long_term'),
+            action: SpotifyTopTimeRange.Short_Term,
+            title: t('app.top.short_term'),
           },
           {
             action: SpotifyTopTimeRange.Medium_Term,
             title: t('app.top.medium_term'),
           },
           {
-            action: SpotifyTopTimeRange.Short_Term,
-            title: t('app.top.short_term'),
+            action: SpotifyTopTimeRange.Long_Term,
+            title: t('app.top.long_term'),
           },
         ]}
         menuTitle={topTitleByTimeRangeGet(topTracksTimeRange)}
