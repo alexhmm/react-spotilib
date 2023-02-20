@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
+import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
 
@@ -27,17 +28,19 @@ const ArtistCard = (props: ArtistCardProps) => {
       className={styles['artist-card']}
       sx={{
         backgroundColor: 'background.paper',
-        ':hover': {
-          backgroundColor: 'action.hover',
-          '.image': {
-            display: 'none',
+        '@media (hover: hover)': {
+          ':hover': {
+            backgroundColor: 'action.hover',
+            '.image': {
+              display: 'none',
+            },
+            '.play': {
+              display: 'flex !important',
+            },
           },
           '.play': {
-            display: 'flex !important',
+            display: 'none !important',
           },
-        },
-        '.play': {
-          display: 'none !important',
         },
       }}
     >
@@ -46,14 +49,16 @@ const ArtistCard = (props: ArtistCardProps) => {
         className={clsx(styles['artist-card-image'], 'image')}
         src={lgDown ? props.artist.images[1]?.url : props.artist.images[0]?.url}
       />
-      <div className={clsx(styles['artist-card-play'], 'play')}>
-        <IconButton
-          icon={['fas', 'play']}
-          iconSize="large"
-          padding="1rem"
-          onClick={props.onPlay}
-        />
-      </div>
+      {!isMobile && (
+        <div className={clsx(styles['artist-card-play'], 'play')}>
+          <IconButton
+            icon={['fas', 'play']}
+            iconSize="large"
+            padding="1rem"
+            onClick={props.onPlay}
+          />
+        </div>
+      )}
       <div className={styles['artist-card-name']}>{props.artist.name}</div>
       <Link
         className={clsx(styles['artist-card-link'], 'app-link')}
