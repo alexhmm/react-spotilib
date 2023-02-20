@@ -21,3 +21,8 @@ export interface MenuItem<T> {
   title: string;
   tooltip?: string;
 }
+
+export interface Notification {
+  timeout?: number;
+  title: string;
+}

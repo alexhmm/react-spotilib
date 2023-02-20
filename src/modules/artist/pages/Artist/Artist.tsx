@@ -84,7 +84,10 @@ const Artist = () => {
   const { followingStateGet, followingStatePutDelete } = useUserHttp();
 
   // Shared store state
-  const [setHeaderTitle] = useSharedStore((state) => [state.setHeaderTitle]);
+  const [setHeaderTitle, setNotification] = useSharedStore((state) => [
+    state.setHeaderTitle,
+    state.setNotification,
+  ]);
 
   // User store state
   const [profile] = useUserStore((state) => [state.profile]);
@@ -269,6 +272,12 @@ const Artist = () => {
       },
       onSuccess: (data, variables) => {
         setFollingState(variables.method === RequestMethod.Put ? true : false);
+        setNotification({
+          title:
+            variables.method === RequestMethod.Put
+              ? 'Zu Künstli hinzugefügt'
+              : 'Aus Künstli entfernt',
+        });
       },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),
     }
