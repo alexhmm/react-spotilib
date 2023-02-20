@@ -1,8 +1,7 @@
 .header {
   @apply flex h-16 items-center sticky top-0 w-full z-10;
   &-info {
-    @apply flex grow h-full items-center justify-between px-2 relative truncate;
-    @apply sm:px-4;
+    @apply flex grow h-full items-center justify-between px-4 relative truncate;
     @apply lg:px-8;
     &-actions {
       @apply flex items-center z-10;
@@ -23,15 +22,14 @@
     }
   }
   &-logo {
-    @apply flex font-bold h-full items-center px-2 shrink-0;
-    @apply sm:px-4;
+    @apply flex font-bold h-full items-center px-4 shrink-0;
     @apply lg:px-6 lg:w-64;
   }
 }
 
 .header-menu {
   &-button {
-    @apply flex font-semibold items-center normal-case p-0 rounded-full truncate w-full;
+    @apply flex font-semibold items-center min-w-0 normal-case p-0 rounded-full truncate w-full;
     @apply sm:p-1 sm:rounded-md;
     &-icon {
       @apply duration-200 ml-1 p-1 transition-transform;

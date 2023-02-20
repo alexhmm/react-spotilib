@@ -1,4 +1,5 @@
 import { memo, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { IconName, IconPrefix } from '@fortawesome/free-solid-svg-icons';
@@ -278,14 +279,16 @@ const Header = () => {
   return (
     <Box
       className={styles['header']}
-      sx={{ backgroundColor: lgDown ? 'background.default' : undefined }}
+      sx={{
+        backgroundColor: lgDown ? 'background.default' : undefined,
+        '.app-link': {
+          backgroundColor: lgDown ? undefined : 'bg.sidebar',
+        },
+      }}
     >
-      <Box
-        className={styles['header-logo']}
-        sx={{ backgroundColor: lgDown ? undefined : 'bg.sidebar' }}
-      >
+      <Link className={clsx(styles['header-logo'], 'app-link')} to="/">
         Spotilib
-      </Box>
+      </Link>
       <div className={styles['header-info']}>
         <div className={styles['header-info-actions']}>
           {searchElem && (
