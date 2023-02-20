@@ -55,11 +55,9 @@ const AlbumTrack = (props: PlaylistTrackProps) => {
           },
         },
       }}
+      onClick={() => isMobile && props.onPlay()}
     >
-      <div
-        className={styles['album-track-title']}
-        onClick={() => isMobile && props.onPlay()}
-      >
+      <div className={styles['album-track-title']}>
         {!isMobile && (
           <>
             <Box

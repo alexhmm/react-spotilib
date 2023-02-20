@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
+import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
 
@@ -23,19 +24,22 @@ const TrackCard = (props: TrackCardProps) => {
       className={styles['track-card']}
       sx={{
         backgroundColor: 'background.paper',
-        ':hover': {
-          backgroundColor: 'action.hover',
-          '.image': {
-            display: 'none',
+        '@media (hover: hover)': {
+          ':hover': {
+            backgroundColor: 'action.hover',
+            '.image': {
+              display: 'none',
+            },
+            '.play': {
+              display: 'flex !important',
+            },
           },
           '.play': {
-            display: 'flex !important',
+            display: 'none !important',
           },
         },
-        '.play': {
-          display: 'none !important',
-        },
       }}
+      onClick={() => isMobile && props.onPlay()}
     >
       <img
         alt={props.track.album.name}
@@ -43,11 +47,13 @@ const TrackCard = (props: TrackCardProps) => {
         src={props.track.album.images[2].url}
         onClick={props.onPlay}
       />
-      <IconButton
-        classes="play"
-        icon={['fas', 'play']}
-        onClick={props.onPlay}
-      />
+      {!isMobile && (
+        <IconButton
+          classes="play"
+          icon={['fas', 'play']}
+          onClick={props.onPlay}
+        />
+      )}
       <Box
         className={styles['track-card-info']}
         sx={{
@@ -66,14 +72,18 @@ const TrackCard = (props: TrackCardProps) => {
               className={styles['track-card-info-artists-item']}
               sx={{ color: 'text.secondary' }}
             >
-              <Link
-                key={artist.id}
-                className={clsx(
-                  styles['track-card-info-artists-item-link'],
-                  'app-link'
-                )}
-                to={`/artist/${artist.id}`}
-              >{`${artist.name}`}</Link>
+              {isMobile ? (
+                <>{artist.name}</>
+              ) : (
+                <Link
+                  key={artist.id}
+                  className={clsx(
+                    styles['track-card-info-artists-item-link'],
+                    'app-link'
+                  )}
+                  to={`/artist/${artist.id}`}
+                >{`${artist.name}`}</Link>
+              )}
               {`${index < props.track.artists.length - 1 ? ',\xa0' : ''}`}
             </Box>
           ))}
