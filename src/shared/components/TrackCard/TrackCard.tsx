@@ -49,7 +49,7 @@ const TrackCard = (props: TrackCardProps) => {
       />
       {!isMobile && (
         <IconButton
-          classes="play"
+          classes={clsx(styles['track-card-play'], 'play')}
           icon={['fas', 'play']}
           onClick={props.onPlay}
         />
