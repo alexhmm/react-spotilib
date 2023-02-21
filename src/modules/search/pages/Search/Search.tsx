@@ -1,5 +1,5 @@
 import { CircularProgress } from '@mui/material';
-import { memo, useCallback, useEffect } from 'react';
+import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // Components
@@ -25,24 +25,10 @@ const Search = () => {
   const { t } = useTranslation();
 
   // Search store state
-  const [searchData, searchLoading, setSearchElem] = useSearchStore((state) => [
+  const [searchData, searchLoading] = useSearchStore((state) => [
     state.searchData,
     state.searchLoading,
-    state.setSearchElem,
   ]);
-
-  // ####### //
-  // EFFECTS //
-  // ####### //
-
-  // Set search element on component mount.
-  useEffect(() => {
-    setSearchElem(true);
-    return () => {
-      setSearchElem(false);
-    };
-    // eslint-disable-next-line
-  }, []);
 
   // ######### //
   // CALLBACKS //

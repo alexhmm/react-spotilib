@@ -8,15 +8,20 @@ import {
 
 // Components
 import Header from './shared/components/Header/Header';
+import LibraryNavigation from './modules/library/components/LibraryNavigation/LibraryNavigation';
 import Sidebar from './shared/components/Sidebar/Sidebar';
 import Snackbar from './shared/ui/Snackbar/Snackbar';
 import Tabs from './shared/components/Tabs/Tabs';
 
 // Hooks
+import useBreakpoints from './shared/hooks/use-breakpoints.hook';
 import useTheme from './shared/hooks/use-theme.hook';
 
 // Router
 import { AppRouter } from './shared/router/AppRouter';
+
+// Stores
+import useSharedStore from './shared/stores/use-shared.store';
 
 // Styles
 import styles from './App.module.scss';
@@ -27,8 +32,13 @@ import './shared/utils/i18n';
 import './shared/utils/fa';
 
 function App() {
+  const { lgDown } = useBreakpoints();
   const queryClient = new QueryClient();
   const { activeThemeGet } = useTheme();
+
+  // Shared store state
+  // Error: react-router useLocation() may be used only in the context of a <Router> component.
+  const [pathname] = useSharedStore((state) => [state.pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -38,6 +48,7 @@ function App() {
           <BrowserRouter>
             <div className={styles['app']}>
               <Header />
+              {lgDown && pathname?.includes('library') && <LibraryNavigation />}
               <div className={styles['app-main']}>
                 <Sidebar />
                 <div className={styles['app-main-content']}>

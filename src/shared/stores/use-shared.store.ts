@@ -7,14 +7,17 @@ import { Notification } from '../types/shared.types';
 export interface SharedState {
   headerTitle: string | undefined;
   notification: Notification | undefined;
+  pathname: string | undefined;
   resetState: () => void;
   setHeaderTitle: (headerTitle: string | undefined) => void;
   setNotification: (notification: Notification | undefined) => void;
+  setPathname: (pathname: string | undefined) => void;
 }
 
 const initialSharedState = {
   headerTitle: undefined,
   notification: undefined,
+  pathname: undefined,
 };
 
 const useSharedStore = create<SharedState>((set) => ({
@@ -27,6 +30,9 @@ const useSharedStore = create<SharedState>((set) => ({
   },
   setNotification: (notification: Notification | undefined) => {
     set({ notification });
+  },
+  setPathname: (pathname: string | undefined) => {
+    set({ pathname });
   },
 }));
 

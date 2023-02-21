@@ -24,13 +24,16 @@ export interface MenuItem<T> {
   tooltip?: string;
 }
 
+export interface NavigationItem {
+  pathname: string;
+  title: string;
+}
+
 export interface Notification {
   timeout?: number;
   title: string;
 }
 
-export interface TabItem {
+export interface TabItem extends NavigationItem {
   icon: [IconPrefix, IconName];
-  pathname: string;
-  title: string;
 }

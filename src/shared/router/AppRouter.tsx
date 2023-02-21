@@ -5,6 +5,7 @@ import { CircularProgress } from '@mui/material';
 // Router
 import AlbumRouter from './AlbumRouter';
 import ArtistRouter from './ArtistRouter';
+import LibraryRouter from './LibraryRouter';
 import PlaylistRouter from './PlaylistRouter';
 import ProtectedRoute from './ProtectedRoute';
 
@@ -48,6 +49,14 @@ export const AppRouter = () => {
         element={
           <ProtectedRoute>
             <ArtistRouter />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/library/*"
+        element={
+          <ProtectedRoute>
+            <LibraryRouter />
           </ProtectedRoute>
         }
       />

@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { IconName, IconPrefix } from '@fortawesome/free-solid-svg-icons';
@@ -31,6 +31,7 @@ import { Theme } from '../../types/shared.types';
 // UI
 import Icon from '../../ui/Icon/Icon';
 import TextButtonOutlined from '../../ui/TextButtonOutlined/TextButtonOutlined';
+import LibraryNavigation from '../../../modules/library/components/LibraryNavigation/LibraryNavigation';
 
 type HeaderMenuButtonItemProps = {
   classes?: string;
@@ -195,6 +196,7 @@ const Header = () => {
   const { authorize } = useAuth();
   const { lgDown } = useBreakpoints();
   const { fetchData } = useFetch();
+  const location = useLocation();
   const { t } = useTranslation();
 
   // Refs
@@ -211,9 +213,8 @@ const Header = () => {
   ]);
 
   // Search store state
-  const [search, searchElem, setSearch] = useSearchStore((state) => [
+  const [search, setSearch] = useSearchStore((state) => [
     state.search,
-    state.searchElem,
     state.setSearch,
   ]);
 
@@ -243,7 +244,10 @@ const Header = () => {
   // Set refs style by scroll position
   useEffect(() => {
     const onScroll = (event: any) => {
-      const headerBgThreshold = searchElem ? 50 : 150;
+      const smallThreshold =
+        location.pathname.includes('library') ||
+        location.pathname.includes('search');
+      const headerBgThreshold = smallThreshold ? 50 : 150;
       const scrollTop = event.target.documentElement.scrollTop;
       if (scrollTop < headerBgThreshold && headerBgRef.current) {
         headerBgRef.current.style.opacity = '0%';
@@ -274,7 +278,7 @@ const Header = () => {
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  }, [headerBgRef, headerTitle, headerTitleRef, lgDown, searchElem]);
+  }, [headerBgRef, headerTitle, headerTitleRef, lgDown, location]);
 
   return (
     <Box
@@ -291,12 +295,15 @@ const Header = () => {
       </Link>
       <div className={styles['header-info']}>
         <div className={styles['header-info-actions']}>
-          {searchElem && (
+          {location.pathname.includes('search') && (
             <Search
               classes={styles['header-info-actions-search']}
               value={search}
               onChange={setSearch}
             />
+          )}
+          {!lgDown && location.pathname.includes('library') && (
+            <LibraryNavigation />
           )}
           <div
             className={styles['header-info-actions-title']}

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 // Types
-import { TabItem } from '../types/shared.types';
+import { NavigationItem, TabItem } from '../types/shared.types';
 import { SpotifyTopTimeRange } from '../types/spotify.types';
 
 const useShared = () => {
@@ -26,6 +26,27 @@ const useShared = () => {
         ? `${seconds} ${t('album.detail.duration.seconds')}`
         : ''
     }`;
+  };
+
+  /**
+   * GET Library navigation items.
+   * @returns Library navigation items array.
+   */
+  const libraryNavigationItemsGet = (): NavigationItem[] => {
+    return [
+      {
+        pathname: '/library/playlists',
+        title: t('playlist.title'),
+      },
+      {
+        pathname: '/library/artists',
+        title: t('artist.title'),
+      },
+      {
+        pathname: '/library/albums',
+        title: t('album.title'),
+      },
+    ];
   };
 
   /**
@@ -72,6 +93,7 @@ const useShared = () => {
 
   return {
     durationByMillisecondsGet,
+    libraryNavigationItemsGet,
     tabItemsGet,
     topTitleByTimeRangeGet,
   };
