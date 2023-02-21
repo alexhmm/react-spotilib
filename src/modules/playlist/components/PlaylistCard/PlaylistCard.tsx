@@ -13,6 +13,7 @@ import styles from './PlaylistCard.module.scss';
 
 // Types
 import { PlaylistCard as IPlaylistCard } from '../../playlist.types';
+import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
 import Icon from '../../../../shared/ui/Icon/Icon';
@@ -51,50 +52,55 @@ const PlaylistCard = (props: PlaylistCardProps) => {
         '@media (hover: hover)': {
           ':hover': {
             backgroundColor: 'action.hover',
-            '.image': {
-              display: 'none',
-            },
             '.play': {
-              display: 'flex !important',
+              opacity: 1,
+              transform: 'translateY(-0.5rem)',
             },
           },
           '.app-link:hover': {
             color: 'primary.main',
           },
           '.play': {
-            display: 'none !important',
+            opacity: 0,
           },
         },
       }}
     >
-      {(props.playlist.images[0] && props.playlist.images[0].url) ||
-      (props.playlist.images[1] && props.playlist.images[1].url) ? (
-        <img
-          alt={props.playlist.name}
-          className={clsx(styles['playlist-card-image'], 'image')}
-          src={
-            lgDown
-              ? props.playlist.images[1]?.url
-                ? props.playlist.images[1].url
-                : props.playlist.images[0]?.url
-              : props.playlist.images[0].url
-          }
-        />
-      ) : (
-        <div className={clsx(styles['playlist-card-fallback'], 'image')}>
-          <Icon icon={['fas', 'music']} size="large" />
-        </div>
-      )}
-      {!isMobile && (
-        <div className={clsx(styles['playlist-card-play'], 'play')}>
+      <div className={clsx(styles['playlist-card-image'], 'image')}>
+        {(props.playlist.images[0] && props.playlist.images[0].url) ||
+        (props.playlist.images[1] && props.playlist.images[1].url) ? (
+          <img
+            alt={props.playlist.name}
+            src={
+              lgDown
+                ? props.playlist.images[1]?.url
+                  ? props.playlist.images[1].url
+                  : props.playlist.images[0]?.url
+                : props.playlist.images[0].url
+            }
+          />
+        ) : (
+          <div className={clsx(styles['playlist-card-fallback'], 'image')}>
+            <Icon icon={['fas', 'music']} size="large" />
+          </div>
+        )}
+        {!isMobile && (
           <IconButton
+            borderRadius="rounded-full"
+            classes={clsx(styles['playlist-card-image-play'], 'play')}
             icon={['fas', 'play']}
-            iconSize="large"
-            padding="1rem"
+            iconSize="medium"
+            padding="0.75rem"
+            preset={ButtonType.Primary}
+            sx={{
+              svg: {
+                transform: 'translateX(2px)',
+              },
+            }}
             onClick={() => onPlay(props.playlist.uri)}
           />
-        </div>
-      )}
+        )}
+      </div>
       <div className={styles['playlist-card-name']}>{props.playlist.name}</div>
       <Link
         className={clsx(styles['playlist-card-owner'], 'app-link')}
