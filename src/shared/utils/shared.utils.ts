@@ -1,4 +1,14 @@
 /**
+ * Concat current and new data arrays.
+ * @param currentData Current data array
+ * @param newData New data array
+ * @returns Concat array
+ */
+export const concatArray = <T>(currentData: T[], newData: T[]): T[] => {
+  return [...currentData].concat(newData);
+};
+
+/**
  * GET Minutes and seconds by milliseconds with two digits.
  * @param ms Milliseconds
  * @returns Minutes and seconds with two digits.

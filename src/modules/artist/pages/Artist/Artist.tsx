@@ -48,7 +48,7 @@ import { albumDataMap } from '../../../album/album.utils';
 import { artistDataMap } from '../../artist.utils';
 import useUserHttp from '../../../user/use-user-http.hook';
 import {
-  FollowingStateParamsRequest,
+  FollowingStateGetRequest,
   FollowingStatePutDeleteRequest,
 } from '../../../user/user.types';
 import { RequestMethod } from '../../../../shared/types/shared.types';
@@ -261,7 +261,7 @@ const Artist = () => {
     (data: {
       body: FollowingStatePutDeleteRequest;
       method: RequestMethod;
-      params: FollowingStateParamsRequest;
+      params: FollowingStateGetRequest;
     }) => followingStatePutDelete(data),
     {
       onError: (error: any) => {

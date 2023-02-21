@@ -8,7 +8,7 @@ import { SpotifyPlaylist } from '../../shared/types/spotify.types';
 import { playlistDataMap } from '../playlist/playlist.utils';
 
 const useLibrary = () => {
-  // Playlists store state
+  // Library store state
   const [playlists, setPlaylists] = useLibraryStore((state) => [
     state.playlists,
     state.setPlaylists,
