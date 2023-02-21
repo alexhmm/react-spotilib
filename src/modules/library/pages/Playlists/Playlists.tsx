@@ -9,38 +9,40 @@ import PlaylistCard from '../../../playlist/components/PlaylistCard/PlaylistCard
 
 // Hooks
 import useFetch from '../../../../shared/hooks/use-fetch.hook';
-import useLibrary from '../../use-library.hook';
 import usePlaylistHttp from '../../../playlist/use-playlist-http.hook';
 
 // Stores
-import useLibraryStore from '../../use-library.store';
 import useSharedStore from '../../../../shared/stores/use-shared.store';
 
 // Styles
 import styles from './Playlists.module.scss';
 
 // Types
-import { PlaylistsGetParams } from '../../../playlist/playlist.types';
+import {
+  PlaylistCard as IPlaylistCard,
+  PlaylistsGetParams,
+} from '../../../playlist/playlist.types';
 
 // UI
 import H3 from '../../../../shared/ui/H3/H3';
 
+// Utils
+import { playlistDataMap } from '../../../playlist/playlist.utils';
+import { concatArray } from '../../../../shared/utils/shared.utils';
+
 const Playlists = () => {
   const { handleError, handleRetry } = useFetch();
-  const { playlistsAddEffect } = useLibrary();
   const { playlistsGet } = usePlaylistHttp();
   const { t } = useTranslation();
-
-  // Library store state
-  const [playlists, setPlaylists] = useLibraryStore((state) => [
-    state.playlists,
-    state.setPlaylists,
-  ]);
 
   // Shared sotre state
   const [setPathName] = useSharedStore((state) => [state.setPathname]);
 
   // Component state
+  const [playlists, setPlaylists] = useState<IPlaylistCard[]>([]);
+  const [playlistsTotal, setPlaylistsTotal] = useState<number | undefined>(
+    undefined
+  );
   const [playlistsGetParams, setPlaylistsGetParams] =
     useState<PlaylistsGetParams>({
       limit: 50,
@@ -66,7 +68,10 @@ const Playlists = () => {
         }
       },
       onSuccess: (data) => {
-        data && playlistsAddEffect(data.items);
+        if (data) {
+          !playlistsTotal && setPlaylistsTotal(data.total);
+          setPlaylists(concatArray(playlists, playlistDataMap(data.items)));
+        }
       },
       retry: handleRetry,
     }
@@ -94,7 +99,9 @@ const Playlists = () => {
       <InfiniteScroll
         className="context-grid"
         dataLength={playlists.length}
-        hasMore
+        hasMore={
+          playlistsTotal && playlists.length < playlistsTotal ? true : false
+        }
         loader={<CircularProgress />}
         next={() =>
           setPlaylistsGetParams({
