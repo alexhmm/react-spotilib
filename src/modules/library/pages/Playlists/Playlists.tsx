@@ -107,11 +107,7 @@ const Playlists = () => {
         {playlists &&
           playlists.length > 0 &&
           playlists.map((playlist) => (
-            <PlaylistCard
-              key={playlist.id}
-              playlist={playlist}
-              onPlay={() => console.log('onPlayPlaylist')}
-            />
+            <PlaylistCard key={playlist.id} playlist={playlist} />
           ))}
       </InfiniteScroll>
     </div>

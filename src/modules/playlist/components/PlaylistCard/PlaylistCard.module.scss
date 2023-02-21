@@ -1,5 +1,8 @@
 .playlist-card {
   @apply duration-200 flex flex-col p-4 relative rounded-md transition-colors w-full;
+  &-fallback {
+    @apply aspect-square flex justify-center items-center w-full;
+  }
   &-image {
     @apply aspect-square object-cover rounded-md shadow-xl w-full;
   }
