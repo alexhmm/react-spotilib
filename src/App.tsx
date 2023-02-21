@@ -10,6 +10,7 @@ import {
 import Header from './shared/components/Header/Header';
 import Sidebar from './shared/components/Sidebar/Sidebar';
 import Snackbar from './shared/ui/Snackbar/Snackbar';
+import Tabs from './shared/components/Tabs/Tabs';
 
 // Hooks
 import useTheme from './shared/hooks/use-theme.hook';
@@ -43,6 +44,7 @@ function App() {
                   <AppRouter />
                 </div>
               </div>
+              <Tabs />
             </div>
             <Snackbar />
           </BrowserRouter>

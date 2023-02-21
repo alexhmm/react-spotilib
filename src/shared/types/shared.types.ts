@@ -1,3 +1,5 @@
+import { IconName, IconPrefix } from '@fortawesome/free-solid-svg-icons';
+
 export enum RequestMethod {
   Delete = 'DELETE',
   Get = 'GET',
@@ -24,5 +26,11 @@ export interface MenuItem<T> {
 
 export interface Notification {
   timeout?: number;
+  title: string;
+}
+
+export interface TabItem {
+  icon: [IconPrefix, IconName];
+  pathname: string;
   title: string;
 }
