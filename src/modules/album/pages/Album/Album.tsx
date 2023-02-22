@@ -278,11 +278,7 @@ const Album = () => {
             <H3>{`${t('album.detail.more_by')} ${album.artists[0].name}`}</H3>
             <div className="context-grid">
               {otherAlbums.map((album) => (
-                <AlbumCard
-                  key={album.id}
-                  album={album}
-                  onPlay={() => onPlayContext(album.uri)}
-                />
+                <AlbumCard key={album.id} album={album} />
               ))}
             </div>
           </section>

@@ -3,7 +3,7 @@
   &-main {
     @apply flex w-full;
     &-content {
-      @apply box-border grow p-4;
+      @apply box-border grow min-h-screen p-4;
       @apply lg:p-8;
     }
   }

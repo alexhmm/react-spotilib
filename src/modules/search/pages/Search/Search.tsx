@@ -1,5 +1,5 @@
 import { CircularProgress } from '@mui/material';
-import { memo, useCallback, useEffect } from 'react';
+import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // Components
@@ -25,41 +25,14 @@ const Search = () => {
   const { t } = useTranslation();
 
   // Search store state
-  const [searchData, searchLoading, setSearchElem] = useSearchStore((state) => [
+  const [searchData, searchLoading] = useSearchStore((state) => [
     state.searchData,
     state.searchLoading,
-    state.setSearchElem,
   ]);
-
-  // ####### //
-  // EFFECTS //
-  // ####### //
-
-  // Set search element on component mount.
-  useEffect(() => {
-    setSearchElem(true);
-    return () => {
-      setSearchElem(false);
-    };
-    // eslint-disable-next-line
-  }, []);
 
   // ######### //
   // CALLBACKS //
   // ######### //
-
-  /**
-   * Handler to play context by uri.
-   * @param contextUri Spotify URI of the context to play
-   */
-  const onPlayContext = useCallback((contextUri: string) => {
-    playPutMutation.mutate({
-      body: {
-        context_uri: contextUri,
-      },
-    });
-    // eslint-disable-next-line
-  }, []);
 
   /**
    * Handler to play selected track.
@@ -82,31 +55,19 @@ const Search = () => {
           <H3>{t('album.title')}</H3>
           <div className="context-grid">
             {searchData.albums.map((album) => (
-              <AlbumCard
-                key={album.id}
-                album={album}
-                onPlay={() => onPlayContext(album.uri)}
-              />
+              <AlbumCard key={album.id} album={album} />
             ))}
           </div>
           <H3>{t('artist.title')}</H3>
           <div className="context-grid">
             {searchData.artists?.map((artist) => (
-              <ArtistCard
-                key={artist.id}
-                artist={artist}
-                onPlay={() => onPlayContext(artist.uri)}
-              />
+              <ArtistCard key={artist.id} artist={artist} />
             ))}
           </div>
           <H3>{t('playlist.title')}</H3>
           <div className="context-grid">
             {searchData.playlists?.map((playlist) => (
-              <PlaylistCard
-                key={playlist.id}
-                playlist={playlist}
-                onPlay={() => onPlayContext(playlist.uri)}
-              />
+              <PlaylistCard key={playlist.id} playlist={playlist} />
             ))}
           </div>
           <H3>{t('track.title')}</H3>

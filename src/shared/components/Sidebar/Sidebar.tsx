@@ -6,7 +6,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import {
@@ -41,6 +41,7 @@ import { SidebarTabType } from '../../types/shared.types';
 import Icon from '../../ui/Icon/Icon';
 
 type SidebarItemProps = {
+  active?: boolean;
   children: ReactNode;
   classes?: string;
   icon?: [IconPrefix, IconName];
@@ -53,7 +54,7 @@ const SidebarItem = (props: SidebarItemProps) => {
       className={clsx(styles['sidebar-item'], props.classes && props.classes)}
       sx={{
         a: {
-          color: 'text.primary',
+          color: props.active ? 'text.primary' : 'text.secondary',
         },
         'a:hover': {
           color: 'primary.main',
@@ -86,6 +87,7 @@ const TabIcon = forwardRef<HTMLDivElement, TabIconProps>((props, ref) => {
 
 const Sidebar = () => {
   const { handleError, handleRetry } = useFetch();
+  const location = useLocation();
   const { playlistsAddEffect, playlistsGetEffect } = usePlaylist();
   const { playlistsGet } = usePlaylistHttp();
   const theme = useTheme();
@@ -206,17 +208,27 @@ const Sidebar = () => {
           }}
         />
         <div className={styles['sidebar-nav-links']}>
-          <SidebarItem classes="mb-4" icon={['fas', 'house']} to="/">
+          <SidebarItem
+            active={location.pathname === '/' ? true : false}
+            classes="mb-4"
+            icon={['fas', 'house']}
+            to="/"
+          >
             {t('app.sidebar.home')}
           </SidebarItem>
           <SidebarItem
+            active={location.pathname === '/search' ? true : false}
             classes="mb-4"
             icon={['fas', 'magnifying-glass']}
             to="/search"
           >
             {t('app.sidebar.search')}
           </SidebarItem>
-          <SidebarItem icon={['fas', 'book']} to="/library">
+          <SidebarItem
+            active={location.pathname.includes('library') ? true : false}
+            icon={['fas', 'book']}
+            to="/library"
+          >
             {t('app.sidebar.library')}
           </SidebarItem>
         </div>
@@ -275,6 +287,9 @@ const Sidebar = () => {
                 playlists.items.map((playlist) => (
                   <SidebarItem
                     key={playlist.id}
+                    active={
+                      location.pathname.includes(playlist.id) ? true : false
+                    }
                     classes={'mb-2'}
                     to={`/playlist/${playlist.id}`}
                   >

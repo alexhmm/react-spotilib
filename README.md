@@ -1,3 +1,69 @@
+# Project Information and (development) Installation
+
+## Information
+
+This project should serve as a better management for releases / albums.
+In 2023 still a missing feature in Spotify.\
+The new feature `Collections` will be able to store releases / albums in custom created lists.
+
+Implemented Features:
+
+- [x] Login page
+- [x] Home page
+- [x] Search page
+- [x] Library Playlists page
+- [x] Library Artists page
+- [x] Library Albums page
+- [x] Playlist detail page (Read)
+- [x] Artist detail page (Read + Update)
+- [x] Album detail page (Read)
+- [x] Global state management (Zustand)
+- [x] Internationalization (i18n)
+- [x] Start music
+- [x] Full responsive design
+
+To be implemented Features:
+
+- [ ] Logo ¯\_(ツ)\_/¯
+- [ ] Header back and forward navigation
+- [ ] Settings page
+- [ ] Profile / User page
+- [ ] Playlist page (Update + Delete)
+- [ ] Album page (Update)
+- [ ] Search (Add string to pathname for better navigation, show last searchs etc..)
+- [ ] Collections to organize releases / albums (playlist like with sorting and display options)
+- [ ] SEO (React Helmet)
+- [ ] Cookie banner
+- ...
+
+Currently in Spotify Development mode (private view).\
+Spotify Quota extension request (public view) TBC.
+
+## Installation
+
+To check out this project create an Application in [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications).
+
+Create an environment file `.env.development` in the root directory of this project.\
+Copy the example content from `env-example` to `.env.development`.\
+Fill the environment file with the variables provided by the created Spotify Application.
+
+Run `npm start` to start the application in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+## Scopes
+
+Spotilib uses the following [Spotify Scopes](https://developer.spotify.com/documentation/general/guides/authorization/scopes/):
+
+- `playlist-read-private` Read access to user's private playlists.
+- `user-follow-modify` Write/delete access to the list of artists and other users that the user follows.
+- `user-follow-read` Read access to the list of artists and other users that the user follows.
+- `user-library-read` Read access to a user's library.
+- `user-modify-playback-state` Write access to a user’s playback state.
+- `user-read-email` Read access to user’s email address.
+- `user-read-playback-state` Read access to a user’s player state.
+- `user-read-private` Read access to user’s subscription details (type of user account).
+- `user-top-read` Read access to a user's top artists and tracks.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

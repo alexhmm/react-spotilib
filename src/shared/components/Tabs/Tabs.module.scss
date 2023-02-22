@@ -1,0 +1,10 @@
+.tabs {
+  @apply bottom-0 gap-2 grid grid-cols-3 h-16 sticky w-full lg:hidden;
+}
+
+.tab-item {
+  @apply flex justify-center items-center w-full;
+  &-button {
+    @apply flex flex-col items-center justify-center normal-case text-sm;
+  }
+}

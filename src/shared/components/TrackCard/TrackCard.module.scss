@@ -18,4 +18,7 @@
       @apply duration-200 font-semibold text-sm truncate transition-colors w-fit;
     }
   }
+  &-play {
+    @apply shrink-0;
+  }
 }

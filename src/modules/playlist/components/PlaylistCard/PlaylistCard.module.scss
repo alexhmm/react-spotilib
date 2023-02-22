@@ -1,7 +1,16 @@
 .playlist-card {
   @apply duration-200 flex flex-col p-4 relative rounded-md transition-colors w-full;
+  &-fallback {
+    @apply aspect-square flex justify-center items-center relative w-full;
+  }
   &-image {
-    @apply aspect-square object-cover rounded-md shadow-xl w-full;
+    @apply aspect-square relative w-full;
+    & img {
+      @apply absolute aspect-square left-0 object-cover rounded-md shadow-xl top-0 w-full;
+    }
+    &-play {
+      @apply absolute bottom-0 duration-300 right-2 shadow-xl transform transition-all z-10;
+    }
   }
   &-link {
     @apply absolute h-full left-0 top-0 w-full;
@@ -11,11 +20,5 @@
   }
   &-owner {
     @apply duration-200 mb-4 mt-2 text-sm transition-colors truncate max-w-full w-fit z-10;
-  }
-  &-play {
-    @apply aspect-square flex items-center justify-center w-full;
-    & button {
-      @apply z-10;
-    }
   }
 }

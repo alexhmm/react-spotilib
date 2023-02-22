@@ -20,7 +20,7 @@ const usePlayerHttp = () => {
   /**
    * GET (non active) devices
    */
-  const devicesQuery = useQuery(
+  const devicesQuery = useQuery<DevicesGetResponse>(
     'devices',
     () => fetchData('me/player/devices'),
     {
@@ -55,9 +55,8 @@ const usePlayerHttp = () => {
         const json = await error?.response.json();
         if (json.error.reason === 'NO_ACTIVE_DEVICE') {
           // Check for non active devices
-          const devices: DevicesGetResponse = (await devicesQuery.refetch())
-            .data;
-          const device = devices.devices[0];
+          const devices = (await devicesQuery.refetch()).data;
+          const device = devices?.devices[0];
           // Start playing from main device
           if (device) {
             playPutMutation.mutate({

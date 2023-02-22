@@ -1,9 +1,36 @@
 // Types
-import { SpotifyFollowType } from '../../shared/types/spotify.types';
+import {
+  SpotifyAlbum,
+  SpotifyArtist,
+  SpotifyDataGetResponse,
+  SpotifyFollowType,
+  SpotifyMarket,
+} from '../../shared/types/spotify.types';
 
-export interface FollowingStateParamsRequest {
+export interface FollowingStateGetRequest {
   ids: string[];
   type: SpotifyFollowType;
+}
+
+export interface FollowedArtistsGetRequest {
+  after?: string;
+  limit?: number;
+  type: string;
+}
+
+export interface FollowedArtistsGetResponse {
+  artists: SpotifyDataGetResponse<SpotifyArtist[]>;
+}
+
+export interface SavedAlbum {
+  added_at: string;
+  album: SpotifyAlbum;
+}
+
+export interface SavedAlbumsGetParams {
+  limit?: number;
+  market?: SpotifyMarket;
+  offset?: number;
 }
 
 export interface UserImage {
@@ -36,6 +63,6 @@ export interface UserProfile {
 }
 
 export type FollowingStatePutDeleteRequest = Pick<
-  FollowingStateParamsRequest,
+  FollowingStateGetRequest,
   'ids'
 >;

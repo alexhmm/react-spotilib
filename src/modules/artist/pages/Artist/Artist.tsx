@@ -48,7 +48,7 @@ import { albumDataMap } from '../../../album/album.utils';
 import { artistDataMap } from '../../artist.utils';
 import useUserHttp from '../../../user/use-user-http.hook';
 import {
-  FollowingStateParamsRequest,
+  FollowingStateGetRequest,
   FollowingStatePutDeleteRequest,
 } from '../../../user/user.types';
 import { RequestMethod } from '../../../../shared/types/shared.types';
@@ -261,7 +261,7 @@ const Artist = () => {
     (data: {
       body: FollowingStatePutDeleteRequest;
       method: RequestMethod;
-      params: FollowingStateParamsRequest;
+      params: FollowingStateGetRequest;
     }) => followingStatePutDelete(data),
     {
       onError: (error: any) => {
@@ -440,11 +440,7 @@ const Artist = () => {
             </div>
             <div className="context-grid">
               {albums.map((album) => (
-                <AlbumCard
-                  key={album.id}
-                  album={album}
-                  onPlay={() => onPlayContext(album.uri)}
-                />
+                <AlbumCard key={album.id} album={album} />
               ))}
             </div>
           </section>
@@ -452,11 +448,7 @@ const Artist = () => {
             <H3>{t('artist.detail.related_artists')}</H3>
             <div className="context-grid">
               {relatedArtists.map((artist) => (
-                <ArtistCard
-                  key={artist.id}
-                  artist={artist}
-                  onPlay={() => onPlayContext(artist.uri)}
-                />
+                <ArtistCard key={artist.id} artist={artist} />
               ))}
             </div>
           </section>
@@ -464,11 +456,7 @@ const Artist = () => {
             <H3>{t('artist.detail.appears_on')}</H3>
             <div className="context-grid">
               {appearsOn.map((album) => (
-                <AlbumCard
-                  key={album.id}
-                  album={album}
-                  onPlay={() => onPlayContext(album.uri)}
-                />
+                <AlbumCard key={album.id} album={album} />
               ))}
             </div>
           </section>

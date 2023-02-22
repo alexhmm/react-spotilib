@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 // Types
+import { NavigationItem, TabItem } from '../types/shared.types';
 import { SpotifyTopTimeRange } from '../types/spotify.types';
 
 const useShared = () => {
@@ -28,6 +29,51 @@ const useShared = () => {
   };
 
   /**
+   * GET Library navigation items.
+   * @returns Library navigation items array.
+   */
+  const libraryNavigationItemsGet = (): NavigationItem[] => {
+    return [
+      {
+        pathname: '/library/playlists',
+        title: t('playlist.title'),
+      },
+      {
+        pathname: '/library/artists',
+        title: t('artist.title'),
+      },
+      {
+        pathname: '/library/albums',
+        title: t('album.title'),
+      },
+    ];
+  };
+
+  /**
+   * GET Mobile tab items.
+   * @returns Tab items array.
+   */
+  const tabItemsGet = (): TabItem[] => {
+    return [
+      {
+        icon: ['fas', 'house'],
+        pathname: '/',
+        title: t('app.sidebar.home'),
+      },
+      {
+        icon: ['fas', 'magnifying-glass'],
+        pathname: '/search',
+        title: t('app.sidebar.search'),
+      },
+      {
+        icon: ['fas', 'book'],
+        pathname: '/library',
+        title: t('app.sidebar.library'),
+      },
+    ];
+  };
+
+  /**
    * GET Top title translation by time range.
    * @param timeRange SpotifyTopTimeRange
    * @returns Top title translation.
@@ -47,6 +93,8 @@ const useShared = () => {
 
   return {
     durationByMillisecondsGet,
+    libraryNavigationItemsGet,
+    tabItemsGet,
     topTitleByTimeRangeGet,
   };
 };

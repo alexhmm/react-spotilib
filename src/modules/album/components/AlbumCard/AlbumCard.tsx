@@ -1,4 +1,4 @@
-import { Fragment, memo } from 'react';
+import { Fragment, memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
@@ -6,23 +6,43 @@ import clsx from 'clsx';
 
 // Hooks
 import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
+import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';
 
 // Styles
 import styles from './AlbumCard.module.scss';
 
 // Types
 import { AlbumCard as IAlbumCard } from '../../album.types';
+import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
+import Icon from '../../../../shared/ui/Icon/Icon';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
 
 type AlbumCardProps = {
   album: IAlbumCard;
-  onPlay: () => void;
 };
 
 const AlbumCard = (props: AlbumCardProps) => {
-  const { xxxxxlDown } = useBreakpoints();
+  const { lgDown } = useBreakpoints();
+  const { playPutMutation } = usePlayerHttp();
+
+  // ######### //
+  // CALLBACKS //
+  // ######### //
+
+  /**
+   * Handler to play playlist by uri.
+   * @param contextUri Spotify URI of the context to play
+   */
+  const onPlay = useCallback((contextUri: string) => {
+    playPutMutation.mutate({
+      body: {
+        context_uri: contextUri,
+      },
+    });
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Box
@@ -32,34 +52,55 @@ const AlbumCard = (props: AlbumCardProps) => {
         '@media (hover: hover)': {
           ':hover': {
             backgroundColor: 'action.hover',
-            '.image': {
-              display: 'none',
-            },
             '.play': {
-              display: 'flex !important',
+              opacity: 1,
+              transform: 'translateY(-0.5rem)',
             },
           },
+          '.app-link:hover': {
+            color: 'primary.main',
+          },
           '.play': {
-            display: 'none !important',
+            opacity: 0,
           },
         },
       }}
     >
-      <img
-        alt={props.album.name}
-        className={clsx(styles['album-card-image'], 'image')}
-        src={xxxxxlDown ? props.album.images[1].url : props.album.images[0].url}
-      />
-      {!isMobile && (
-        <div className={clsx(styles['album-card-play'], 'play')}>
-          <IconButton
-            icon={['fas', 'play']}
-            iconSize="large"
-            padding="1rem"
-            onClick={props.onPlay}
+      <div className={clsx(styles['album-card-image'], 'image')}>
+        {(props.album.images[0] && props.album.images[0].url) ||
+        (props.album.images[1] && props.album.images[1].url) ? (
+          <img
+            alt={props.album.name}
+            src={
+              lgDown
+                ? props.album.images[1]?.url
+                  ? props.album.images[1].url
+                  : props.album.images[0]?.url
+                : props.album.images[0].url
+            }
           />
-        </div>
-      )}
+        ) : (
+          <div className={clsx(styles['album-card-fallback'], 'image')}>
+            <Icon icon={['fas', 'music']} size="large" />
+          </div>
+        )}
+        {!isMobile && (
+          <IconButton
+            borderRadius="rounded-full"
+            classes={clsx(styles['album-card-image-play'], 'play')}
+            icon={['fas', 'play']}
+            iconSize="medium"
+            padding="0.75rem"
+            preset={ButtonType.Primary}
+            sx={{
+              svg: {
+                transform: 'translateX(2px)',
+              },
+            }}
+            onClick={() => onPlay(props.album.uri)}
+          />
+        )}
+      </div>
       <div className={styles['album-card-name']}>{props.album.name}</div>
       <Box
         className={styles['album-card-data']}

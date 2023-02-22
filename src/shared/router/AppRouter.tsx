@@ -5,6 +5,7 @@ import { CircularProgress } from '@mui/material';
 // Router
 import AlbumRouter from './AlbumRouter';
 import ArtistRouter from './ArtistRouter';
+import LibraryRouter from './LibraryRouter';
 import PlaylistRouter from './PlaylistRouter';
 import ProtectedRoute from './ProtectedRoute';
 
@@ -14,7 +15,7 @@ const Home = lazy(() => import('../../modules/home/pages/Home'));
 const Login = lazy(() => import('../../modules/auth/pages/Login/Login'));
 const Search = lazy(() => import('../../modules/search/pages/Search/Search'));
 
-export const AppRouter = () => {
+const AppRouter = () => {
   return (
     <Routes>
       <Route
@@ -52,6 +53,14 @@ export const AppRouter = () => {
         }
       />
       <Route
+        path="/library/*"
+        element={
+          <ProtectedRoute>
+            <LibraryRouter />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/login"
         element={
           <Suspense fallback={<CircularProgress />}>
@@ -81,3 +90,5 @@ export const AppRouter = () => {
     </Routes>
   );
 };
+
+export default AppRouter;

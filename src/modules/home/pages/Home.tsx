@@ -80,7 +80,7 @@ const Home = () => {
 
   // Get profile on access token change.
   // eslint-disable-next-line
-  const topArtistsQuery = useQuery(
+  const topArtistsQuery = useQuery<SpotifyDataGetResponse<SpotifyArtist[]>>(
     ['top-artists', token, topArtistsTimeRange],
     () =>
       fetchData(
@@ -95,7 +95,7 @@ const Home = () => {
           handleError(errRes.status);
         }
       },
-      onSuccess: (data: SpotifyDataGetResponse<SpotifyArtist[]>) => {
+      onSuccess: (data) => {
         setTopArtists(artistDataMap(data.items));
       },
     }
@@ -103,7 +103,7 @@ const Home = () => {
 
   // Get profile on access token change.
   // eslint-disable-next-line
-  const topTracksQuery = useQuery(
+  const topTracksQuery = useQuery<TopTracksGetResponse>(
     ['top-tracks', token, topTracksTimeRange],
     () =>
       fetchData(
@@ -118,7 +118,7 @@ const Home = () => {
           handleError(errRes.status);
         }
       },
-      onSuccess: (data: TopTracksGetResponse) => {
+      onSuccess: (data) => {
         setTopTracks(trackDataMap(data.items));
       },
     }
@@ -127,19 +127,6 @@ const Home = () => {
   // ######### //
   // CALLBACKS //
   // ######### //
-
-  /**
-   * Handler to play context by uri.
-   * @param contextUri Spotify URI of the context to play
-   */
-  const onContextPlay = useCallback((contextUri: string) => {
-    playPutMutation.mutate({
-      body: {
-        context_uri: contextUri,
-      },
-    });
-    // eslint-disable-next-line
-  }, []);
 
   /**
    * Handler to play selected track.
@@ -218,11 +205,7 @@ const Home = () => {
             );
           })}
         {topArtists?.map((artist) => (
-          <ArtistCard
-            key={artist.id}
-            artist={artist}
-            onPlay={() => onContextPlay(artist.uri)}
-          />
+          <ArtistCard key={artist.id} artist={artist} />
         ))}
       </div>
       <H3

@@ -1,11 +1,11 @@
 # Client ID
 
-REACT_APP_CLIENT_ID=
+REACT_APP_CLIENT_ID=1234abcd
 
 # Client Secret
 
-REACT_APP_CLIENT_SECRET=
+REACT_APP_CLIENT_SECRET=1234abcd
 
 # Redirect URI
 
-REACT_APP_REDIRECT_URI=
+REACT_APP_REDIRECT_URI=https://spotilib.netlify.app/auth

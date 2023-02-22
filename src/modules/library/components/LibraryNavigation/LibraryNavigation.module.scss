@@ -1,0 +1,6 @@
+.library-navigation {
+  @apply flex h-12 items-center px-4 sticky top-16 z-50 lg:px-0;
+  &-item:not(:last-of-type) {
+    @apply mr-2;
+  }
+}
