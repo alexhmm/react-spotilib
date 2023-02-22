@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import {
@@ -39,6 +40,16 @@ function App() {
   // Shared store state
   // Error: react-router useLocation() may be used only in the context of a <Router> component.
   const [pathname] = useSharedStore((state) => [state.pathname]);
+
+  // Check if browser can restorate scroll (scroll to top on navigate)
+  useEffect(() => {
+    const canControlScrollRestoration = 'scrollRestoration' in window.history;
+    if (canControlScrollRestoration) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>
