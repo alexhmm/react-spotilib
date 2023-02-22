@@ -15,7 +15,7 @@ const Home = lazy(() => import('../../modules/home/pages/Home'));
 const Login = lazy(() => import('../../modules/auth/pages/Login/Login'));
 const Search = lazy(() => import('../../modules/search/pages/Search/Search'));
 
-export const AppRouter = () => {
+const AppRouter = () => {
   return (
     <Routes>
       <Route
@@ -90,3 +90,5 @@ export const AppRouter = () => {
     </Routes>
   );
 };
+
+export default AppRouter;

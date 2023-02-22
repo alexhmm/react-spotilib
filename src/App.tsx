@@ -19,7 +19,8 @@ import useBreakpoints from './shared/hooks/use-breakpoints.hook';
 import useTheme from './shared/hooks/use-theme.hook';
 
 // Router
-import { AppRouter } from './shared/router/AppRouter';
+import AppRouter from './shared/router/AppRouter';
+import ScrollToTop from './shared/router/ScrollToTop';
 
 // Stores
 import useSharedStore from './shared/stores/use-shared.store';
@@ -41,22 +42,13 @@ function App() {
   // Error: react-router useLocation() may be used only in the context of a <Router> component.
   const [pathname] = useSharedStore((state) => [state.pathname]);
 
-  // Check if browser can restorate scroll (scroll to top on navigate)
-  useEffect(() => {
-    const canControlScrollRestoration = 'scrollRestoration' in window.history;
-    if (canControlScrollRestoration) {
-      window.history.scrollRestoration = 'manual';
-    }
-
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
   return (
     <QueryClientProvider client={queryClient}>
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={activeThemeGet()}>
           <CssBaseline />
           <BrowserRouter>
+            <ScrollToTop />
             <div className={styles['app']}>
               <Header />
               {lgDown && pathname?.includes('library') && <LibraryNavigation />}
