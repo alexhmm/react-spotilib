@@ -79,7 +79,6 @@ const useArtistHttp = () => {
     country?: string
   ): Promise<ArtistTopTracksGetResponse | undefined> => {
     if (id && country) {
-      // return await fetchData(`artists/${id}/top-tracks?market=${language}`);
       return await fetchData(`artists/${id}/top-tracks`, {
         params: new URLSearchParams({
           market: country ? country.toString() : '',

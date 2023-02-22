@@ -80,7 +80,7 @@ const Home = () => {
 
   // Get profile on access token change.
   // eslint-disable-next-line
-  const topArtistsQuery = useQuery(
+  const topArtistsQuery = useQuery<SpotifyDataGetResponse<SpotifyArtist[]>>(
     ['top-artists', token, topArtistsTimeRange],
     () =>
       fetchData(
@@ -95,7 +95,7 @@ const Home = () => {
           handleError(errRes.status);
         }
       },
-      onSuccess: (data: SpotifyDataGetResponse<SpotifyArtist[]>) => {
+      onSuccess: (data) => {
         setTopArtists(artistDataMap(data.items));
       },
     }
@@ -103,7 +103,7 @@ const Home = () => {
 
   // Get profile on access token change.
   // eslint-disable-next-line
-  const topTracksQuery = useQuery(
+  const topTracksQuery = useQuery<TopTracksGetResponse>(
     ['top-tracks', token, topTracksTimeRange],
     () =>
       fetchData(
@@ -118,7 +118,7 @@ const Home = () => {
           handleError(errRes.status);
         }
       },
-      onSuccess: (data: TopTracksGetResponse) => {
+      onSuccess: (data) => {
         setTopTracks(trackDataMap(data.items));
       },
     }

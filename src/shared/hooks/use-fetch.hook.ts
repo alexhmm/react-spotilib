@@ -25,7 +25,7 @@ const useFetch = () => {
    * @param options Fetch options
    * @returns JSON data | Error
    */
-  const fetchData = (path: string, options?: FetchDataOptions) => {
+  const fetchData = async (path: string, options?: FetchDataOptions) => {
     if (token) {
       try {
         // Cast query params to string

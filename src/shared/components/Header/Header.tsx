@@ -27,6 +27,7 @@ import styles from './Header.module.scss';
 
 // Types
 import { Theme } from '../../types/shared.types';
+import { UserProfile } from '../../../modules/user/user.types';
 
 // UI
 import Icon from '../../ui/Icon/Icon';
@@ -227,15 +228,19 @@ const Header = () => {
 
   // Get profile on access token change.
   // eslint-disable-next-line
-  const profileQuery = useQuery(['profile', token], () => fetchData('me'), {
-    refetchOnWindowFocus: false,
-    onError: (error: unknown) => {
-      console.error('Error on getting profile:', error);
-    },
-    onSuccess: (data) => {
-      setProfile(data);
-    },
-  });
+  const profileQuery = useQuery<UserProfile>(
+    ['profile', token],
+    () => fetchData('me'),
+    {
+      refetchOnWindowFocus: false,
+      onError: (error: unknown) => {
+        console.error('Error on getting profile:', error);
+      },
+      onSuccess: (data) => {
+        setProfile(data);
+      },
+    }
+  );
 
   // ####### //
   // EFFECTS //
