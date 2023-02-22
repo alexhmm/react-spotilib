@@ -35,19 +35,6 @@ const Search = () => {
   // ######### //
 
   /**
-   * Handler to play context by uri.
-   * @param contextUri Spotify URI of the context to play
-   */
-  const onPlayContext = useCallback((contextUri: string) => {
-    playPutMutation.mutate({
-      body: {
-        context_uri: contextUri,
-      },
-    });
-    // eslint-disable-next-line
-  }, []);
-
-  /**
    * Handler to play selected track.
    * @param track_uri Spotify track URI to play
    */
@@ -68,11 +55,7 @@ const Search = () => {
           <H3>{t('album.title')}</H3>
           <div className="context-grid">
             {searchData.albums.map((album) => (
-              <AlbumCard
-                key={album.id}
-                album={album}
-                onPlay={() => onPlayContext(album.uri)}
-              />
+              <AlbumCard key={album.id} album={album} />
             ))}
           </div>
           <H3>{t('artist.title')}</H3>

@@ -440,11 +440,7 @@ const Artist = () => {
             </div>
             <div className="context-grid">
               {albums.map((album) => (
-                <AlbumCard
-                  key={album.id}
-                  album={album}
-                  onPlay={() => onPlayContext(album.uri)}
-                />
+                <AlbumCard key={album.id} album={album} />
               ))}
             </div>
           </section>
@@ -460,11 +456,7 @@ const Artist = () => {
             <H3>{t('artist.detail.appears_on')}</H3>
             <div className="context-grid">
               {appearsOn.map((album) => (
-                <AlbumCard
-                  key={album.id}
-                  album={album}
-                  onPlay={() => onPlayContext(album.uri)}
-                />
+                <AlbumCard key={album.id} album={album} />
               ))}
             </div>
           </section>

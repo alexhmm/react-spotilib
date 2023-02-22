@@ -121,11 +121,7 @@ const Albums = () => {
         {savedAlbums &&
           savedAlbums.length > 0 &&
           savedAlbums.map((album) => (
-            <AlbumCard
-              key={album.id}
-              album={album}
-              onPlay={() => console.log('onPlayAlbum')}
-            />
+            <AlbumCard key={album.id} album={album} />
           ))}
       </InfiniteScroll>
     </div>
