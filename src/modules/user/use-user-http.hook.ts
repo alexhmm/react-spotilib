@@ -3,11 +3,14 @@ import useFetch from '../../shared/hooks/use-fetch.hook';
 
 // Types
 import { RequestMethod } from '../../shared/types/shared.types';
+import { SpotifyDataGetResponse } from '../../shared/types/spotify.types';
 import {
   FollowedArtistsGetRequest,
   FollowedArtistsGetResponse,
   FollowingStateGetRequest,
   FollowingStatePutDeleteRequest,
+  SavedAlbumsGetParams,
+  SavedAlbum,
 } from './user.types';
 
 const useUserHttp = () => {
@@ -71,10 +74,29 @@ const useUserHttp = () => {
     });
   };
 
+  /**
+   * GET List of the albums saved in the current Spotify user's 'Your Music' library.
+   * @param params SavedAlbumsGetRequest
+   * @returns Pages of albums
+   */
+  const savedAlbumsGet = async (
+    params: SavedAlbumsGetParams
+  ): Promise<SpotifyDataGetResponse<SavedAlbum[]> | undefined> => {
+    const urlSearchParams = new URLSearchParams();
+    params.limit && urlSearchParams.append('limit', params.limit.toString());
+    params.market && urlSearchParams.append('market', params.market);
+    params.offset && urlSearchParams.append('offset', params.offset.toString());
+
+    return await fetchData('me/albums', {
+      params: urlSearchParams,
+    });
+  };
+
   return {
     followedArtistsGet,
     followingStateGet,
     followingStatePutDelete,
+    savedAlbumsGet,
   };
 };
 

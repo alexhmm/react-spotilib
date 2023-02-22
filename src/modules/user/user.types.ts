@@ -1,8 +1,10 @@
 // Types
 import {
+  SpotifyAlbum,
   SpotifyArtist,
   SpotifyDataGetResponse,
   SpotifyFollowType,
+  SpotifyMarket,
 } from '../../shared/types/spotify.types';
 
 export interface FollowingStateGetRequest {
@@ -18,6 +20,17 @@ export interface FollowedArtistsGetRequest {
 
 export interface FollowedArtistsGetResponse {
   artists: SpotifyDataGetResponse<SpotifyArtist[]>;
+}
+
+export interface SavedAlbum {
+  added_at: string;
+  album: SpotifyAlbum;
+}
+
+export interface SavedAlbumsGetParams {
+  limit?: number;
+  market?: SpotifyMarket;
+  offset?: number;
 }
 
 export interface UserImage {

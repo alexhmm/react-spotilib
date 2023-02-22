@@ -34,7 +34,7 @@ const Artists = () => {
   const { followedArtistsGet } = useUserHttp();
   const { t } = useTranslation();
 
-  // Shared sotre state
+  // Shared store state
   const [setPathName] = useSharedStore((state) => [state.setPathname]);
 
   // Component state

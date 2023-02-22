@@ -35,7 +35,7 @@ const Playlists = () => {
   const { playlistsGet } = usePlaylistHttp();
   const { t } = useTranslation();
 
-  // Shared sotre state
+  // Shared store state
   const [setPathName] = useSharedStore((state) => [state.setPathname]);
 
   // Component state
@@ -63,7 +63,7 @@ const Playlists = () => {
       onError: (error: any) => {
         const errRes = error?.response;
         if (errRes) {
-          console.error('Error on getting playlist:', error);
+          console.error('Error on getting playlists:', error);
           handleError(errRes.status);
         }
       },
