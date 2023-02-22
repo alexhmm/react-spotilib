@@ -78,11 +78,7 @@ const Search = () => {
           <H3>{t('artist.title')}</H3>
           <div className="context-grid">
             {searchData.artists?.map((artist) => (
-              <ArtistCard
-                key={artist.id}
-                artist={artist}
-                onPlay={() => onPlayContext(artist.uri)}
-              />
+              <ArtistCard key={artist.id} artist={artist} />
             ))}
           </div>
           <H3>{t('playlist.title')}</H3>

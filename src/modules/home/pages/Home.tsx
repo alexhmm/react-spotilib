@@ -129,19 +129,6 @@ const Home = () => {
   // ######### //
 
   /**
-   * Handler to play context by uri.
-   * @param contextUri Spotify URI of the context to play
-   */
-  const onContextPlay = useCallback((contextUri: string) => {
-    playPutMutation.mutate({
-      body: {
-        context_uri: contextUri,
-      },
-    });
-    // eslint-disable-next-line
-  }, []);
-
-  /**
    * Handler to play selected track.
    * @param trackUri Spotify track URI to play
    */
@@ -218,11 +205,7 @@ const Home = () => {
             );
           })}
         {topArtists?.map((artist) => (
-          <ArtistCard
-            key={artist.id}
-            artist={artist}
-            onPlay={() => onContextPlay(artist.uri)}
-          />
+          <ArtistCard key={artist.id} artist={artist} />
         ))}
       </div>
       <H3

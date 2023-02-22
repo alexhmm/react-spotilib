@@ -117,11 +117,7 @@ const Artists = () => {
         {followedArtists &&
           followedArtists.length > 0 &&
           followedArtists.map((artist) => (
-            <ArtistCard
-              key={artist.id}
-              artist={artist}
-              onPlay={() => console.log('onPlayArtist')}
-            />
+            <ArtistCard key={artist.id} artist={artist} />
           ))}
       </InfiniteScroll>
     </div>

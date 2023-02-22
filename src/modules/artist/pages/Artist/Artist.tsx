@@ -452,11 +452,7 @@ const Artist = () => {
             <H3>{t('artist.detail.related_artists')}</H3>
             <div className="context-grid">
               {relatedArtists.map((artist) => (
-                <ArtistCard
-                  key={artist.id}
-                  artist={artist}
-                  onPlay={() => onPlayContext(artist.uri)}
-                />
+                <ArtistCard key={artist.id} artist={artist} />
               ))}
             </div>
           </section>
