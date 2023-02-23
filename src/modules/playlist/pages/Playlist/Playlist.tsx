@@ -34,6 +34,7 @@ import IconButton from '../../../../shared/ui/IconButton/IconButton';
 
 // Utils
 import { playlistCreate } from '../../playlist.utils';
+import { ButtonType } from '../../../../shared/types/ui.types';
 
 const Playlist = () => {
   const { handleError, handleRetry } = useFetch();
@@ -172,7 +173,7 @@ const Playlist = () => {
           next={onAddTracks}
           scrollThreshold={1}
         >
-          <div className={styles['playlist-header']}>
+          <section className={styles['playlist-header']}>
             {playlist.images[0]?.url && (
               <div className={styles['playlist-header-image']}>
                 <img
@@ -219,8 +220,29 @@ const Playlist = () => {
                 )}
               </div>
             </div>
-          </div>
-          <div className={styles['playlist-content']}>
+          </section>
+          <section className={styles['playlist-actions']}>
+            <IconButton
+              borderRadius="rounded-full"
+              icon={['fas', 'play']}
+              iconSize="medium"
+              padding="1rem"
+              preset={ButtonType.Primary}
+              sx={{
+                svg: {
+                  transform: 'translateX(2px)',
+                },
+              }}
+              onClick={() =>
+                playPutMutation.mutate({
+                  body: {
+                    context_uri: playlist.uri,
+                  },
+                })
+              }
+            />
+          </section>
+          <section className={styles['playlist-content']}>
             {playlist.tracks.map((track) => (
               <PlaylistTrack
                 key={track.id}
@@ -230,7 +252,7 @@ const Playlist = () => {
               />
             ))}
             {playlistTracksGetMutation.isLoading && <CircularProgress />}
-          </div>
+          </section>
         </InfiniteScroll>
       )}
     </>

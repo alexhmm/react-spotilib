@@ -3,6 +3,10 @@
   overflow: hidden !important;
 }
 
+.playlist-actions {
+  @apply flex items-center mb-4 lg:mb-8;
+}
+
 .playlist-content {
   @apply flex flex-col;
 }
