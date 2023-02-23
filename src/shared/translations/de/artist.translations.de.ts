@@ -13,10 +13,9 @@ export const artistTranslationsDE: ArtistTranslations = {
       },
     },
     follow: {
-      active: 'Folge ich',
-      inactive: 'Folgen',
+      delete: 'Aus Künstli entfernt',
+      put: 'Zu Künstli hinzugefügt',
     },
-    followers: 'Followli',
     related_artists: 'Was anderen Fans gefällt',
     top_tracks: 'Beliebt',
   },

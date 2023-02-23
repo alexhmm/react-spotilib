@@ -20,6 +20,7 @@ import Icon from '../../../../shared/ui/Icon/Icon';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
 
 type PlaylistCardProps = {
+  hideOwner?: boolean;
   playlist: IPlaylistCard;
 };
 
@@ -102,12 +103,16 @@ const PlaylistCard = (props: PlaylistCardProps) => {
         )}
       </div>
       <div className={styles['playlist-card-name']}>{props.playlist.name}</div>
-      <Link
-        className={clsx(styles['playlist-card-owner'], 'app-link')}
-        to={`/user/${props.playlist.owner.id}`}
-      >
-        {props.playlist.owner.display_name}
-      </Link>
+      {!props.hideOwner ? (
+        <Link
+          className={clsx(styles['playlist-card-owner'], 'app-link')}
+          to={`/user/${props.playlist.owner.id}`}
+        >
+          {props.playlist.owner.display_name}
+        </Link>
+      ) : (
+        <div className={styles['playlist-card-owner']}></div>
+      )}
       <Link
         className={clsx(styles['playlist-card-link'], 'app-link')}
         to={`/playlist/${props.playlist.id}`}

@@ -40,10 +40,10 @@ export interface UserImage {
 }
 
 export interface UserProfile {
-  country: string;
+  country?: string;
   display_name: string;
-  email: string;
-  explicit_content: {
+  email?: string;
+  explicit_content?: {
     filter_enabled: boolean;
     filter_locked: boolean;
   };
@@ -57,7 +57,7 @@ export interface UserProfile {
   href: string;
   id: string;
   images: UserImage[];
-  product: string;
+  product?: string;
   type: string;
   uri: string;
 }

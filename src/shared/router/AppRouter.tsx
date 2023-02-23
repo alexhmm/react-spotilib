@@ -8,6 +8,7 @@ import ArtistRouter from './ArtistRouter';
 import LibraryRouter from './LibraryRouter';
 import PlaylistRouter from './PlaylistRouter';
 import ProtectedRoute from './ProtectedRoute';
+import UserRouter from './UserRouter';
 
 // Lazy-load pages
 const Auth = lazy(() => import('../../modules/auth/pages/Auth/Auth'));
@@ -96,6 +97,14 @@ const AppRouter = () => {
             <Suspense fallback={<CircularProgress />}>
               <Settings />
             </Suspense>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/user/*"
+        element={
+          <ProtectedRoute>
+            <UserRouter />
           </ProtectedRoute>
         }
       />

@@ -1,8 +1,12 @@
 export interface AppTranslations {
   coming_soon: string;
+  follow: {
+    active: string;
+    inactive: string;
+  };
+  followers: string;
   hello: string;
   logout: string;
-  profile: string;
   settings: {
     language: {
       english: string;
@@ -13,6 +17,7 @@ export interface AppTranslations {
     title: string;
   };
   show: {
+    all: string;
     less: string;
     more: string;
   };
@@ -21,7 +26,6 @@ export interface AppTranslations {
     library: string;
     search: string;
   };
-
   top: {
     artists: string;
     long_term: string;

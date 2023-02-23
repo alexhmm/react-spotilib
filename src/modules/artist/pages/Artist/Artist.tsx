@@ -1,7 +1,7 @@
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import { CircularProgress } from '@mui/material';
 
 // Components
@@ -47,10 +47,6 @@ import TextButtonOutlined from '../../../../shared/ui/TextButtonOutlined/TextBut
 import { albumDataMap } from '../../../album/album.utils';
 import { artistDataMap } from '../../artist.utils';
 import useUserHttp from '../../../user/use-user-http.hook';
-import {
-  FollowingStateGetRequest,
-  FollowingStatePutDeleteRequest,
-} from '../../../user/user.types';
 import { RequestMethod } from '../../../../shared/types/shared.types';
 
 type ArtistAlbumsTypeButtonProps = {
@@ -81,13 +77,12 @@ const Artist = () => {
   const { id } = useParams();
   const { playPutMutation } = usePlayerHttp();
   const { t, i18n } = useTranslation();
-  const { followingStateGet, followingStatePutDelete } = useUserHttp();
+  const { followingStateGet, followingStatePutDeleteMutation } = useUserHttp();
 
   // Shared store state
-  const [setHeaderTitle, setNotification] = useSharedStore((state) => [
-    state.setHeaderTitle,
-    state.setNotification,
-  ]);
+  const [followingState, setHeaderTitle, setFollowingState] = useSharedStore(
+    (state) => [state.following, state.setHeaderTitle, state.setFollowing]
+  );
 
   // User store state
   const [profile] = useUserStore((state) => [state.profile]);
@@ -99,9 +94,6 @@ const Artist = () => {
   );
   const [appearsOn, setAppearsOn] = useState<IAlbumCard[]>([]);
   const [artist, setArtist] = useState<SpotifyArtist | undefined>(undefined);
-  const [followingState, setFollingState] = useState<boolean | undefined>(
-    undefined
-  );
   const [relatedArtists, setRelatedArtists] = useState<IArtistCard[]>([]);
   const [topTracks, setTopTracks] = useState<SpotifyTrack[]>([]);
   const [topTracksMore, setTopTracksMore] = useState<boolean>(false);
@@ -179,7 +171,7 @@ const Artist = () => {
     retry: (failureCount, error: any) => handleRetry(failureCount, error),
   });
 
-  // Get artist follow state by id.
+  // Get artist following state by id.
   // eslint-disable-next-line
   const followingStateQuery = useQuery(
     ['following', id],
@@ -198,9 +190,7 @@ const Artist = () => {
         }
       },
       onSuccess: (data) => {
-        if (data) {
-          setFollingState(data[0]);
-        }
+        data && setFollowingState(data[0]);
       },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),
     }
@@ -253,37 +243,6 @@ const Artist = () => {
   );
 
   // ######### //
-  // MUTATIONS //
-  // ######### //
-
-  // PUT / DELETE Following state mutation
-  const followingStatePutDeleteMutation = useMutation(
-    (data: {
-      body: FollowingStatePutDeleteRequest;
-      method: RequestMethod;
-      params: FollowingStateGetRequest;
-    }) => followingStatePutDelete(data),
-    {
-      onError: (error: any) => {
-        const errRes = error?.response;
-        if (errRes) {
-          handleError(errRes.status);
-        }
-      },
-      onSuccess: (data, variables) => {
-        setFollingState(variables.method === RequestMethod.Put ? true : false);
-        setNotification({
-          title:
-            variables.method === RequestMethod.Put
-              ? 'Zu Künstli hinzugefügt'
-              : 'Aus Künstli entfernt',
-        });
-      },
-      retry: (failureCount, error: any) => handleRetry(failureCount, error),
-    }
-  );
-
-  // ######### //
   // CALLBACKS //
   // ######### //
 
@@ -296,11 +255,13 @@ const Artist = () => {
         body: {
           ids: [id],
         },
+        deleteSuccessMessage: t('artist.detail.follow.delete'),
         method: followingState ? RequestMethod.Delete : RequestMethod.Put,
         params: {
           ids: [id],
           type: SpotifyFollowType.Artist,
         },
+        putSuccessMessage: t('artist.detail.follow.put'),
       });
     // eslint-disable-next-line
   }, [followingState, id]);
@@ -341,6 +302,18 @@ const Artist = () => {
     [topTracks]
   );
 
+  // ####### //
+  // EFFECTS //
+  // ####### //
+
+  // Reset following state on component unmount.
+  useEffect(() => {
+    return () => {
+      setFollowingState(undefined);
+    };
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <>
       {!artist && artistQuery.isLoading && <CircularProgress />}
@@ -359,7 +332,7 @@ const Artist = () => {
                 {new Intl.NumberFormat(i18n.language).format(
                   artist.followers.total
                 )}
-                {' ' + t('artist.detail.followers')}
+                {' ' + t('app.followers')}
               </div>
             </div>
           </div>
@@ -380,11 +353,12 @@ const Artist = () => {
             {followingState !== undefined && (
               <TextButtonOutlined
                 classes={styles['artist-actions-follow']}
+                preset={followingState ? ButtonType.Selected : undefined}
                 onClick={onFollowStateChange}
               >
                 {followingState
-                  ? t('artist.detail.follow.active')
-                  : t('artist.detail.follow.inactive')}
+                  ? t('app.follow.active')
+                  : t('app.follow.inactive')}
               </TextButtonOutlined>
             )}
           </div>

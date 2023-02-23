@@ -162,8 +162,11 @@ const HeaderMenu = () => {
             <>
               <HeaderMenuButtonItem
                 icon={['fas', 'user']}
-                title={t('app.profile')}
-                onClick={() => console.log('profile')}
+                title={t('user.profile.title')}
+                onClick={() => {
+                  navigate(`/user/${profile.id}`);
+                  setAnchor(null);
+                }}
               />
               <HeaderMenuButtonItem
                 icon={['fas', 'gear']}

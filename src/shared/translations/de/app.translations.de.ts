@@ -2,10 +2,13 @@ import { AppTranslations } from '../types/app.translations.interface';
 
 export const appTranslationsDE: AppTranslations = {
   coming_soon: 'Bald verfügbar ...',
+  follow: {
+    active: 'Folge ich',
+    inactive: 'Folgen',
+  },
+  followers: 'Followli',
   hello: 'Guten Tag!',
-
   logout: 'Abmelden',
-  profile: 'Profil',
   settings: {
     language: {
       english: 'Englisch',
@@ -16,6 +19,7 @@ export const appTranslationsDE: AppTranslations = {
     title: 'Einstellungen',
   },
   show: {
+    all: 'Alle anzeigen',
     less: 'Weniger anzeigen',
     more: 'Mehr anzeigen',
   },

@@ -2,10 +2,13 @@ import { AppTranslations } from '../types/app.translations.interface';
 
 export const appTranslationsEN: AppTranslations = {
   coming_soon: 'Coming soon ...',
+  follow: {
+    active: 'Following',
+    inactive: 'Follow',
+  },
+  followers: 'Followers',
   hello: 'Hello!',
-
   logout: 'Logout',
-  profile: 'Profile',
   settings: {
     language: {
       english: 'English',
@@ -16,6 +19,7 @@ export const appTranslationsEN: AppTranslations = {
     title: 'Settings',
   },
   show: {
+    all: 'Show all',
     less: 'Show less',
     more: 'Show more',
   },

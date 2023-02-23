@@ -13,15 +13,22 @@ const usePlaylistHttp = () => {
   const { fetchData } = useFetch();
 
   /**
-   * GET User playlists.
+   * GET List of the playlists owned or followed by a Spotify user.
+   * @param id Playlist id
    * @param params PlaylistGetParams
    * @returns User playlists
    */
   const playlistsGet = async (
+    id: string,
     params?: PlaylistsGetParams
   ): Promise<SpotifyDataGetResponse<SpotifyPlaylist[]> | undefined> => {
+    const urlSearchParams = new URLSearchParams();
+    params?.limit && urlSearchParams.append('limit', params.limit.toString());
+    params?.offset &&
+      urlSearchParams.append('offset', params.offset.toString());
+
     return await fetchData(
-      'me/playlists',
+      `users/${id}/playlists`,
       params && {
         params: new URLSearchParams({
           limit: params.limit.toString(),
