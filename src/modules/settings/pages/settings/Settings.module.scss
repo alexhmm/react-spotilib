@@ -1,0 +1,11 @@
+.settings {
+  @apply flex justify-center w-full;
+  &-content {
+    @apply flex flex-col w-full;
+    @apply md:w-[640px];
+  }
+}
+
+.settings-form-item {
+  @apply flex h-12 items-center justify-between;
+}

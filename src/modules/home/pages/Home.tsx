@@ -1,7 +1,7 @@
 import { memo, useCallback, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Skeleton } from '@mui/material';
+import { Skeleton } from '@mui/material';
 
 // Components
 import ArtistCard from '../../artist/components/ArtistCard/ArtistCard';
@@ -14,14 +14,12 @@ import useShared from '../../../shared/hooks/use-shared.hook';
 
 // Stores
 import useAuthStore from '../../auth/use-auth.store';
-import useThemeStore from '../../../shared/stores/use-theme.store';
 
 // Styles
 import styles from './Home.module.scss';
 
 // Types
 import { ArtistCard as IArtistCard } from '../../artist/artist.types';
-import { Theme } from '../../../shared/types/shared.types';
 import {
   SpotifyArtist,
   SpotifyDataGetResponse,
@@ -35,8 +33,7 @@ import {
 // UI
 import H2 from '../../../shared/ui/H2/H2';
 import H3 from '../../../shared/ui/H3/H3';
-import Icon from '../../../shared/ui/Icon/Icon';
-import Popover from '../../../shared/ui/Popover/Popover';
+// import Popover from '../../../shared/ui/Popover/Popover';
 
 // Utils
 import { artistDataMap } from '../../artist/artist.utils';
@@ -46,27 +43,21 @@ const Home = () => {
   const { fetchData, handleError } = useFetch();
   const { playPutMutation } = usePlayerHttp();
   const { topTitleByTimeRangeGet } = useShared();
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
 
   // Auth store state
   const [token] = useAuthStore((state) => [state.token]);
 
-  // Theme store state
-  const [theme, setTheme] = useThemeStore((state) => [
-    state.theme,
-    state.setTheme,
-  ]);
-
   // Component state
-  const [anchorPopover1, setAnchorPopover1] = useState<
-    HTMLButtonElement | undefined
-  >(undefined);
-  const [anchorPopover2, setAnchorPopover2] = useState<
-    HTMLButtonElement | undefined
-  >(undefined);
-  const [anchorPopover3, setAnchorPopover3] = useState<
-    HTMLButtonElement | undefined
-  >(undefined);
+  // const [anchorPopover1, setAnchorPopover1] = useState<
+  //   HTMLButtonElement | undefined
+  // >(undefined);
+  // const [anchorPopover2, setAnchorPopover2] = useState<
+  //   HTMLButtonElement | undefined
+  // >(undefined);
+  // const [anchorPopover3, setAnchorPopover3] = useState<
+  //   HTMLButtonElement | undefined
+  // >(undefined);
   const [topArtists, setTopArtists] = useState<IArtistCard[]>([]);
   const [topArtistsTimeRange, setTopArtistsTimeRange] =
     useState<SpotifyTopTimeRange>(SpotifyTopTimeRange.Short_Term);
@@ -249,31 +240,7 @@ const Home = () => {
           />
         ))}
       </div>
-      <Box className={styles['home-header']} sx={{ borderColor: 'border.app' }}>
-        <div className={styles['home-header-text']}>{t('app.hello')}</div>
-        <Icon icon={['fas', theme === Theme.Dark ? 'moon' : 'sun']} />
-      </Box>
-      <div className={styles['home-content']}>
-        <Button
-          onClick={() =>
-            setTheme(theme === Theme.Light ? Theme.Dark : Theme.Light)
-          }
-        >
-          {t('app.theme.toggle')}
-        </Button>
-        <Button
-          onClick={() => {
-            i18n.language === 'en-US'
-              ? i18n.changeLanguage('de-DE')
-              : i18n.changeLanguage('en-US');
-          }}
-        >
-          {i18n.language === 'en-US'
-            ? t('app.language.german')
-            : t('app.language.english')}
-        </Button>
-      </div>
-      <div className={styles['home-content-popovers']}>
+      {/* <div className={styles['home-content-popovers']}>
         <Popover
           anchor={anchorPopover1}
           anchorOrigin={{
@@ -318,7 +285,7 @@ const Home = () => {
           <div>Custom Icon Custom Icon 3</div>
           <div>Custom Icon Custom Icon 4</div>
         </Popover>
-      </div>
+      </div> */}
     </div>
   );
 };

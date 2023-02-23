@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { IconName, IconPrefix } from '@fortawesome/free-solid-svg-icons';
@@ -95,6 +95,7 @@ const HeaderMenuSwitchItem = (props: HeaderMenuSwitchItemProps) => {
 const HeaderMenu = () => {
   const { smDown } = useBreakpoints();
   const { logout } = useLogout();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   // Theme store state
@@ -166,8 +167,11 @@ const HeaderMenu = () => {
               />
               <HeaderMenuButtonItem
                 icon={['fas', 'gear']}
-                title={t('app.settings')}
-                onClick={() => console.log('settings')}
+                title={t('app.settings.title')}
+                onClick={() => {
+                  navigate('/settings');
+                  setAnchor(null);
+                }}
               />
               <HeaderMenuSwitchItem
                 checked={theme === Theme.Dark ? true : false}

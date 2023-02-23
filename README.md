@@ -17,6 +17,7 @@ Implemented Features:
 - [x] Playlist detail page (Read)
 - [x] Artist detail page (Read + Update)
 - [x] Album detail page (Read)
+- [x] Settings page
 - [x] Global state management (Zustand)
 - [x] Internationalization (i18n)
 - [x] Start music
@@ -26,7 +27,6 @@ To be implemented Features:
 
 - [ ] Logo ¯\_(ツ)\_/¯
 - [ ] Header back and forward navigation
-- [ ] Settings page
 - [ ] Profile / User page
 - [ ] Playlist page (Update + Delete)
 - [ ] Album page (Update)

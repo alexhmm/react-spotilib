@@ -3,13 +3,18 @@ import { AppTranslations } from '../types/app.translations.interface';
 export const appTranslationsEN: AppTranslations = {
   coming_soon: 'Coming soon ...',
   hello: 'Hello!',
-  language: {
-    english: 'English',
-    german: 'German',
-  },
+
   logout: 'Logout',
   profile: 'Profile',
-  settings: 'Settings',
+  settings: {
+    language: {
+      english: 'English',
+      german: 'German',
+      title: 'Language',
+    },
+    theme: 'Dark theme',
+    title: 'Settings',
+  },
   show: {
     less: 'Show less',
     more: 'Show more',
@@ -18,9 +23,6 @@ export const appTranslationsEN: AppTranslations = {
     home: 'Home',
     library: 'Library',
     search: 'Search',
-  },
-  theme: {
-    toggle: 'Toggle theme',
   },
   top: {
     artists: 'Your top artists',
