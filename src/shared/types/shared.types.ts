@@ -31,8 +31,8 @@ export interface FormItem {
   value: any;
 }
 
-export interface MenuItem<T> {
-  action: T;
+export interface MenuItem {
+  action: any;
   disabled?: boolean;
   title: string;
   tooltip?: string;

@@ -1,4 +1,9 @@
 export interface AppTranslations {
+  actions: {
+    delete: string;
+    download_metadata: string;
+    title: string;
+  };
   coming_soon: string;
   follow: {
     active: string;

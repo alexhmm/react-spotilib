@@ -8,6 +8,11 @@ import {
   SpotifyTrackMetaData,
 } from '../../shared/types/spotify.types';
 
+export enum PlaylistMoreMenuItemAction {
+  Delete = 'DELETE',
+  DownloadMetadata = 'DOWNLOADMETADATA',
+}
+
 export interface PlaylistFollowPutRequest {
   public?: boolean;
 }

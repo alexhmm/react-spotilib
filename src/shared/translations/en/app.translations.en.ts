@@ -1,6 +1,11 @@
 import { AppTranslations } from '../types/app.translations.interface';
 
 export const appTranslationsEN: AppTranslations = {
+  actions: {
+    delete: 'Delete',
+    download_metadata: 'Download metadata',
+    title: 'More options for',
+  },
   coming_soon: 'Coming soon ...',
   follow: {
     active: 'Following',

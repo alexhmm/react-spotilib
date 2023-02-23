@@ -6,7 +6,6 @@ import styles from './H3.module.scss';
 
 // Types
 import { MenuItem as IMenuItem } from '../../types/shared.types';
-import { SpotifyTopTimeRange } from '../../types/spotify.types';
 
 // UI
 import Menu from '../Menu/Menu';
@@ -16,7 +15,7 @@ type H3Props = {
   actionTitle?: string;
   children: ReactNode;
   classes?: string;
-  menuItems?: IMenuItem<SpotifyTopTimeRange>[];
+  menuItems?: IMenuItem[];
   menuTitle?: string;
   onAction?: () => void;
   onMenuAction?: (action: any) => void;

@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
@@ -28,12 +28,14 @@ import {
   PlaylistsGetParams,
   Playlist as IPlaylist,
   PlaylistFollowPutRequest,
+  PlaylistMoreMenuItemAction,
 } from '../../playlist.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
 import H2 from '../../../../shared/ui/H2/H2';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
+import Menu from '../../../../shared/ui/Menu/Menu';
 
 // Utils
 import { playlistCreate } from '../../playlist.utils';
@@ -53,6 +55,9 @@ const Playlist = () => {
   } = usePlaylistHttp();
   const { i18n, t } = useTranslation();
 
+  // Refs
+  const downloadMetadataRef = useRef<HTMLAnchorElement>(null);
+
   // Shared store state
   const [following, setHeaderTitle, setFollowing, setNotifcation] =
     useSharedStore((state) => [
@@ -67,6 +72,21 @@ const Playlist = () => {
 
   // Component state
   const [playlist, setPlaylist] = useState<IPlaylist | undefined>(undefined);
+
+  // Constants
+  const moreMenuItems = [
+    {
+      action: PlaylistMoreMenuItemAction.Delete,
+      title:
+        playlist?.owner.id === profile?.id
+          ? t('app.follow.delete.title')
+          : t('app.actions.delete'),
+    },
+    {
+      action: PlaylistMoreMenuItemAction.DownloadMetadata,
+      title: t('app.actions.download_metadata'),
+    },
+  ];
 
   // ####### //
   // QUERIES //
@@ -236,6 +256,22 @@ const Playlist = () => {
   }, [following, id]);
 
   /**
+   * Handler on more menu action.
+   */
+  const onMoreMenuAction = useCallback(
+    (action: PlaylistMoreMenuItemAction) => {
+      action === PlaylistMoreMenuItemAction.Delete &&
+        id &&
+        playlistFollowDeleteMutation.mutate(id);
+      action === PlaylistMoreMenuItemAction.DownloadMetadata &&
+        downloadMetadataRef.current &&
+        downloadMetadataRef.current.click();
+    },
+    // eslint-disable-next-line
+    [downloadMetadataRef, id]
+  );
+
+  /**
    * @param contextUri Spotify URI of the context to play
    * @param trackUri Track URI
    */
@@ -306,17 +342,6 @@ const Playlist = () => {
               <div className={styles['playlist-header-info-tracks']}>
                 {playlist.owner.display_name} • {playlist.tracks_total}{' '}
                 {t('playlist.detail.tracks')}
-                {objectURL && (
-                  <a
-                    className="app-link"
-                    download={`${playlist.name}.json`}
-                    href={objectURL}
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    <IconButton icon={['fas', 'download']} />
-                  </a>
-                )}
               </div>
             </div>
           </section>
@@ -350,16 +375,31 @@ const Playlist = () => {
                 }
               >
                 <IconButton
-                  borderRadius="rounded-full"
                   classes={styles['playlist-actions-follow']}
-                  color={following ? 'primary' : undefined}
+                  color={following ? 'primary' : 'secondary'}
                   icon={[following ? 'fas' : 'far', 'heart']}
                   iconSize="medium"
-                  padding="0.75rem"
                   onClick={onFollowingStateChange}
                 />
               </Tooltip>
             )}
+            <Menu
+              anchorOrigin={{
+                horizontal: 'right',
+                vertical: 'top',
+              }}
+              classes={styles['playlist-actions-more']}
+              icon={['fas', 'ellipsis']}
+              iconSize="medium"
+              items={moreMenuItems}
+              sx={{ color: 'text.secondary' }}
+              tooltip={`${t('app.actions.title').toString()} ${playlist.name}`}
+              transformOrigin={{
+                horizontal: 'left',
+                vertical: 'top',
+              }}
+              onAction={onMoreMenuAction}
+            />
           </section>
           <section className={styles['playlist-content']}>
             {playlist.tracks.map((track) => (
@@ -372,6 +412,17 @@ const Playlist = () => {
             ))}
             {playlistTracksGetMutation.isLoading && <CircularProgress />}
           </section>
+          {objectURL && (
+            // eslint-disable-next-line
+            <a
+              className="invisible"
+              download={`${playlist.name}.json`}
+              href={objectURL}
+              ref={downloadMetadataRef}
+              rel="noreferrer"
+              target="_blank"
+            />
+          )}
         </InfiniteScroll>
       )}
     </>

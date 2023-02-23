@@ -1,12 +1,25 @@
-import { memo, PropsWithChildren, useCallback, useState } from 'react';
-import { Box, Button, Popover as MuiPopover } from '@mui/material';
+import { memo, useCallback, useState } from 'react';
+import { IconName, IconPrefix } from '@fortawesome/free-solid-svg-icons';
+import {
+  Box,
+  Button,
+  Popover as MuiPopover,
+  PopoverOrigin,
+  SxProps,
+  Theme,
+  Tooltip,
+} from '@mui/material';
 import clsx from 'clsx';
 
 // Styles
 import styles from './Menu.module.scss';
 
 // Types
+import { ColorType } from '../../types/mui.types';
 import { MenuItem as IMenuItem } from '../../types/shared.types';
+
+// UI
+import IconButton from '../IconButton/IconButton';
 
 type MenuItemProps = {
   classes?: string;
@@ -26,14 +39,22 @@ const MenuItem = (props: MenuItemProps) => {
   );
 };
 
-type MenuProps<T> = {
-  items: IMenuItem<T>[];
-  title: string;
-  onAction: (action: T) => void;
+type MenuProps = {
+  anchorOrigin?: PopoverOrigin;
+  classes?: string;
+  color?: ColorType;
+  icon?: [IconPrefix, IconName];
+  iconSize?: 'medium' | 'small' | 'large' | undefined;
+  items: IMenuItem[];
+  padding?: string | undefined;
+  sx?: SxProps<Theme>;
+  title?: string;
+  tooltip?: string;
+  transformOrigin?: PopoverOrigin;
+  onAction: (action: any) => void;
 };
 
-// const Menu = (props: MenuProps) => {
-const Menu = <ObjectType,>(props: PropsWithChildren<MenuProps<ObjectType>>) => {
+const Menu = (props: MenuProps) => {
   // Component state
   const [anchorMenu, setAnchorMenu] = useState<null | HTMLElement>(null);
 
@@ -46,28 +67,46 @@ const Menu = <ObjectType,>(props: PropsWithChildren<MenuProps<ObjectType>>) => {
 
   return (
     <>
-      <Button
-        id="basic-button"
-        aria-controls={Boolean(anchorMenu) ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={Boolean(anchorMenu) ? 'true' : undefined}
-        className={styles['menu']}
-        onClick={(event) => setAnchorMenu(event.currentTarget)}
-      >
-        {props.title}
-      </Button>
+      {props.icon ? (
+        <Tooltip placement="top" title={props.tooltip}>
+          <IconButton
+            classes={props.classes && props.classes}
+            color={props.color}
+            icon={props.icon}
+            iconSize={props.iconSize}
+            padding={props.padding}
+            sx={{ ...props.sx }}
+            onClick={(event) => setAnchorMenu(event.currentTarget)}
+          />
+        </Tooltip>
+      ) : (
+        <Button
+          id="basic-button"
+          aria-controls={Boolean(anchorMenu) ? 'basic-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={Boolean(anchorMenu) ? 'true' : undefined}
+          className={styles['menu']}
+          onClick={(event) => setAnchorMenu(event.currentTarget)}
+        >
+          {props.title}
+        </Button>
+      )}
       <MuiPopover
         anchorEl={anchorMenu}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        anchorOrigin={
+          props.anchorOrigin ?? { horizontal: 'right', vertical: 'bottom' }
+        }
         classes={{
           paper: styles['menu-popover-paper'],
           root: styles['menu-popover'],
         }}
         open={Boolean(anchorMenu)}
-        transformOrigin={{
-          horizontal: 'right',
-          vertical: 'top',
-        }}
+        transformOrigin={
+          props.transformOrigin ?? {
+            horizontal: 'right',
+            vertical: 'top',
+          }
+        }
         onClose={() => setAnchorMenu(null)}
       >
         <Box
