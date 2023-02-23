@@ -43,6 +43,7 @@ export const playlistDataMap = (
   return playlists.map((playlist) => {
     return {
       id: playlist.id,
+      description: playlist.description,
       images: playlist.images,
       name: playlist.name,
       owner: playlist.owner,

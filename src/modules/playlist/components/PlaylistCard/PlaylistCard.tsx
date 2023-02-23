@@ -1,5 +1,6 @@
 import { memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
@@ -27,6 +28,7 @@ type PlaylistCardProps = {
 const PlaylistCard = (props: PlaylistCardProps) => {
   const { lgDown } = useBreakpoints();
   const { playPutMutation } = usePlayerHttp();
+  const { t } = useTranslation();
 
   // ######### //
   // CALLBACKS //
@@ -104,12 +106,32 @@ const PlaylistCard = (props: PlaylistCardProps) => {
       </div>
       <div className={styles['playlist-card-name']}>{props.playlist.name}</div>
       {!props.hideOwner ? (
-        <Link
-          className={clsx(styles['playlist-card-owner'], 'app-link')}
-          to={`/user/${props.playlist.owner.id}`}
-        >
-          {props.playlist.owner.display_name}
-        </Link>
+        <>
+          {props.playlist.owner.id !== 'spotify' ? (
+            <div className={styles['playlist-card-owner']}>
+              <Box
+                className={styles['playlist-card-owner-from']}
+                sx={{ color: 'text.secondary' }}
+              >
+                {t('app.from')}
+              </Box>
+              <span className="whitespace-pre-wrap shrink-0"> </span>
+              <Link
+                className={clsx(styles['playlist-card-owner-name'], 'app-link')}
+                to={`/user/${props.playlist.owner.id}`}
+              >
+                {props.playlist.owner.display_name}
+              </Link>
+            </div>
+          ) : (
+            <Box
+              className={styles['playlist-card-owner']}
+              sx={{ color: 'text.secondary' }}
+            >
+              {props.playlist.description}
+            </Box>
+          )}
+        </>
       ) : (
         <div className={styles['playlist-card-owner']}></div>
       )}

@@ -43,7 +43,7 @@ export type Playlist = Pick<
 
 export type PlaylistCard = Pick<
   SpotifyPlaylist,
-  'id' | 'images' | 'name' | 'owner' | 'uri'
+  'id' | 'description' | 'images' | 'name' | 'owner' | 'uri'
 >;
 
 export type PlaylistTrack = Pick<

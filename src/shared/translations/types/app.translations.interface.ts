@@ -5,6 +5,7 @@ export interface AppTranslations {
     inactive: string;
   };
   followers: string;
+  from: string;
   hello: string;
   logout: string;
   settings: {

@@ -7,6 +7,7 @@ export const appTranslationsEN: AppTranslations = {
     inactive: 'Follow',
   },
   followers: 'Followers',
+  from: 'from',
   hello: 'Hello!',
   logout: 'Logout',
   settings: {
