@@ -22,6 +22,10 @@ export enum Theme {
   Light = 'Light',
 }
 
+export interface FollowingStateGetRequest {
+  ids: string[];
+}
+
 export interface FormItem {
   title: string;
   value: any;

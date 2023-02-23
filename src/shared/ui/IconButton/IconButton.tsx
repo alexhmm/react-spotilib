@@ -34,7 +34,8 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
     // If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase xxx instead.
     // If you accidentally passed it from a parent component, remove it from the DOM element.
     // https://reactjs.org/warnings/unknown-prop.html
-    const { borderRadius, classes, disabled, icon, iconSize, ...rest } = props;
+    const { borderRadius, classes, color, disabled, icon, iconSize, ...rest } =
+      props;
 
     // Set button sx by preset
     let sx: SxProps<Theme> | undefined = undefined;
@@ -64,7 +65,7 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
           borderRadius ?? 'rounded-md',
           classes && classes
         )}
-        color={props.color ?? 'inherit'}
+        color={color ?? 'inherit'}
         disabled={disabled && disabled}
         id={props.id}
         ref={ref}

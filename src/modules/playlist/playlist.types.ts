@@ -8,6 +8,10 @@ import {
   SpotifyTrackMetaData,
 } from '../../shared/types/spotify.types';
 
+export interface PlaylistFollowPutRequest {
+  public?: boolean;
+}
+
 export interface PlaylistTracks {
   tracks: PlaylistTrack[];
 }

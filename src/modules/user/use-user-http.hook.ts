@@ -13,7 +13,7 @@ import { PlaylistsGetParams } from '../playlist/playlist.types';
 import {
   FollowedArtistsGetRequest,
   FollowedArtistsGetResponse,
-  FollowingStateGetRequest,
+  UserFollowingStateGetRequest,
   FollowingStatePutDeleteRequest,
   SavedAlbumsGetParams,
   SavedAlbum,
@@ -57,17 +57,14 @@ const useUserHttp = () => {
    * @returns Array of booleans.
    */
   const followingStateGet = async (
-    params: FollowingStateGetRequest
+    params: UserFollowingStateGetRequest
   ): Promise<boolean[] | undefined> => {
-    return await fetchData(
-      'me/following/contains',
-      params && {
-        params: new URLSearchParams({
-          ids: params.ids.toString(),
-          type: params.type.toString(),
-        }),
-      }
-    );
+    return await fetchData('me/following/contains', {
+      params: new URLSearchParams({
+        ids: params.ids.toString(),
+        type: params.type.toString(),
+      }),
+    });
   };
 
   /**
@@ -78,7 +75,7 @@ const useUserHttp = () => {
   const followingStatePutDelete = async (data: {
     body: FollowingStatePutDeleteRequest;
     method: RequestMethod;
-    params: FollowingStateGetRequest;
+    params: UserFollowingStateGetRequest;
   }): Promise<boolean[] | undefined> => {
     return await fetchData('me/following', {
       body: data.body,
@@ -98,7 +95,7 @@ const useUserHttp = () => {
       body: FollowingStatePutDeleteRequest;
       deleteSuccessMessage: string;
       method: RequestMethod;
-      params: FollowingStateGetRequest;
+      params: UserFollowingStateGetRequest;
       putSuccessMessage: string;
     }) => followingStatePutDelete(data),
     {

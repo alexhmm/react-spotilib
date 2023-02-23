@@ -2,7 +2,15 @@ export interface AppTranslations {
   coming_soon: string;
   follow: {
     active: string;
+    delete: {
+      success: string;
+      title: string;
+    };
     inactive: string;
+    put: {
+      success: string;
+      title: string;
+    };
   };
   followers: string;
   from: string;

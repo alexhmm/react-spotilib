@@ -80,9 +80,11 @@ const Artist = () => {
   const { followingStateGet, followingStatePutDeleteMutation } = useUserHttp();
 
   // Shared store state
-  const [followingState, setHeaderTitle, setFollowingState] = useSharedStore(
-    (state) => [state.following, state.setHeaderTitle, state.setFollowing]
-  );
+  const [following, setHeaderTitle, setFollowing] = useSharedStore((state) => [
+    state.following,
+    state.setHeaderTitle,
+    state.setFollowing,
+  ]);
 
   // User store state
   const [profile] = useUserStore((state) => [state.profile]);
@@ -190,7 +192,7 @@ const Artist = () => {
         }
       },
       onSuccess: (data) => {
-        data && setFollowingState(data[0]);
+        data && setFollowing(data[0]);
       },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),
     }
@@ -256,7 +258,7 @@ const Artist = () => {
           ids: [id],
         },
         deleteSuccessMessage: t('artist.detail.follow.delete'),
-        method: followingState ? RequestMethod.Delete : RequestMethod.Put,
+        method: following ? RequestMethod.Delete : RequestMethod.Put,
         params: {
           ids: [id],
           type: SpotifyFollowType.Artist,
@@ -264,7 +266,7 @@ const Artist = () => {
         putSuccessMessage: t('artist.detail.follow.put'),
       });
     // eslint-disable-next-line
-  }, [followingState, id]);
+  }, [following, id]);
 
   /**
    * Handler to play context by uri.
@@ -309,7 +311,7 @@ const Artist = () => {
   // Reset following state on component unmount.
   useEffect(() => {
     return () => {
-      setFollowingState(undefined);
+      setFollowing(undefined);
     };
     // eslint-disable-next-line
   }, []);
@@ -350,15 +352,13 @@ const Artist = () => {
               }}
               onClick={() => onPlayContext(artist.uri)}
             />
-            {followingState !== undefined && (
+            {following !== undefined && (
               <TextButtonOutlined
                 classes={styles['artist-actions-follow']}
-                preset={followingState ? ButtonType.Selected : undefined}
+                preset={following ? ButtonType.Selected : undefined}
                 onClick={onFollowStateChange}
               >
-                {followingState
-                  ? t('app.follow.active')
-                  : t('app.follow.inactive')}
+                {following ? t('app.follow.active') : t('app.follow.inactive')}
               </TextButtonOutlined>
             )}
           </div>

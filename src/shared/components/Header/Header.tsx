@@ -120,7 +120,7 @@ const HeaderMenu = () => {
       >
         {profile?.images[0]?.url && (
           <img
-            alt={t('app.profile').toString()}
+            alt={t('user.profile.title').toString()}
             className={styles['header-menu-button-image']}
             src={profile?.images[0].url}
           />

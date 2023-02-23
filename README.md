@@ -18,6 +18,7 @@ Implemented Features:
 - [x] Artist detail page (Read + Update)
 - [x] Album detail page (Read)
 - [x] Settings page
+- [x] Profile / User page
 - [x] Global state management (Zustand)
 - [x] Internationalization (i18n)
 - [x] Start music
@@ -27,7 +28,6 @@ To be implemented Features:
 
 - [ ] Logo ¯\_(ツ)\_/¯
 - [ ] Header back and forward navigation
-- [ ] Profile / User page
 - [ ] Playlist page (Update + Delete)
 - [ ] Album page (Update)
 - [ ] Search (Add string to pathname for better navigation, show last searchs etc..)
@@ -54,9 +54,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 Spotilib uses the following [Spotify Scopes](https://developer.spotify.com/documentation/general/guides/authorization/scopes/):
 
+- `playlist-modify-public` Write access to a user's public playlists.
+- `playlist-modify-private` Write access to a user's private playlists.
 - `playlist-read-private` Read access to user's private playlists.
 - `user-follow-modify` Write/delete access to the list of artists and other users that the user follows.
 - `user-follow-read` Read access to the list of artists and other users that the user follows.
+- `user-library-modify` Write/delete access to a user's "Your Music" library.
 - `user-library-read` Read access to a user's library.
 - `user-modify-playback-state` Write access to a user’s playback state.
 - `user-read-email` Read access to user’s email address.

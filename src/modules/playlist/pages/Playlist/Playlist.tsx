@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Tooltip } from '@mui/material';
 import clsx from 'clsx';
 
 // Components
@@ -21,12 +21,15 @@ import styles from './Playlist.module.scss';
 
 // Stores
 import useSharedStore from '../../../../shared/stores/use-shared.store';
+import useUserStore from '../../../user/use-user.store';
 
 // Types
 import {
   PlaylistsGetParams,
   Playlist as IPlaylist,
+  PlaylistFollowPutRequest,
 } from '../../playlist.types';
+import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
 import H2 from '../../../../shared/ui/H2/H2';
@@ -34,7 +37,6 @@ import IconButton from '../../../../shared/ui/IconButton/IconButton';
 
 // Utils
 import { playlistCreate } from '../../playlist.utils';
-import { ButtonType } from '../../../../shared/types/ui.types';
 
 const Playlist = () => {
   const { handleError, handleRetry } = useFetch();
@@ -42,11 +44,26 @@ const Playlist = () => {
   const { id } = useParams();
   const { playPutMutation } = usePlayerHttp();
   const { playlistTracksGetEffect } = usePlaylist();
-  const { playlistGet, playlistTracksGet } = usePlaylistHttp();
+  const {
+    playlistGet,
+    playlistFollowDelete,
+    playlistfollowGet,
+    playlistFollowPut,
+    playlistTracksGet,
+  } = usePlaylistHttp();
   const { i18n, t } = useTranslation();
 
   // Shared store state
-  const [setHeaderTitle] = useSharedStore((state) => [state.setHeaderTitle]);
+  const [following, setHeaderTitle, setFollowing, setNotifcation] =
+    useSharedStore((state) => [
+      state.following,
+      state.setHeaderTitle,
+      state.setFollowing,
+      state.setNotification,
+    ]);
+
+  // User store state
+  const [profile] = useUserStore((state) => [state.profile]);
 
   // Component state
   const [playlist, setPlaylist] = useState<IPlaylist | undefined>(undefined);
@@ -54,6 +71,33 @@ const Playlist = () => {
   // ####### //
   // QUERIES //
   // ####### //
+
+  // Get playlist following state by id.
+  // eslint-disable-next-line
+  const followingQuery = useQuery(
+    ['following', id, profile?.id],
+    () =>
+      playlistfollowGet(id ?? '', {
+        ids: profile?.id ? [profile?.id] : [],
+      }),
+    {
+      refetchOnWindowFocus: false,
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          console.error(
+            'Error on getting following state for playlist:',
+            error
+          );
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data) => {
+        data && setFollowing(data[0]);
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
 
   // Get playlist on component mount.
   // eslint-disable-next-line
@@ -84,6 +128,47 @@ const Playlist = () => {
   // ######### //
   // MUTATIONS //
   // ######### //
+
+  // GET Playlist follow delete mutation
+  const playlistFollowDeleteMutation = useMutation(
+    (id: string) => playlistFollowDelete(id),
+    {
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data) => {
+        setFollowing(false);
+        setNotifcation({
+          title: `${playlist?.name} ${t('app.follow.delete.success')}`,
+        });
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
+  // GET Playlist follow put mutation
+  const playlistFollowPutMutation = useMutation(
+    (data: { id: string; body?: PlaylistFollowPutRequest }) =>
+      playlistFollowPut(data),
+    {
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data) => {
+        setFollowing(true);
+        setNotifcation({
+          title: `${playlist?.name} ${t('app.follow.put.success')}`,
+        });
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
 
   // GET Playlist tracks mutation
   const playlistTracksGetMutation = useMutation(
@@ -135,6 +220,20 @@ const Playlist = () => {
     }
     // eslint-disable-next-line
   }, [playlist]);
+
+  /**
+   * Handler to change following state.
+   */
+  const onFollowingStateChange = useCallback(() => {
+    if (id) {
+      if (following) {
+        playlistFollowDeleteMutation.mutate(id);
+      } else {
+        playlistFollowPutMutation.mutate({ id });
+      }
+    }
+    // eslint-disable-next-line
+  }, [following, id]);
 
   /**
    * @param contextUri Spotify URI of the context to play
@@ -241,6 +340,26 @@ const Playlist = () => {
                 })
               }
             />
+            {following !== undefined && (
+              <Tooltip
+                placement="top"
+                title={
+                  following
+                    ? t('app.follow.delete.title')
+                    : t('app.follow.put.title')
+                }
+              >
+                <IconButton
+                  borderRadius="rounded-full"
+                  classes={styles['playlist-actions-follow']}
+                  color={following ? 'primary' : undefined}
+                  icon={[following ? 'fas' : 'far', 'heart']}
+                  iconSize="medium"
+                  padding="0.75rem"
+                  onClick={onFollowingStateChange}
+                />
+              </Tooltip>
+            )}
           </section>
           <section className={styles['playlist-content']}>
             {playlist.tracks.map((track) => (
