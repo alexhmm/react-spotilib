@@ -9,7 +9,7 @@
 }
 
 .context-grid {
-  @apply gap-2 grid grid-cols-2 grid-rows-2 pb-4;
+  @apply gap-2 grid grid-cols-2 pb-4;
   @apply lg:pb-8;
   @apply @lg:gap-4 @lg:grid-cols-3;
   @apply @2xl:grid-cols-4;
