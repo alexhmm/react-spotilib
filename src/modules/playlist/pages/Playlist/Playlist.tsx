@@ -340,7 +340,7 @@ const Playlist = () => {
                 })
               }
             />
-            {following !== undefined && (
+            {following !== undefined && playlist.owner.id !== profile?.id && (
               <Tooltip
                 placement="top"
                 title={
