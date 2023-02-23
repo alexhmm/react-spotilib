@@ -452,14 +452,16 @@ const Artist = () => {
               ))}
             </div>
           </section>
-          <section className={styles['artist-section']}>
-            <H3>{t('artist.detail.appears_on')}</H3>
-            <div className="context-grid">
-              {appearsOn.map((album) => (
-                <AlbumCard key={album.id} album={album} />
-              ))}
-            </div>
-          </section>
+          {appearsOn.length > 0 && (
+            <section className={styles['artist-section']}>
+              <H3>{t('artist.detail.appears_on')}</H3>
+              <div className="context-grid">
+                {appearsOn.map((album) => (
+                  <AlbumCard key={album.id} album={album} />
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       )}
     </>
