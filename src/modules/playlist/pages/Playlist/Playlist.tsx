@@ -79,8 +79,8 @@ const Playlist = () => {
       action: PlaylistMoreMenuItemAction.Delete,
       title:
         playlist?.owner.id === profile?.id
-          ? t('app.follow.delete.title')
-          : t('app.actions.delete'),
+          ? t('app.actions.delete')
+          : t('app.follow.delete.title'),
     },
     {
       action: PlaylistMoreMenuItemAction.DownloadMetadata,
