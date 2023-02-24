@@ -303,7 +303,8 @@ const Header = () => {
       }}
     >
       <Link className={clsx(styles['header-logo'], 'app-link')} to="/">
-        Spotilib
+        <Icon icon={['fas', 'record-vinyl']} size="medium" />
+        <span className={styles['header-logo-text']}>Spotilib</span>
       </Link>
       <div className={styles['header-info']}>
         <div className={styles['header-info-actions']}>

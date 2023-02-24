@@ -26,7 +26,6 @@ Implemented Features:
 
 To be implemented Features:
 
-- [ ] Logo ¯\_(ツ)\_/¯
 - [ ] Header back and forward navigation
 - [ ] Playlist page (Update + Delete)
 - [ ] Album page (Update)
