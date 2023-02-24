@@ -402,9 +402,10 @@ const Playlist = () => {
             />
           </section>
           <section className={styles['playlist-content']}>
-            {playlist.tracks.map((track) => (
+            {playlist.tracks.map((track, index) => (
               <PlaylistTrack
                 key={track.id}
+                index={index}
                 locale={i18n.language}
                 track={track}
                 onPlay={() => onTrackPlay(playlist.uri, track.uri)}

@@ -36,7 +36,7 @@
         @apply sm:pl-2 sm:pr-1;
       }
       &-index {
-        @apply hidden;
+        @apply hidden sm:block;
       }
     }
   }
