@@ -1,5 +1,10 @@
 import { IconName, IconPrefix } from '@fortawesome/free-solid-svg-icons';
 
+export enum FormType {
+  Select = 'SELECT',
+  Switch = 'SWITCH',
+}
+
 export enum RequestMethod {
   Delete = 'DELETE',
   Get = 'GET',
@@ -17,8 +22,17 @@ export enum Theme {
   Light = 'Light',
 }
 
-export interface MenuItem<T> {
-  action: T;
+export interface FollowingStateGetRequest {
+  ids: string[];
+}
+
+export interface FormItem {
+  title: string;
+  value: any;
+}
+
+export interface MenuItem {
+  action: any;
   disabled?: boolean;
   title: string;
   tooltip?: string;

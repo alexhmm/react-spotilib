@@ -8,6 +8,15 @@ import {
   SpotifyTrackMetaData,
 } from '../../shared/types/spotify.types';
 
+export enum PlaylistMoreMenuItemAction {
+  Delete = 'DELETE',
+  DownloadMetadata = 'DOWNLOADMETADATA',
+}
+
+export interface PlaylistFollowPutRequest {
+  public?: boolean;
+}
+
 export interface PlaylistTracks {
   tracks: PlaylistTrack[];
 }
@@ -43,7 +52,7 @@ export type Playlist = Pick<
 
 export type PlaylistCard = Pick<
   SpotifyPlaylist,
-  'id' | 'images' | 'name' | 'owner' | 'uri'
+  'id' | 'description' | 'images' | 'name' | 'owner' | 'uri'
 >;
 
 export type PlaylistTrack = Pick<

@@ -11,10 +11,9 @@ export interface ArtistTranslations {
       };
     };
     follow: {
-      active: string;
-      inactive: string;
+      delete: string;
+      put: string;
     };
-    followers: string;
     related_artists: string;
     top_tracks: string;
   };

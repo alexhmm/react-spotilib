@@ -1,7 +1,11 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
+import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
+
+// Hooks
+import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
 
 // Styles
 import styles from './PlaylistTrack.module.scss';
@@ -17,6 +21,7 @@ import { minutesSecondsByMillisecondsGet } from '../../../../shared/utils/shared
 
 type PlaylistTrackProps = {
   locale: string;
+  index: number;
   track: IPlaylistTrack;
   onPlay: () => void;
 };
@@ -35,40 +40,52 @@ const playlistPropsAreEqual = (
 };
 
 const PlaylistTrack = (props: PlaylistTrackProps) => {
+  const { smDown } = useBreakpoints();
+
   return (
     <Box
       className={styles['playlist-track']}
       sx={{
-        ':hover': {
-          backgroundColor: 'action.hover',
-          '.image': {
-            display: 'none',
+        '@media (hover: hover)': {
+          ':hover': {
+            backgroundColor: 'action.hover',
+            '.index': {
+              display: 'none',
+            },
+            '.play': {
+              display: 'flex !important',
+            },
+          },
+          '.app-link:hover': {
+            color: 'primary.main',
           },
           '.play': {
-            display: 'flex !important',
+            display: 'none !important',
           },
-        },
-        '.app-link:hover': {
-          color: 'primary.main',
-        },
-        '.play': {
-          display: 'none !important',
         },
       }}
     >
       <div className={styles['playlist-track-title']}>
+        <Box
+          className={clsx(styles['playlist-track-title-index'], 'index')}
+          sx={{ color: 'text.secondary' }}
+        >
+          {props.index + 1}
+        </Box>
+        {!isMobile && !smDown && (
+          <IconButton
+            classes={clsx(styles['playlist-track-title-play'], 'play')}
+            icon={['fas', 'play']}
+            onClick={props.onPlay}
+          />
+        )}
         <img
           alt={props.track.album.name}
-          className={clsx(styles['playlist-track-title-image'], 'image')}
+          className={styles['playlist-track-title-image']}
           height={36}
           src={props.track.album.images[2].url}
           width={36}
           loading="lazy"
-        />
-        <IconButton
-          classes={clsx(styles['playlist-track-title-play'], 'play')}
-          icon={['fas', 'play']}
-          onClick={props.onPlay}
         />
         <Box className={styles['playlist-track-title-data']}>
           <div className={styles['playlist-track-title-data-name']}>

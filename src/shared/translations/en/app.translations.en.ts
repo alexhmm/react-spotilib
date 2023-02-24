@@ -1,16 +1,39 @@
 import { AppTranslations } from '../types/app.translations.interface';
 
 export const appTranslationsEN: AppTranslations = {
-  coming_soon: 'Coming soon ...',
-  hello: 'Hello!',
-  language: {
-    english: 'English',
-    german: 'German',
+  actions: {
+    delete: 'Delete',
+    download_metadata: 'Download metadata',
+    title: 'More options for',
   },
+  coming_soon: 'Coming soon ...',
+  follow: {
+    active: 'Following',
+    delete: {
+      success: 'removed from library',
+      title: 'Remove from library',
+    },
+    inactive: 'Follow',
+    put: {
+      success: 'added to library',
+      title: 'Add to library',
+    },
+  },
+  followers: 'Followers',
+  from: 'from',
+  hello: 'Hello!',
   logout: 'Logout',
-  profile: 'Profile',
-  settings: 'Settings',
+  settings: {
+    language: {
+      english: 'English',
+      german: 'German',
+      title: 'Language',
+    },
+    theme: 'Dark theme',
+    title: 'Settings',
+  },
   show: {
+    all: 'Show all',
     less: 'Show less',
     more: 'Show more',
   },
@@ -18,9 +41,6 @@ export const appTranslationsEN: AppTranslations = {
     home: 'Home',
     library: 'Library',
     search: 'Search',
-  },
-  theme: {
-    toggle: 'Toggle theme',
   },
   top: {
     artists: 'Your top artists',

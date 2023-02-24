@@ -5,6 +5,7 @@ import { authTranslationsDE } from './de/auth.translations.de';
 import { collectionTranslationsDE } from './de/collection.translations.de';
 import { playlistTranslationsDE } from './de/playlist.translations.de';
 import { trackTranslationsDE } from './de/track.translations.de';
+import { userTranslationsDE } from './de/user.translations.de';
 
 export const translationsDe = {
   album: albumTranslationsDE,
@@ -14,4 +15,5 @@ export const translationsDe = {
   collection: collectionTranslationsDE,
   playlist: playlistTranslationsDE,
   track: trackTranslationsDE,
+  user: userTranslationsDE,
 };

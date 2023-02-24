@@ -4,6 +4,9 @@ import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
 
+// Hooks
+import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
+
 // Styles
 import styles from './AlbumTrack.module.scss';
 
@@ -33,6 +36,8 @@ const albumPropsAreEqual = (
 };
 
 const AlbumTrack = (props: PlaylistTrackProps) => {
+  const { smDown } = useBreakpoints();
+
   return (
     <Box
       className={styles['album-track']}
@@ -58,20 +63,18 @@ const AlbumTrack = (props: PlaylistTrackProps) => {
       onClick={() => isMobile && props.onPlay()}
     >
       <div className={styles['album-track-title']}>
-        {!isMobile && (
-          <>
-            <Box
-              className={clsx(styles['album-track-title-index'], 'index')}
-              sx={{ color: 'text.secondary' }}
-            >
-              {props.index + 1}
-            </Box>
-            <IconButton
-              classes={clsx(styles['album-track-title-index'], 'play')}
-              icon={['fas', 'play']}
-              onClick={props.onPlay}
-            />
-          </>
+        <Box
+          className={clsx(styles['album-track-title-index'], 'index')}
+          sx={{ color: 'text.secondary' }}
+        >
+          {props.index + 1}
+        </Box>
+        {!isMobile && !smDown && (
+          <IconButton
+            classes={clsx(styles['album-track-title-play'], 'play')}
+            icon={['fas', 'play']}
+            onClick={props.onPlay}
+          />
         )}
         <Box className={styles['album-track-title-data']}>
           <div className={styles['album-track-title-data-name']}>

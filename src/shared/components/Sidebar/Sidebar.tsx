@@ -24,7 +24,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 // Hooks
 import useFetch from '../../hooks/use-fetch.hook';
 import usePlaylist from '../../../modules/playlist/use-playlist.hook';
-import usePlaylistHttp from '../../../modules/playlist/use-playlist-http.hook';
+import useUserHttp from '../../../modules/user/use-user-http.hook';
 
 // Stores
 import useAuthStore from '../../../modules/auth/use-auth.store';
@@ -89,7 +89,7 @@ const Sidebar = () => {
   const { handleError, handleRetry } = useFetch();
   const location = useLocation();
   const { playlistsAddEffect, playlistsGetEffect } = usePlaylist();
-  const { playlistsGet } = usePlaylistHttp();
+  const { playlistsGet } = useUserHttp();
   const theme = useTheme();
   const { t } = useTranslation();
 

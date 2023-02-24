@@ -2,7 +2,11 @@
 import useFetch from '../../shared/hooks/use-fetch.hook';
 
 // Types
-import { PlaylistsGetParams } from './playlist.types';
+import { PlaylistFollowPutRequest, PlaylistsGetParams } from './playlist.types';
+import {
+  FollowingStateGetRequest,
+  RequestMethod,
+} from '../../shared/types/shared.types';
 import {
   SpotifyDataGetResponse,
   SpotifyPlaylist,
@@ -13,15 +17,22 @@ const usePlaylistHttp = () => {
   const { fetchData } = useFetch();
 
   /**
-   * GET User playlists.
+   * GET List of the playlists owned or followed by a Spotify user.
+   * @param id Playlist id
    * @param params PlaylistGetParams
    * @returns User playlists
    */
   const playlistsGet = async (
+    id: string,
     params?: PlaylistsGetParams
   ): Promise<SpotifyDataGetResponse<SpotifyPlaylist[]> | undefined> => {
+    const urlSearchParams = new URLSearchParams();
+    params?.limit && urlSearchParams.append('limit', params.limit.toString());
+    params?.offset &&
+      urlSearchParams.append('offset', params.offset.toString());
+
     return await fetchData(
-      'me/playlists',
+      `users/${id}/playlists`,
       params && {
         params: new URLSearchParams({
           limit: params.limit.toString(),
@@ -43,6 +54,50 @@ const usePlaylistHttp = () => {
     } else {
       return undefined;
     }
+  };
+
+  /**
+   * DELETE Remove the current user as a follower of a playlist.
+   * @param id Playlist id
+   * @returns Message
+   */
+  const playlistFollowDelete = async (id: string): Promise<any> => {
+    return await fetchData(`playlists/${id}/followers`, {
+      method: RequestMethod.Delete,
+    });
+  };
+
+  /**
+   * GET Check to see if one or more Spotify users are following a specified playlist.
+   * @param params FollowingStateGetPutRequest
+   * @returns Array of booleans.
+   */
+  const playlistfollowGet = async (
+    id: string,
+    params: FollowingStateGetRequest
+  ): Promise<boolean[] | undefined> => {
+    if (id.length > 0 && params.ids.length > 0) {
+      return await fetchData(`playlists/${id}/followers/contains`, {
+        params: new URLSearchParams({
+          ids: params.ids.toString(),
+        }),
+      });
+    }
+  };
+
+  /**
+   * PUT Add the current user as a follower of a playlist.
+   * @param data Playlist id and follow put body
+   * @returns Message
+   */
+  const playlistFollowPut = async (data: {
+    id: string;
+    body?: PlaylistFollowPutRequest;
+  }): Promise<any> => {
+    return await fetchData(`playlists/${data.id}/followers`, {
+      body: data.body,
+      method: RequestMethod.Put,
+    });
   };
 
   /**
@@ -69,6 +124,9 @@ const usePlaylistHttp = () => {
   return {
     playlistsGet,
     playlistGet,
+    playlistFollowDelete,
+    playlistfollowGet,
+    playlistFollowPut,
     playlistTracksGet,
   };
 };

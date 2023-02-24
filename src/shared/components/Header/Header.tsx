@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { IconName, IconPrefix } from '@fortawesome/free-solid-svg-icons';
@@ -95,6 +95,7 @@ const HeaderMenuSwitchItem = (props: HeaderMenuSwitchItemProps) => {
 const HeaderMenu = () => {
   const { smDown } = useBreakpoints();
   const { logout } = useLogout();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   // Theme store state
@@ -119,7 +120,7 @@ const HeaderMenu = () => {
       >
         {profile?.images[0]?.url && (
           <img
-            alt={t('app.profile').toString()}
+            alt={t('user.profile.title').toString()}
             className={styles['header-menu-button-image']}
             src={profile?.images[0].url}
           />
@@ -161,13 +162,19 @@ const HeaderMenu = () => {
             <>
               <HeaderMenuButtonItem
                 icon={['fas', 'user']}
-                title={t('app.profile')}
-                onClick={() => console.log('profile')}
+                title={t('user.profile.title')}
+                onClick={() => {
+                  navigate(`/user/${profile.id}`);
+                  setAnchor(null);
+                }}
               />
               <HeaderMenuButtonItem
                 icon={['fas', 'gear']}
-                title={t('app.settings')}
-                onClick={() => console.log('settings')}
+                title={t('app.settings.title')}
+                onClick={() => {
+                  navigate('/settings');
+                  setAnchor(null);
+                }}
               />
               <HeaderMenuSwitchItem
                 checked={theme === Theme.Dark ? true : false}
@@ -296,7 +303,8 @@ const Header = () => {
       }}
     >
       <Link className={clsx(styles['header-logo'], 'app-link')} to="/">
-        Spotilib
+        <Icon icon={['fas', 'record-vinyl']} size="medium" />
+        <span className={styles['header-logo-text']}>Spotilib</span>
       </Link>
       <div className={styles['header-info']}>
         <div className={styles['header-info-actions']}>

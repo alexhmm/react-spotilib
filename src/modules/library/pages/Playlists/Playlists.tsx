@@ -9,7 +9,7 @@ import PlaylistCard from '../../../playlist/components/PlaylistCard/PlaylistCard
 
 // Hooks
 import useFetch from '../../../../shared/hooks/use-fetch.hook';
-import usePlaylistHttp from '../../../playlist/use-playlist-http.hook';
+import useUserHttp from '../../../user/use-user-http.hook';
 
 // Stores
 import useSharedStore from '../../../../shared/stores/use-shared.store';
@@ -32,8 +32,8 @@ import { concatArray } from '../../../../shared/utils/shared.utils';
 
 const Playlists = () => {
   const { handleError, handleRetry } = useFetch();
-  const { playlistsGet } = usePlaylistHttp();
   const { t } = useTranslation();
+  const { playlistsGet } = useUserHttp();
 
   // Shared store state
   const [setPathName] = useSharedStore((state) => [state.setPathname]);

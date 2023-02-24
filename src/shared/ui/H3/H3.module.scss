@@ -1,6 +1,9 @@
 .h3 {
-  @apply flex items-center mb-2 lg:mb-4;
+  @apply flex items-center justify-between mb-2 lg:mb-4;
   & h3 {
     @apply my-0;
+  }
+  &-title {
+    @apply flex items-center;
   }
 }

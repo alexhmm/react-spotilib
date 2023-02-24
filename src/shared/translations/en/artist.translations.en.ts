@@ -13,10 +13,9 @@ export const artistTranslationsEN: ArtistTranslations = {
       },
     },
     follow: {
-      active: 'Following',
-      inactive: 'Follow',
+      delete: 'Removed from artists',
+      put: 'Added to artists',
     },
-    followers: 'Followers',
     related_artists: 'Fans also like',
     top_tracks: 'Popular',
   },

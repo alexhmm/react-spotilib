@@ -1,14 +1,37 @@
 export interface AppTranslations {
-  coming_soon: string;
-  hello: string;
-  language: {
-    english: string;
-    german: string;
+  actions: {
+    delete: string;
+    download_metadata: string;
+    title: string;
   };
+  coming_soon: string;
+  follow: {
+    active: string;
+    delete: {
+      success: string;
+      title: string;
+    };
+    inactive: string;
+    put: {
+      success: string;
+      title: string;
+    };
+  };
+  followers: string;
+  from: string;
+  hello: string;
   logout: string;
-  profile: string;
-  settings: string;
+  settings: {
+    language: {
+      english: string;
+      german: string;
+      title: string;
+    };
+    theme: string;
+    title: string;
+  };
   show: {
+    all: string;
     less: string;
     more: string;
   };
@@ -16,9 +39,6 @@ export interface AppTranslations {
     home: string;
     library: string;
     search: string;
-  };
-  theme: {
-    toggle: string;
   };
   top: {
     artists: string;

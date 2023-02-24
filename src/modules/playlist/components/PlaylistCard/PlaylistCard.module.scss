@@ -19,6 +19,12 @@
     @apply font-semibold mt-4 text-sm truncate;
   }
   &-owner {
-    @apply duration-200 mb-4 mt-2 text-sm transition-colors truncate max-w-full w-fit z-10;
+    @apply flex items-center mb-4 mt-2 text-sm truncate z-10;
+    &-from {
+      @apply inline-block;
+    }
+    &-name {
+      @apply duration-200 inline-block transition-colors truncate max-w-full w-fit;
+    }
   }
 }

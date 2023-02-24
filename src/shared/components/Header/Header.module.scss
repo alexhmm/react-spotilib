@@ -24,6 +24,9 @@
   &-logo {
     @apply flex font-bold h-full items-center px-4 shrink-0;
     @apply lg:px-6 lg:w-64;
+    &-text {
+      @apply ml-1 lg:ml-2;
+    }
   }
 }
 

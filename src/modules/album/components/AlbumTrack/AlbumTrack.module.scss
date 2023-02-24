@@ -1,12 +1,12 @@
 .album-track {
-  @apply duration-200 grid grid-cols-12 items-center py-1 rounded-md transition-colors mb-2 md:px-2;
+  @apply duration-200 grid grid-cols-12 items-center py-1 rounded-md transition-colors mb-2 sm:px-2;
   &-duration {
     @apply hidden text-sm md:col-span-1 md:flex md:justify-end md:pl-2 md:pr-4;
   }
   &-title {
     @apply col-span-full flex items-center truncate md:col-span-11;
     &-data {
-      @apply flex flex-col truncate w-full md:pl-2 md:pr-1 lg:pl-4 lg:pr-2;
+      @apply flex flex-col truncate w-full lg:pl-4 lg:pr-2;
       &-artists {
         @apply flex flex-wrap truncate;
         &-item {
@@ -21,7 +21,33 @@
       }
     }
     &-index {
-      @apply flex h-9 items-center justify-center shrink-0 w-9;
+      @apply h-9 hidden items-center justify-center shrink-0 w-9 sm:flex;
+    }
+    &-play {
+      @apply h-9 hidden shrink-0 w-9 sm:flex;
+    }
+  }
+}
+
+@media (hover: none) {
+  .album-track {
+    &-title {
+      &-data {
+        @apply sm:pl-2 sm:pr-1;
+      }
+      &-index {
+        @apply hidden sm:block;
+      }
+    }
+  }
+}
+
+@media (hover: hover) {
+  .album-track {
+    &-title {
+      &-data {
+        @apply pl-2 pr-1;
+      }
     }
   }
 }

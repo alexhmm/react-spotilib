@@ -1,0 +1,33 @@
+.profile {
+  @apply flex flex-col;
+}
+
+.profile-actions {
+  @apply flex items-center mb-4 lg:mb-8;
+}
+
+.profile-header {
+  @apply flex items-center mb-4 w-full md:items-end md:mb-8;
+  &-image {
+    @apply h-32 relative self-center shrink-0 w-32 md:h-48 md:w-48;
+    & img {
+      @apply h-full object-cover rounded-full shadow-lg w-full;
+    }
+  }
+  &-info {
+    @apply flex flex-col justify-end pl-4 md:pl-8;
+    &-data {
+      @apply flex flex-col text-sm md:flex-row;
+      &-section {
+        @apply flex flex-wrap items-center mt-1 md:mt-0;
+      }
+    }
+    &-title {
+      @apply text-sm uppercase;
+    }
+  }
+}
+
+.profile-section {
+  @apply flex flex-col w-full mb-4 lg:mb-8 @container;
+}

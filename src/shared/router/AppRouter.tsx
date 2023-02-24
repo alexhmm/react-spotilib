@@ -8,12 +8,16 @@ import ArtistRouter from './ArtistRouter';
 import LibraryRouter from './LibraryRouter';
 import PlaylistRouter from './PlaylistRouter';
 import ProtectedRoute from './ProtectedRoute';
+import UserRouter from './UserRouter';
 
 // Lazy-load pages
 const Auth = lazy(() => import('../../modules/auth/pages/Auth/Auth'));
 const Home = lazy(() => import('../../modules/home/pages/Home'));
 const Login = lazy(() => import('../../modules/auth/pages/Login/Login'));
 const Search = lazy(() => import('../../modules/search/pages/Search/Search'));
+const Settings = lazy(
+  () => import('../../modules/settings/pages/settings/Settings')
+);
 
 const AppRouter = () => {
   return (
@@ -83,6 +87,24 @@ const AppRouter = () => {
             <Suspense fallback={<CircularProgress />}>
               <Search />
             </Suspense>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <Suspense fallback={<CircularProgress />}>
+              <Settings />
+            </Suspense>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/user/*"
+        element={
+          <ProtectedRoute>
+            <UserRouter />
           </ProtectedRoute>
         }
       />

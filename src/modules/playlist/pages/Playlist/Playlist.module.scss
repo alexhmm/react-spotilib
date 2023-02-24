@@ -3,6 +3,16 @@
   overflow: hidden !important;
 }
 
+.playlist-actions {
+  @apply flex items-center mb-4 lg:mb-8;
+  &-follow {
+    @apply ml-4 lg:ml-8;
+  }
+  &-more {
+    @apply ml-2 lg:ml-4;
+  }
+}
+
 .playlist-content {
   @apply flex flex-col;
 }
