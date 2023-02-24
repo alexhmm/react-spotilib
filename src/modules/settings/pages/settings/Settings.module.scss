@@ -1,8 +1,7 @@
 .settings {
   @apply flex justify-center w-full;
   &-content {
-    @apply flex flex-col w-full;
-    @apply md:w-[640px];
+    @apply md:w-[640px] flex flex-col w-full;
   }
 }
 
