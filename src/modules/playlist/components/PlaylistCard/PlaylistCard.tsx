@@ -26,7 +26,7 @@ type PlaylistCardProps = {
 };
 
 const PlaylistCard = (props: PlaylistCardProps) => {
-  const { lgDown } = useBreakpoints();
+  const { smDown, lgDown } = useBreakpoints();
   const { playPutMutation } = usePlayerHttp();
   const { t } = useTranslation();
 
@@ -51,7 +51,7 @@ const PlaylistCard = (props: PlaylistCardProps) => {
     <Box
       className={styles['playlist-card']}
       sx={{
-        backgroundColor: 'background.paper',
+        backgroundColor: smDown ? undefined : 'background.paper',
         '@media (hover: hover)': {
           ':hover': {
             backgroundColor: 'action.hover',
@@ -87,7 +87,7 @@ const PlaylistCard = (props: PlaylistCardProps) => {
             <Icon icon={['fas', 'music']} size="large" />
           </div>
         )}
-        {!isMobile && (
+        {!isMobile && !smDown && (
           <IconButton
             borderRadius="rounded-full"
             classes={clsx(styles['playlist-card-image-play'], 'play')}
@@ -104,37 +104,59 @@ const PlaylistCard = (props: PlaylistCardProps) => {
           />
         )}
       </div>
-      <div className={styles['playlist-card-name']}>{props.playlist.name}</div>
-      {!props.hideOwner ? (
-        <>
-          {props.playlist.owner.id !== 'spotify' ? (
-            <div className={styles['playlist-card-owner']}>
+      <div className={styles['playlist-card-info']}>
+        <div className={styles['playlist-card-info-name']}>
+          {props.playlist.name}
+        </div>
+        {!props.hideOwner ? (
+          <>
+            {props.playlist.owner.id !== 'spotify' ? (
+              <div className={styles['playlist-card-info-owner']}>
+                {!smDown && (
+                  <>
+                    <Box
+                      className={styles['playlist-card-info-owner-from']}
+                      sx={{ color: 'text.secondary' }}
+                    >
+                      {t('app.from')}
+                    </Box>
+                    <span className="whitespace-pre-wrap shrink-0"> </span>
+                  </>
+                )}
+                {isMobile ? (
+                  <Box
+                    className={styles['playlist-card-info-owner-name']}
+                    sx={{ color: 'text.secondary' }}
+                  >
+                    {props.playlist.owner.display_name}
+                  </Box>
+                ) : (
+                  <Link
+                    className={clsx(
+                      styles['playlist-card-info-owner-link'],
+                      styles['playlist-card-info-owner-name'],
+
+                      'app-link'
+                    )}
+                    to={`/user/${props.playlist.owner.id}`}
+                  >
+                    {props.playlist.owner.display_name}
+                  </Link>
+                )}
+              </div>
+            ) : (
               <Box
-                className={styles['playlist-card-owner-from']}
+                className={styles['playlist-card-info-description']}
                 sx={{ color: 'text.secondary' }}
               >
-                {t('app.from')}
+                {props.playlist.description}
               </Box>
-              <span className="whitespace-pre-wrap shrink-0"> </span>
-              <Link
-                className={clsx(styles['playlist-card-owner-name'], 'app-link')}
-                to={`/user/${props.playlist.owner.id}`}
-              >
-                {props.playlist.owner.display_name}
-              </Link>
-            </div>
-          ) : (
-            <Box
-              className={styles['playlist-card-owner']}
-              sx={{ color: 'text.secondary' }}
-            >
-              {props.playlist.description}
-            </Box>
-          )}
-        </>
-      ) : (
-        <div className={styles['playlist-card-owner']}></div>
-      )}
+            )}
+          </>
+        ) : (
+          <div className={styles['playlist-card-info-owner']}></div>
+        )}
+      </div>
       <Link
         className={clsx(styles['playlist-card-link'], 'app-link')}
         to={`/playlist/${props.playlist.id}`}

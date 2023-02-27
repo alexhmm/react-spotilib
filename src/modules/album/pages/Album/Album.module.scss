@@ -12,7 +12,7 @@
 }
 
 .album-header {
-  @apply flex flex-col mb-4 w-full md:flex-row lg:items-end lg:mb-8;
+  @apply flex flex-col mb-4 w-full sm:flex-row lg:items-end lg:mb-8;
   &-image {
     @apply h-48 relative self-center shrink-0 w-48;
     & img {
@@ -20,9 +20,9 @@
     }
   }
   &-info {
-    @apply flex flex-col justify-end md:pl-4 lg:pl-8;
+    @apply flex flex-col justify-end sm:pl-4 lg:pl-8;
     &-data {
-      @apply flex flex-col text-sm md:flex-row;
+      @apply flex flex-col text-sm sm:flex-row;
       &-artist {
         @apply text-sm;
         &-link {
@@ -30,7 +30,7 @@
         }
       }
       &-section {
-        @apply flex flex-wrap items-center mt-1 md:mt-0;
+        @apply flex flex-wrap items-center mt-1 sm:mt-0;
       }
     }
     &-type {

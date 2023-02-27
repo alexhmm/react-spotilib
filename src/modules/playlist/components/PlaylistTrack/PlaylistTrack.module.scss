@@ -7,7 +7,7 @@
     @apply hidden text-sm lg:col-span-3 lg:flex lg:px-2;
   }
   &-duration {
-    @apply hidden text-sm lg:col-span-1 lg:flex lg:justify-end lg:pl-2 lg:pr-4;
+    @apply hidden text-sm lg:col-span-1 lg:flex lg:justify-end;
   }
   &-title {
     @apply col-span-12 flex items-center truncate lg:col-span-6;
@@ -42,7 +42,7 @@
   .playlist-track {
     &-title {
       &-data {
-        @apply sm:pl-2 sm:pr-1;
+        @apply sm:pl-4 sm:pr-1 lg:pr-2;
       }
       &-index {
         @apply hidden sm:flex;
@@ -55,7 +55,7 @@
   .playlist-track {
     &-title {
       &-data {
-        @apply pl-2 pr-1;
+        @apply pl-4 pr-1 lg:pr-2;
       }
     }
   }

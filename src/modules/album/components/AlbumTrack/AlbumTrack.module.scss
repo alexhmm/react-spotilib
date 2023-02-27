@@ -6,7 +6,7 @@
   &-title {
     @apply col-span-full flex items-center truncate md:col-span-11;
     &-data {
-      @apply flex flex-col truncate w-full lg:pl-4 lg:pr-2;
+      @apply flex flex-col truncate w-full;
       &-artists {
         @apply flex flex-wrap truncate;
         &-item {
@@ -33,7 +33,7 @@
   .album-track {
     &-title {
       &-data {
-        @apply sm:pl-2 sm:pr-1;
+        @apply sm:pl-2 sm:pr-1 lg:pr-2;
       }
       &-index {
         @apply hidden sm:block;
@@ -46,7 +46,7 @@
   .album-track {
     &-title {
       &-data {
-        @apply pl-2 pr-1;
+        @apply pl-2 pr-1 lg:pr-2;
       }
     }
   }

@@ -82,9 +82,9 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
         <img
           alt={props.track.album.name}
           className={styles['playlist-track-title-image']}
-          height={36}
+          height={isMobile ? 48 : 36}
           src={props.track.album.images[2].url}
-          width={36}
+          width={isMobile ? 48 : 36}
           loading="lazy"
         />
         <Box className={styles['playlist-track-title-data']}>
@@ -98,14 +98,20 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
                 className={styles['playlist-track-title-data-artists-item']}
                 sx={{ color: 'text.secondary' }}
               >
-                <Link
-                  key={artist.id}
-                  className={clsx(
-                    styles['playlist-track-title-data-artists-item-link'],
-                    'app-link'
-                  )}
-                  to={`/artist/${artist.id}`}
-                >{`${artist.name}`}</Link>
+                {isMobile ? (
+                  <>{artist.name}</>
+                ) : (
+                  <Link
+                    key={artist.id}
+                    className={clsx(
+                      styles['playlist-track-title-data-artists-item-link'],
+                      'app-link'
+                    )}
+                    to={`/artist/${artist.id}`}
+                  >
+                    {artist.name}
+                  </Link>
+                )}
                 {`${index < props.track.artists.length - 1 ? ',\xa0' : ''}`}
               </Box>
             ))}
@@ -116,9 +122,13 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
         className={styles['playlist-track-album']}
         sx={{ color: 'text.secondary' }}
       >
-        <Link className="app-link" to={`/album/${props.track.album.id}`}>
-          {props.track.album.name}
-        </Link>
+        {isMobile ? (
+          <div>{props.track.album.name}</div>
+        ) : (
+          <Link className="app-link" to={`/album/${props.track.album.id}`}>
+            {props.track.album.name}
+          </Link>
+        )}
       </Box>
       <Box
         className={styles['playlist-track-added-at']}

@@ -1,12 +1,12 @@
 .playlist-card {
-  @apply duration-200 flex flex-col p-4 relative rounded-md transition-colors w-full;
+  @apply duration-200 flex py-1 relative rounded-md transition-colors w-full sm:flex-col sm:p-4;
   &-fallback {
     @apply aspect-square flex justify-center items-center relative w-full;
   }
   &-image {
-    @apply aspect-square relative w-full;
+    @apply h-12 relative shrink-0 w-12 sm:aspect-square sm:h-auto sm:w-full;
     & img {
-      @apply absolute aspect-square left-0 object-cover rounded-md shadow-xl top-0 w-full;
+      @apply absolute aspect-square left-0 object-cover shadow-xl top-0 w-full sm:rounded-md;
     }
     &-play {
       @apply absolute bottom-0 duration-300 right-2 shadow-xl transform transition-all z-10;
@@ -15,16 +15,25 @@
   &-link {
     @apply absolute h-full left-0 top-0 w-full;
   }
-  &-name {
-    @apply font-semibold mt-4 text-sm truncate;
-  }
-  &-owner {
-    @apply flex items-center mb-4 mt-2 text-sm truncate z-10;
-    &-from {
-      @apply inline-block;
+  &-info {
+    @apply flex flex-col ml-4 truncate w-full sm:ml-0;
+    &-description {
+      @apply text-sm truncate w-full sm:mb-4 sm:mt-2;
     }
     &-name {
-      @apply duration-200 inline-block transition-colors truncate max-w-full w-fit;
+      @apply font-semibold text-sm truncate sm:mt-4;
+    }
+    &-owner {
+      @apply flex items-center text-sm truncate w-full sm:mb-4 sm:mt-2;
+      &-from {
+        @apply inline-block;
+      }
+      &-link {
+        @apply z-10;
+      }
+      &-name {
+        @apply duration-200 inline-block transition-colors truncate max-w-full w-fit;
+      }
     }
   }
 }

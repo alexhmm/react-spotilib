@@ -4,6 +4,9 @@ import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
 
+// Hooks
+import useBreakpoints from '../../hooks/use-breakpoints.hook';
+
 // Styles
 import styles from './TrackCard.module.scss';
 
@@ -19,11 +22,13 @@ type TrackCardProps = {
 };
 
 const TrackCard = (props: TrackCardProps) => {
+  const { smDown } = useBreakpoints();
+
   return (
     <Box
       className={styles['track-card']}
       sx={{
-        backgroundColor: 'background.paper',
+        backgroundColor: smDown ? undefined : 'background.paper',
         '@media (hover: hover)': {
           ':hover': {
             backgroundColor: 'action.hover',

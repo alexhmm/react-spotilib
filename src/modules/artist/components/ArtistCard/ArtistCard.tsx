@@ -24,7 +24,7 @@ type ArtistCardProps = {
 };
 
 const ArtistCard = (props: ArtistCardProps) => {
-  const { lgDown } = useBreakpoints();
+  const { smDown, lgDown } = useBreakpoints();
   const { playPutMutation } = usePlayerHttp();
 
   /**
@@ -44,7 +44,7 @@ const ArtistCard = (props: ArtistCardProps) => {
     <Box
       className={styles['artist-card']}
       sx={{
-        backgroundColor: 'background.paper',
+        backgroundColor: smDown ? undefined : 'background.paper',
         '@media (hover: hover)': {
           ':hover': {
             backgroundColor: 'action.hover',
@@ -80,7 +80,7 @@ const ArtistCard = (props: ArtistCardProps) => {
             <Icon icon={['fas', 'user']} size="large" />
           </div>
         )}
-        {!isMobile && (
+        {!isMobile && !smDown && (
           <IconButton
             borderRadius="rounded-full"
             classes={clsx(styles['artist-card-image-play'], 'play')}

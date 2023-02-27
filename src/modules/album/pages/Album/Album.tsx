@@ -41,7 +41,7 @@ const Album = () => {
   const { typeTranslationByTypeGet } = useAlbum();
   const { albumGet } = useAlbumHttp();
   const { albumsGet } = useArtistHttp();
-  const { mdDown } = useBreakpoints();
+  const { smDown } = useBreakpoints();
   const { handleError, handleRetry } = useFetch();
   const { id } = useParams();
   const { playPutMutation } = usePlayerHttp();
@@ -175,7 +175,7 @@ const Album = () => {
               />
             </div>
             <div className={styles['album-header-info']}>
-              {!mdDown && (
+              {!smDown && (
                 <Box
                   className={styles['album-header-info-type']}
                   sx={{ color: 'text.secondary' }}
@@ -183,7 +183,7 @@ const Album = () => {
                   {typeTranslationByTypeGet(album.album_type)}
                 </Box>
               )}
-              {mdDown ? (
+              {smDown ? (
                 <H3 classes={styles['album-header-title']}>{album.name}</H3>
               ) : (
                 <H2>{album.name}</H2>
@@ -211,7 +211,7 @@ const Album = () => {
                   className={styles['album-header-info-data-section']}
                   sx={{ color: 'text.secondary' }}
                 >
-                  {mdDown && typeTranslationByTypeGet(album.album_type)}{' '}
+                  {smDown && typeTranslationByTypeGet(album.album_type)}{' '}
                   <span className="whitespace-pre-wrap"> </span>
                   {' • '}
                   {new Intl.DateTimeFormat(i18n.language, {
@@ -222,7 +222,7 @@ const Album = () => {
                   className={styles['album-header-info-data-section']}
                   sx={{ color: 'text.secondary' }}
                 >
-                  {!mdDown && (
+                  {!smDown && (
                     <>
                       <span className="whitespace-pre-wrap"> </span>
                       {'• '}

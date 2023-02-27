@@ -8,6 +8,7 @@ import ArtistCard from '../../artist/components/ArtistCard/ArtistCard';
 import TrackCard from '../../../shared/components/TrackCard/TrackCard';
 
 // Hooks
+import useBreakpoints from '../../../shared/hooks/use-breakpoints.hook';
 import useFetch from '../../../shared/hooks/use-fetch.hook';
 import usePlayerHttp from '../../../shared/hooks/use-player-http.hook';
 import useShared from '../../../shared/hooks/use-shared.hook';
@@ -40,6 +41,7 @@ import { artistDataMap } from '../../artist/artist.utils';
 import { trackDataMap } from '../../../shared/utils/track.utils';
 
 const Home = () => {
+  const { smDown } = useBreakpoints();
   const { fetchData, handleError } = useFetch();
   const { playPutMutation } = usePlayerHttp();
   const { topTitleByTimeRangeGet } = useShared();
@@ -183,14 +185,14 @@ const Home = () => {
       >
         {t('app.top.artists')}
       </H3>
-      <div className={styles['home-top-artists']}>
+      <div className="context-grid">
         {(topArtistsQuery.isLoading || topArtistsQuery.isRefetching) &&
           [...Array(20)].map((element, index) => {
             return (
               <Skeleton
                 key={index}
                 className={styles['home-top-item-loading']}
-                height={220}
+                height={smDown ? 56 : 220}
                 variant="rectangular"
               />
             );

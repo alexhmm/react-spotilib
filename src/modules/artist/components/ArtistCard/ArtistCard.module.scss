@@ -1,10 +1,10 @@
 .artist-card {
-  @apply duration-200 flex flex-col p-4 relative rounded-md transition-colors w-full;
+  @apply duration-200 flex items-center py-1 relative rounded-md transition-colors w-full sm:flex-col sm:items-start sm:p-4;
   &-fallback {
     @apply aspect-square flex justify-center items-center relative w-full;
   }
   &-image {
-    @apply aspect-square relative w-full;
+    @apply h-12 relative w-12 sm:aspect-square sm:h-auto sm:w-full;
     & img {
       @apply absolute aspect-square left-0 object-cover rounded-full shadow-xl top-0 w-full;
     }
@@ -16,6 +16,6 @@
     @apply absolute h-full left-0 top-0 w-full;
   }
   &-name {
-    @apply font-semibold my-4 text-sm truncate;
+    @apply font-semibold ml-4 text-sm truncate sm:ml-0 sm:my-4;
   }
 }
