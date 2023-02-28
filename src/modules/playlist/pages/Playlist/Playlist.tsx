@@ -37,6 +37,7 @@ import { ButtonType } from '../../../../shared/types/ui.types';
 // UI
 import H2 from '../../../../shared/ui/H2/H2';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
+import Link from '../../../../shared/ui/Link/Link';
 import Menu from '../../../../shared/ui/Menu/Menu';
 
 // Utils
@@ -347,8 +348,12 @@ const Playlist = () => {
                 {playlist.description}
               </div>
               <div className={styles['playlist-header-info-tracks']}>
-                {playlist.owner.display_name} • {playlist.tracks_total}{' '}
-                {t('playlist.detail.tracks')}
+                <Link to={`/user/${playlist.owner.id}`}>
+                  {playlist.owner.display_name}
+                </Link>
+                <span className="whitespace-pre-wrap"> </span>
+                {' • '}
+                {playlist.tracks_total} {t('playlist.detail.tracks')}
               </div>
             </div>
           </section>

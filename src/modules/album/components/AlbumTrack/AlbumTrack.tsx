@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import { Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
@@ -15,6 +14,7 @@ import { AlbumTrack as IAlbumTrack } from '../../album.types';
 
 // UI
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
+import Link from '../../../../shared/ui/Link/Link';
 
 // Utils
 import { minutesSecondsByMillisecondsGet } from '../../../../shared/utils/shared.utils';
@@ -92,10 +92,7 @@ const AlbumTrack = (props: PlaylistTrackProps) => {
                 ) : (
                   <Link
                     key={artist.id}
-                    className={clsx(
-                      styles['album-track-title-data-artists-item-link'],
-                      'app-link'
-                    )}
+                    classes={styles['album-track-title-data-artists-item-link']}
                     to={`/artist/${artist.id}`}
                   >
                     {artist.name}

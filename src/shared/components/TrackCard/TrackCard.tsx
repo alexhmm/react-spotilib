@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import { Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
@@ -15,6 +14,7 @@ import { TrackCard as ITrackCard } from '../../types/track.types';
 
 // UI
 import IconButton from '../../ui/IconButton/IconButton';
+import Link from '../../ui/Link/Link';
 
 type TrackCardProps = {
   track: ITrackCard;
@@ -82,7 +82,7 @@ const TrackCard = (props: TrackCardProps) => {
               ) : (
                 <Link
                   key={artist.id}
-                  className={clsx(
+                  classes={clsx(
                     styles['track-card-info-artists-item-link'],
                     'app-link'
                   )}

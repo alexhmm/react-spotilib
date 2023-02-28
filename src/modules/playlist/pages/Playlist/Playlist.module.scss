@@ -44,9 +44,6 @@
     }
     &-tracks {
       @apply flex items-center text-sm;
-      & a {
-        @apply ml-4;
-      }
     }
   }
 }

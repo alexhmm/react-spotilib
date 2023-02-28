@@ -1,5 +1,5 @@
 import { Fragment, memo, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
@@ -21,6 +21,7 @@ import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
+import Link from '../../../../shared/ui/Link/Link';
 
 type AlbumCardProps = {
   album: IAlbumCard;
@@ -137,10 +138,9 @@ const AlbumCard = (props: AlbumCardProps) => {
                 </Box>
               ) : (
                 <Link
-                  className={clsx(
+                  classes={clsx(
                     styles['album-card-info-data-artist'],
-                    styles['album-card-info-data-artist-link'],
-                    'app-link'
+                    styles['album-card-info-data-artist-link']
                   )}
                   to={`/artist/${artist.id}`}
                   onClick={() => {
@@ -156,8 +156,8 @@ const AlbumCard = (props: AlbumCardProps) => {
           ))}
         </Box>
       </div>
-      <Link
-        className={clsx(styles['album-card-link'], 'app-link')}
+      <RouterLink
+        className={styles['album-card-link']}
         to={`/album/${props.album.id}`}
       />
     </Box>

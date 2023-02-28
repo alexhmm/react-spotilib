@@ -1,5 +1,5 @@
 import { memo, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
@@ -22,6 +22,7 @@ import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
+import Link from '../../../../shared/ui/Link/Link';
 
 type PlaylistCardProps = {
   hideOwner?: boolean;
@@ -136,11 +137,9 @@ const PlaylistCard = (props: PlaylistCardProps) => {
                   </Box>
                 ) : (
                   <Link
-                    className={clsx(
+                    classes={clsx(
                       styles['playlist-card-info-owner-link'],
-                      styles['playlist-card-info-owner-name'],
-
-                      'app-link'
+                      styles['playlist-card-info-owner-name']
                     )}
                     to={`/user/${props.playlist.owner.id}`}
                   >
@@ -161,7 +160,7 @@ const PlaylistCard = (props: PlaylistCardProps) => {
           <div className={styles['playlist-card-info-owner']}></div>
         )}
       </div>
-      <Link
+      <RouterLink
         className={clsx(styles['playlist-card-link'], 'app-link')}
         to={`/playlist/${props.playlist.id}`}
       />

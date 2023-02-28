@@ -100,7 +100,7 @@ const ArtistCard = (props: ArtistCardProps) => {
       </div>
       <div className={styles['artist-card-name']}>{props.artist.name}</div>
       <Link
-        className={clsx(styles['artist-card-link'], 'app-link')}
+        className={styles['artist-card-link']}
         to={`/artist/${props.artist.id}`}
       />
     </Box>

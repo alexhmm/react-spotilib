@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import { Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
@@ -12,6 +11,7 @@ import { SpotifyTrack } from '../../../../shared/types/spotify.types';
 
 // UI
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
+import Link from '../../../../shared/ui/Link/Link';
 
 // Utils
 import { minutesSecondsByMillisecondsGet } from '../../../../shared/utils/shared.utils';
@@ -80,7 +80,7 @@ const ArtistTopTrack = (props: ArtistTopTrackProps) => {
         className={styles['artist-top-track-album']}
         sx={{ color: 'text.secondary' }}
       >
-        <Link className="app-link" to={`/album/${props.track.album.id}`}>
+        <Link to={`/album/${props.track.album.id}`}>
           {props.track.album.name}
         </Link>
       </Box>

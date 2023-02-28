@@ -1,9 +1,8 @@
 import { memo, useCallback, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import { Box, CircularProgress } from '@mui/material';
-import clsx from 'clsx';
 
 // Components
 import AlbumCard from '../../components/AlbumCard/AlbumCard';
@@ -35,6 +34,7 @@ import { ButtonType } from '../../../../shared/types/ui.types';
 import H2 from '../../../../shared/ui/H2/H2';
 import H3 from '../../../../shared/ui/H3/H3';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
+import Link from '../../../../shared/ui/Link/Link';
 
 // Utils
 import { albumDataMap } from '../../album.utils';
@@ -206,10 +206,7 @@ const Album = () => {
                     >
                       <Link
                         key={artist.id}
-                        className={clsx(
-                          styles['album-header-info-data-artist-link'],
-                          'app-link'
-                        )}
+                        classes={styles['album-header-info-data-artist-link']}
                         to={`/artist/${artist.id}`}
                       >{`${artist.name}`}</Link>
                       {`${index < album.artists.length - 1 ? ',\xa0' : ''}`}

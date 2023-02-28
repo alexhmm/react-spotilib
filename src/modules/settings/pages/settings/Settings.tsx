@@ -65,6 +65,7 @@ const Settings = () => {
     return () => {
       setTitle();
     };
+    // eslint-disable-next-line
   }, []);
 
   return (
