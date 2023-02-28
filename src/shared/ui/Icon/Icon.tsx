@@ -11,7 +11,7 @@ import {
 import PropTypes from 'prop-types';
 
 // Types
-import { ColorType } from '../../types/mui.types';
+import { ColorType, FontSize } from '../../types/mui.types';
 
 type IconProps = {
   classes?: string;
@@ -20,7 +20,7 @@ type IconProps = {
   icon: [IconPrefix, IconName];
   id?: string;
   secondaryOpacity?: string;
-  size?: 'small' | 'medium' | 'large';
+  size?: FontSize;
   sx?: SxProps<Theme> | undefined;
 };
 

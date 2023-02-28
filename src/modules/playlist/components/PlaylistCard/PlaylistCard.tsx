@@ -5,6 +5,9 @@ import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
 
+// Components
+import ImageFallback from '../../../../shared/components/ImageFallback/ImageFallback';
+
 // Hooks
 import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
 import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';
@@ -14,10 +17,10 @@ import styles from './PlaylistCard.module.scss';
 
 // Types
 import { PlaylistCard as IPlaylistCard } from '../../playlist.types';
+import { ImageFallbackType } from '../../../../shared/types/shared.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
-import Icon from '../../../../shared/ui/Icon/Icon';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
 
 type PlaylistCardProps = {
@@ -83,9 +86,10 @@ const PlaylistCard = (props: PlaylistCardProps) => {
             }
           />
         ) : (
-          <div className={clsx(styles['playlist-card-fallback'], 'image')}>
-            <Icon icon={['fas', 'music']} size="large" />
-          </div>
+          <ImageFallback
+            classes="sm:rounded-md"
+            type={ImageFallbackType.Playlist}
+          />
         )}
         {!isMobile && !smDown && (
           <IconButton

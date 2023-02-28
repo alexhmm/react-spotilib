@@ -8,6 +8,7 @@ import clsx from 'clsx';
 // Components
 import AlbumCard from '../../components/AlbumCard/AlbumCard';
 import AlbumTrack from '../../components/AlbumTrack/AlbumTrack';
+import ImageFallback from '../../../../shared/components/ImageFallback/ImageFallback';
 
 // Hooks
 import useAlbum from '../../use-album.hook';
@@ -27,6 +28,7 @@ import useUserStore from '../../../user/use-user.store';
 
 // Types
 import { AlbumCard as IAlbumCard, AlbumWithDuration } from '../../album.types';
+import { ImageFallbackType } from '../../../../shared/types/shared.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
@@ -169,10 +171,14 @@ const Album = () => {
         >
           <div className={styles['album-header']}>
             <div className={styles['album-header-image']}>
-              <img
-                alt={`${t('album.detail.title')} ${album.name}`}
-                src={album.images[0].url}
-              />
+              {album.images[0]?.url ? (
+                <img
+                  alt={`${t('album.detail.title')} ${album.name}`}
+                  src={album.images[0].url}
+                />
+              ) : (
+                <ImageFallback type={ImageFallbackType.Album} />
+              )}
             </div>
             <div className={styles['album-header-info']}>
               {!smDown && (

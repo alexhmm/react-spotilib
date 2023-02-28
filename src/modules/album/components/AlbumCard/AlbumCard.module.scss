@@ -1,8 +1,6 @@
 .album-card {
   @apply cursor-pointer duration-200 flex py-1 relative rounded-md transition-colors w-full sm:flex-col sm:p-4;
-  &-fallback {
-    @apply aspect-square flex justify-center items-center relative w-full;
-  }
+
   &-image {
     @apply h-12 relative shrink-0 w-12 sm:aspect-square sm:h-auto sm:w-full;
     & img {

@@ -7,6 +7,7 @@ import { CircularProgress, Tooltip } from '@mui/material';
 import clsx from 'clsx';
 
 // Components
+import ImageFallback from '../../../../shared/components/ImageFallback/ImageFallback';
 import PlaylistTrack from '../../components/PlaylistTrack/PlaylistTrack';
 
 // Hooks
@@ -30,6 +31,7 @@ import {
   PlaylistFollowPutRequest,
   PlaylistMoreMenuItemAction,
 } from '../../playlist.types';
+import { ImageFallbackType } from '../../../../shared/types/shared.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
@@ -309,15 +311,17 @@ const Playlist = () => {
           scrollThreshold={1}
         >
           <section className={styles['playlist-header']}>
-            {playlist.images[0]?.url && (
-              <div className={styles['playlist-header-image']}>
+            <div className={styles['playlist-header-image']}>
+              {playlist.images[0]?.url ? (
                 <img
                   alt={`${t('playlist.detail.title')} ${playlist.name}`}
                   src={playlist.images[0].url}
                   onClick={onPlaylistMetaDataDownload}
                 />
-              </div>
-            )}
+              ) : (
+                <ImageFallback type={ImageFallbackType.Playlist} />
+              )}
+            </div>
             <div
               className={clsx(
                 styles['playlist-header-info'],

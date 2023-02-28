@@ -4,6 +4,9 @@ import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
 
+// Components
+import ImageFallback from '../../../../shared/components/ImageFallback/ImageFallback';
+
 // Hooks
 import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
 import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';
@@ -13,10 +16,10 @@ import styles from './ArtistCard.module.scss';
 
 // Types
 import { ArtistCard as IArtistCard } from '../../artist.types';
+import { ImageFallbackType } from '../../../../shared/types/shared.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
-import Icon from '../../../../shared/ui/Icon/Icon';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
 
 type ArtistCardProps = {
@@ -76,9 +79,7 @@ const ArtistCard = (props: ArtistCardProps) => {
             }
           />
         ) : (
-          <div className={clsx(styles['artist-card-fallback'], 'image')}>
-            <Icon icon={['fas', 'user']} size="large" />
-          </div>
+          <ImageFallback type={ImageFallbackType.Artist} />
         )}
         {!isMobile && !smDown && (
           <IconButton

@@ -15,7 +15,7 @@ import clsx from 'clsx';
 import styles from './Menu.module.scss';
 
 // Types
-import { ColorType } from '../../types/mui.types';
+import { ColorType, FontSize } from '../../types/mui.types';
 import { MenuItem as IMenuItem } from '../../types/shared.types';
 
 // UI
@@ -44,7 +44,7 @@ type MenuProps = {
   classes?: string;
   color?: ColorType;
   icon?: [IconPrefix, IconName];
-  iconSize?: 'medium' | 'small' | 'large' | undefined;
+  iconSize?: FontSize;
   items: IMenuItem[];
   padding?: string | undefined;
   sx?: SxProps<Theme>;

@@ -7,3 +7,5 @@ export type ColorType =
   | 'info'
   | 'warning'
   | undefined;
+
+export type FontSize = 'small' | 'medium' | 'large' | 'inherit' | undefined;

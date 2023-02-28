@@ -8,11 +8,13 @@ import { CircularProgress } from '@mui/material';
 import AlbumCard from '../../../album/components/AlbumCard/AlbumCard';
 import ArtistCard from '../../components/ArtistCard/ArtistCard';
 import ArtistTopTrack from '../../components/ArtistTopTrack/ArtistTopTrack';
+import ImageFallback from '../../../../shared/components/ImageFallback/ImageFallback';
 
 // Hooks
 import useArtistHttp from '../../use-artist-http.hook';
 import useFetch from '../../../../shared/hooks/use-fetch.hook';
 import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';
+import useUserHttp from '../../../user/use-user-http.hook';
 
 // Stores
 import useSharedStore from '../../../../shared/stores/use-shared.store';
@@ -27,6 +29,10 @@ import {
   ArtistCard as IArtistCard,
   ArtistTopTracksGetResponse,
 } from '../../artist.types';
+import {
+  ImageFallbackType,
+  RequestMethod,
+} from '../../../../shared/types/shared.types';
 import {
   SpotifyAlbumType,
   SpotifyArtist,
@@ -46,8 +52,6 @@ import TextButtonOutlined from '../../../../shared/ui/TextButtonOutlined/TextBut
 // Utils
 import { albumDataMap } from '../../../album/album.utils';
 import { artistDataMap } from '../../artist.utils';
-import useUserHttp from '../../../user/use-user-http.hook';
-import { RequestMethod } from '../../../../shared/types/shared.types';
 
 type ArtistAlbumsTypeButtonProps = {
   currentType: SpotifyAlbumType | undefined;
@@ -323,10 +327,14 @@ const Artist = () => {
         <div className={styles['artist']}>
           <div className={styles['artist-header']}>
             <div className={styles['artist-header-image']}>
-              <img
-                alt={`${t('artist.title')} ${artist.name}`}
-                src={artist.images[0].url}
-              />
+              {artist.images[0]?.url ? (
+                <img
+                  alt={`${t('artist.title')} ${artist.name}`}
+                  src={artist.images[0].url}
+                />
+              ) : (
+                <ImageFallback type={ImageFallbackType.Artist} />
+              )}
             </div>
             <div className={styles['artist-header-info']}>
               <H2 classes={styles['artist-header-info-name']}>{artist.name}</H2>

@@ -1,12 +1,9 @@
 .artist-card {
   @apply duration-200 flex items-center py-1 relative rounded-md transition-colors w-full sm:flex-col sm:items-start sm:p-4;
-  &-fallback {
-    @apply aspect-square flex justify-center items-center relative w-full;
-  }
   &-image {
     @apply h-12 relative w-12 sm:aspect-square sm:h-auto sm:w-full;
     & img {
-      @apply absolute aspect-square left-0 object-cover rounded-full shadow-xl top-0 w-full;
+      @apply absolute aspect-square left-0 object-cover rounded-full top-0 w-full sm:shadow-xl;
     }
     &-play {
       @apply absolute bottom-0 duration-300 right-2 shadow-xl transform transition-all z-10;

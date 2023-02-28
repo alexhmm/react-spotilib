@@ -4,6 +4,9 @@ import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
 
+// Components
+import ImageFallback from '../../../../shared/components/ImageFallback/ImageFallback';
+
 // Hooks
 import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
 import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';
@@ -13,10 +16,10 @@ import styles from './AlbumCard.module.scss';
 
 // Types
 import { AlbumCard as IAlbumCard } from '../../album.types';
+import { ImageFallbackType } from '../../../../shared/types/shared.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
-import Icon from '../../../../shared/ui/Icon/Icon';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
 
 type AlbumCardProps = {
@@ -80,9 +83,10 @@ const AlbumCard = (props: AlbumCardProps) => {
             }
           />
         ) : (
-          <div className={clsx(styles['album-card-fallback'], 'image')}>
-            <Icon icon={['fas', 'music']} size="large" />
-          </div>
+          <ImageFallback
+            classes="sm:rounded-md"
+            type={ImageFallbackType.Album}
+          />
         )}
         {!isMobile && !smDown && (
           <IconButton

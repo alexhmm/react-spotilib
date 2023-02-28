@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import styles from './IconButton.module.scss';
 
 // Types
-import { ColorType } from '../../types/mui.types';
+import { ColorType, FontSize } from '../../types/mui.types';
 import { ButtonType } from '../../types/ui.types';
 
 // UI
@@ -20,7 +20,7 @@ type IconButtonProps = {
   color?: ColorType;
   disabled?: boolean;
   icon: [IconPrefix, IconName];
-  iconSize?: 'small' | 'medium' | 'large';
+  iconSize?: FontSize;
   id?: string;
   padding?: string;
   preset?: ButtonType;

@@ -5,6 +5,13 @@ export enum FormType {
   Switch = 'SWITCH',
 }
 
+export enum ImageFallbackType {
+  Album = 'ALBUM',
+  Artist = 'ARTIST',
+  Playlist = 'PLAYLIST',
+  Profile = 'PROFILE',
+}
+
 export enum RequestMethod {
   Delete = 'DELETE',
   Get = 'GET',

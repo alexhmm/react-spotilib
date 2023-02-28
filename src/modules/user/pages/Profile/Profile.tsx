@@ -22,7 +22,10 @@ import styles from './Profile.module.scss';
 
 // Types
 import { PlaylistCard as IPlaylistCard } from '../../../playlist/playlist.types';
-import { RequestMethod } from '../../../../shared/types/shared.types';
+import {
+  ImageFallbackType,
+  RequestMethod,
+} from '../../../../shared/types/shared.types';
 import { SpotifyFollowType } from '../../../../shared/types/spotify.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
 import { UserProfile } from '../../user.types';
@@ -34,6 +37,7 @@ import { playlistDataMap } from '../../../playlist/playlist.utils';
 import H3 from '../../../../shared/ui/H3/H3';
 import H2 from '../../../../shared/ui/H2/H2';
 import TextButtonOutlined from '../../../../shared/ui/TextButtonOutlined/TextButtonOutlined';
+import ImageFallback from '../../../../shared/components/ImageFallback/ImageFallback';
 
 const Profile = () => {
   const { mdDown } = useBreakpoints();
@@ -180,10 +184,14 @@ const Profile = () => {
       {userProfile && (
         <section className={styles['profile-header']}>
           <div className={styles['profile-header-image']}>
-            <img
-              alt={`${t('user.profile.title')} ${userProfile.display_name}`}
-              src={userProfile.images[0].url}
-            />
+            {userProfile.images[0]?.url ? (
+              <img
+                alt={`${t('user.profile.title')} ${userProfile.display_name}`}
+                src={userProfile.images[0].url}
+              />
+            ) : (
+              <ImageFallback type={ImageFallbackType.Profile} />
+            )}
           </div>
           <div className={styles['profile-header-info']}>
             {!mdDown && (
