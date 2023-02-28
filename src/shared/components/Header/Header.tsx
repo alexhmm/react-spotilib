@@ -2,6 +2,7 @@ import { memo, useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
+import { isMobile } from 'react-device-detect';
 import { IconName, IconPrefix } from '@fortawesome/free-solid-svg-icons';
 import { Box, Button, Divider, Popover, Switch } from '@mui/material';
 import clsx from 'clsx';
@@ -27,12 +28,14 @@ import styles from './Header.module.scss';
 
 // Types
 import { Theme } from '../../types/shared.types';
+import { ButtonType } from '../../types/ui.types';
 import { UserProfile } from '../../../modules/user/user.types';
 
 // UI
 import Icon from '../../ui/Icon/Icon';
-import TextButtonOutlined from '../../ui/TextButtonOutlined/TextButtonOutlined';
+import IconButton from '../../ui/IconButton/IconButton';
 import LibraryNavigation from '../../../modules/library/components/LibraryNavigation/LibraryNavigation';
+import TextButtonOutlined from '../../ui/TextButtonOutlined/TextButtonOutlined';
 
 type HeaderMenuButtonItemProps = {
   classes?: string;
@@ -205,6 +208,7 @@ const Header = () => {
   const { lgDown } = useBreakpoints();
   const { fetchData } = useFetch();
   const location = useLocation();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   // Refs
@@ -302,12 +306,40 @@ const Header = () => {
         },
       }}
     >
-      <Link className={clsx(styles['header-logo'], 'app-link')} to="/">
-        <Icon icon={['fas', 'record-vinyl']} size="medium" />
-        <span className={styles['header-logo-text']}>Spotilib</span>
-      </Link>
+      {((isMobile && location.pathname === '/') || !isMobile) && (
+        <Link className={clsx(styles['header-logo'], 'app-link')} to="/">
+          <Icon icon={['fas', 'record-vinyl']} size="medium" />
+          <span className={styles['header-logo-text']}>Spotilib</span>
+        </Link>
+      )}
+      {isMobile && location.pathname !== '/' && token && (
+        <div className={styles['header-logo']}>
+          <IconButton
+            icon={['fas', 'arrow-left']}
+            onClick={() => navigate(-1)}
+          />
+        </div>
+      )}
       <div className={styles['header-info']}>
         <div className={styles['header-info-actions']}>
+          {!lgDown &&
+            location.pathname !== '/' &&
+            location.pathname !== '/auth' &&
+            token && (
+              <div className={styles['header-info-actions-nav']}>
+                <IconButton
+                  disabled={location.key === 'default'}
+                  icon={['fas', 'chevron-left']}
+                  preset={ButtonType.Paper}
+                  onClick={() => navigate(-1)}
+                />
+                <IconButton
+                  icon={['fas', 'chevron-right']}
+                  preset={ButtonType.Paper}
+                  onClick={() => navigate(+1)}
+                />
+              </div>
+            )}
           {location.pathname.includes('search') && (
             <Search
               classes={styles['header-info-actions-search']}
@@ -326,21 +358,6 @@ const Header = () => {
           </div>
         </div>
         <div className={styles['header-info-content']}>
-          {/*
-          <Button
-            onClick={() => {
-              i18n.language === 'en-US'
-                ? i18n.changeLanguage('de-DE')
-                : i18n.changeLanguage('en-US');
-            }}
-          >
-            {i18n.language === 'en-US'
-              ? t('app.language.german')
-              : t('app.language.english')}
-          </Button>
-          {profile?.display_name && (
-            <Button onClick={logout}>{profile?.display_name}</Button>
-          )} */}
           {profile ? (
             <HeaderMenu />
           ) : (
@@ -354,6 +371,7 @@ const Header = () => {
           ref={headerBgRef}
           sx={{
             backgroundColor: lgDown ? undefined : 'bg.sidebar',
+            opacity: 0,
           }}
         ></Box>
       </div>

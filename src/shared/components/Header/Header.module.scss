@@ -5,6 +5,12 @@
     @apply lg:px-8;
     &-actions {
       @apply flex items-center z-10;
+      &-nav {
+        @apply flex items-center mr-4;
+        & button:first-of-type {
+          @apply mr-2;
+        }
+      }
       &-search {
         @apply grow w-full md:w-96;
       }

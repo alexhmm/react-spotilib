@@ -40,6 +40,12 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
     // Set button sx by preset
     let sx: SxProps<Theme> | undefined = undefined;
     switch (props.preset) {
+      case ButtonType.Paper:
+        sx = {
+          ...props.sx,
+          backgroundColor: 'background.paper',
+        };
+        break;
       case ButtonType.Primary:
         sx = {
           ...props.sx,

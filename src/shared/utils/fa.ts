@@ -3,9 +3,12 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
 
 import {
+  faArrowLeft as fasArrowLeft,
   faBars as fasBars,
   faBook as fasBook,
   faChevronDown as fasChevronDown,
+  faChevronLeft as fasChevronLeft,
+  faChevronRight as fasChevronRight,
   faChevronUp as fasChevronUp,
   faDownload as fasDownload,
   faEllipsis as fasEllipsis,
@@ -29,9 +32,12 @@ library.add(farHeart);
 
 // Add free solid icons to libary
 library.add(
+  fasArrowLeft,
   fasBars,
   fasBook,
   fasChevronDown,
+  fasChevronLeft,
+  fasChevronRight,
   fasChevronUp,
   fasDownload,
   fasEllipsis,
