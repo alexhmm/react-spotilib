@@ -52,6 +52,7 @@ import TextButtonOutlined from '../../../../shared/ui/TextButtonOutlined/TextBut
 // Utils
 import { albumDataMap } from '../../../album/album.utils';
 import { artistDataMap } from '../../artist.utils';
+import { setTitle } from '../../../../shared/utils/shared.utils';
 
 type ArtistAlbumsTypeButtonProps = {
   currentType: SpotifyAlbumType | undefined;
@@ -168,9 +169,10 @@ const Artist = () => {
     onSuccess: (data) => {
       if (data) {
         setArtist(data);
+        setTitle(data.name);
         // Wait for transition animation
         setTimeout(() => {
-          setHeaderTitle(data?.name);
+          setHeaderTitle(data.name);
         }, 500);
       }
     },
@@ -316,6 +318,8 @@ const Artist = () => {
   useEffect(() => {
     return () => {
       setFollowing(undefined);
+      setHeaderTitle(undefined);
+      setTitle();
     };
     // eslint-disable-next-line
   }, []);

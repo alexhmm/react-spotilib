@@ -41,6 +41,7 @@ import Menu from '../../../../shared/ui/Menu/Menu';
 
 // Utils
 import { playlistCreate } from '../../playlist.utils';
+import { setTitle } from '../../../../shared/utils/shared.utils';
 
 const Playlist = () => {
   const { handleError, handleRetry } = useFetch();
@@ -139,9 +140,10 @@ const Playlist = () => {
         const output = JSON.stringify({ playlist: mappedPlaylist }, null, 4);
         const blob = new Blob([output]);
         setObject(blob);
+        setTitle(data.name);
         // Wait for transition animation
         setTimeout(() => {
-          setHeaderTitle(data?.name);
+          setHeaderTitle(data.name);
         }, 500);
       }
     },
@@ -222,6 +224,7 @@ const Playlist = () => {
     // Reset header title
     return () => {
       setHeaderTitle(undefined);
+      setTitle();
     };
     // eslint-disable-next-line
   }, [id]);

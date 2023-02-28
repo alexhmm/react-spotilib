@@ -27,7 +27,7 @@ import H3 from '../../../../shared/ui/H3/H3';
 
 // Utils
 import { artistDataMap } from '../../../artist/artist.utils';
-import { concatArray } from '../../../../shared/utils/shared.utils';
+import { concatArray, setTitle } from '../../../../shared/utils/shared.utils';
 
 const Artists = () => {
   const { handleError, handleRetry } = useFetch();
@@ -83,12 +83,14 @@ const Artists = () => {
   // ####### //
 
   /**
-   * Set pathname on mount.
+   * Set pathname and page title on mount.
    */
   useEffect(() => {
     setPathName('/library/artists');
+    setTitle(t('artist.title').toString());
     return () => {
       setPathName(undefined);
+      setTitle();
     };
     // eslint-disable-next-line
   }, []);

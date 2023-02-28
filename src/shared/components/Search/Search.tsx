@@ -1,5 +1,6 @@
 import { memo, useEffect } from 'react';
 import { useMutation } from 'react-query';
+import { useTranslation } from 'react-i18next';
 import { InputAdornment, OutlinedInput } from '@mui/material';
 import clsx from 'clsx';
 
@@ -35,6 +36,7 @@ type SearchProps = {
 const Search = (props: SearchProps) => {
   const { handleError, handleRetry } = useFetch();
   const { searchGet } = useSearchHttp();
+  const { t } = useTranslation();
 
   // Search store state
   const [setSearch, setSearchData, setSearchLoading] = useSearchStore(
@@ -111,7 +113,7 @@ const Search = (props: SearchProps) => {
         notchedOutline: styles['search-outline'],
       }}
       disabled={props.disabled}
-      placeholder="Search"
+      placeholder={t('app.search').toString()}
       size="small"
       startAdornment={
         <InputAdornment

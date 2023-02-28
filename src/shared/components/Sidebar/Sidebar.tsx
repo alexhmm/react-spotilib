@@ -222,7 +222,7 @@ const Sidebar = () => {
             icon={['fas', 'magnifying-glass']}
             to="/search"
           >
-            {t('app.sidebar.search')}
+            {t('app.search')}
           </SidebarItem>
           <SidebarItem
             active={location.pathname.includes('library') ? true : false}

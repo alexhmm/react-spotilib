@@ -38,6 +38,7 @@ import IconButton from '../../../../shared/ui/IconButton/IconButton';
 
 // Utils
 import { albumDataMap } from '../../album.utils';
+import { setTitle } from '../../../../shared/utils/shared.utils';
 
 const Album = () => {
   const { typeTranslationByTypeGet } = useAlbum();
@@ -89,9 +90,10 @@ const Album = () => {
           };
           setAlbum(album);
         }
+        setTitle(data.name);
         // Wait for transition animation
         setTimeout(() => {
-          setHeaderTitle(data?.name);
+          setHeaderTitle(data.name);
         }, 500);
       }
     },
@@ -131,6 +133,7 @@ const Album = () => {
     // Reset header title
     return () => {
       setHeaderTitle(undefined);
+      setTitle();
     };
     // eslint-disable-next-line
   }, [id]);
