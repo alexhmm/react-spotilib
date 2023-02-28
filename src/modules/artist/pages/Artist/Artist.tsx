@@ -314,15 +314,16 @@ const Artist = () => {
   // EFFECTS //
   // ####### //
 
-  // Reset following state on component unmount.
+  // Reset data on id change.
   useEffect(() => {
     return () => {
+      setArtist(undefined);
       setFollowing(undefined);
       setHeaderTitle(undefined);
       setTitle();
     };
     // eslint-disable-next-line
-  }, []);
+  }, [id]);
 
   return (
     <>

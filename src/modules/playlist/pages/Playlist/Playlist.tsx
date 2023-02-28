@@ -219,12 +219,11 @@ const Playlist = () => {
   // EFFECTS //
   // ####### //
 
-  // Reset playlist on id change
+  // Reset data on id change.
   useEffect(() => {
-    playlist && setPlaylist(undefined);
-    // Reset header title
     return () => {
       setHeaderTitle(undefined);
+      setPlaylist(undefined);
       setTitle();
     };
     // eslint-disable-next-line

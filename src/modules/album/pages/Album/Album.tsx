@@ -127,11 +127,10 @@ const Album = () => {
   // EFFECTS //
   // ####### //
 
-  // Reset playlist on id change
+  // Reset data on id change.
   useEffect(() => {
-    album && setAlbum(undefined);
-    // Reset header title
     return () => {
+      setAlbum(undefined);
       setHeaderTitle(undefined);
       setTitle();
     };
