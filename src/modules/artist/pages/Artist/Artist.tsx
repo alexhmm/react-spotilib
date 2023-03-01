@@ -383,6 +383,7 @@ const Artist = () => {
                   return (
                     <ArtistTopTrack
                       key={track.id}
+                      index={index}
                       track={track}
                       onPlay={() => onPlayTopTrack(index)}
                     />
@@ -390,13 +391,17 @@ const Artist = () => {
                 }
                 return null;
               })}
-            <TextButton
-              onClick={() =>
-                topTracksMore ? setTopTracksMore(false) : setTopTracksMore(true)
-              }
-            >
-              {topTracksMore ? t('app.show.less') : t('app.show.more')}
-            </TextButton>
+            {topTracks.length > 5 && (
+              <TextButton
+                onClick={() =>
+                  topTracksMore
+                    ? setTopTracksMore(false)
+                    : setTopTracksMore(true)
+                }
+              >
+                {topTracksMore ? t('app.show.less') : t('app.show.more')}
+              </TextButton>
+            )}
           </section>
           <section className={styles['artist-section']}>
             <H3>{t('artist.detail.discography.title')}</H3>

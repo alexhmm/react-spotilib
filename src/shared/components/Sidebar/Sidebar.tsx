@@ -298,7 +298,7 @@ const Sidebar = () => {
           )}
           {playlistsAddMutation.isLoading && <CircularProgress />}
         </InfiniteScroll>
-        <div className={styles['sidebar-content-info']}>© 2022 Spotilib</div>
+        <div className={styles['sidebar-content-info']}>© 2023 Spotilib</div>
       </div>
     </Box>
   );
