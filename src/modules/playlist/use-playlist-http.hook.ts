@@ -2,7 +2,11 @@
 import useFetch from '../../shared/hooks/use-fetch.hook';
 
 // Types
-import { PlaylistFollowPutRequest, PlaylistsGetParams } from './playlist.types';
+import {
+  PlaylistFollowPutRequest,
+  PlaylistItemsRemoveDeleteRequest,
+  PlaylistsGetParams,
+} from './playlist.types';
 import {
   FollowingStateGetRequest,
   RequestMethod,
@@ -121,6 +125,21 @@ const usePlaylistHttp = () => {
     );
   };
 
+  /**
+   * DELETE Remove one or more items from a user's playlist.
+   * @param data Playlist id and PlaylistItemsRemoveDeleteRequest
+   * @returns Message
+   */
+  const removePlaylistItems = async (data: {
+    id: string;
+    body: PlaylistItemsRemoveDeleteRequest;
+  }): Promise<any> => {
+    return await fetchData(`playlists/${data.id}/tracks`, {
+      body: data.body,
+      method: RequestMethod.Delete,
+    });
+  };
+
   return {
     playlistsGet,
     playlistGet,
@@ -128,6 +147,7 @@ const usePlaylistHttp = () => {
     playlistfollowGet,
     playlistFollowPut,
     playlistTracksGet,
+    removePlaylistItems,
   };
 };
 

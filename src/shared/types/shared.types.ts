@@ -41,6 +41,7 @@ export interface FormItem {
 export interface MenuItem {
   action: any;
   disabled?: boolean;
+  icon?: [IconPrefix, IconName];
   title: string;
   tooltip?: string;
 }

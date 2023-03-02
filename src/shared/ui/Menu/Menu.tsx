@@ -23,6 +23,7 @@ import IconButton from '../IconButton/IconButton';
 
 type MenuItemProps = {
   classes?: string;
+  hideIcon?: boolean;
   title: string;
   onClick: () => void;
 };
@@ -43,6 +44,7 @@ type MenuProps = {
   anchorOrigin?: PopoverOrigin;
   classes?: string;
   color?: ColorType;
+  hideItemIcon?: boolean;
   icon?: [IconPrefix, IconName];
   iconSize?: FontSize;
   items: IMenuItem[];
@@ -116,6 +118,7 @@ const Menu = (props: MenuProps) => {
           {props.items.map((item, index) => (
             <MenuItem
               key={index}
+              hideIcon={props.hideItemIcon}
               title={item.title}
               onClick={() => {
                 onMenuClose();

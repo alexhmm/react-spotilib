@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -29,7 +29,10 @@ import {
   PlaylistsGetParams,
   Playlist as IPlaylist,
   PlaylistFollowPutRequest,
-  PlaylistMoreMenuItemAction,
+  PlaylistAction,
+  PlaylistTrackAction,
+  PlaylistItemsRemoveDeleteRequest,
+  PlaylistTrack as IPlaylistTrack,
 } from '../../playlist.types';
 import { ImageFallbackType } from '../../../../shared/types/shared.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
@@ -41,11 +44,17 @@ import Link from '../../../../shared/ui/Link/Link';
 import Menu from '../../../../shared/ui/Menu/Menu';
 
 // Utils
-import { playlistCreate } from '../../playlist.utils';
+import {
+  playlistCreate,
+  removePlaylistItemsEffect,
+} from '../../playlist.utils';
 import { setTitle } from '../../../../shared/utils/shared.utils';
+import useTrackHttp from '../../../../shared/hooks/use-track-http.hook';
+import { SaveTracksPutRequest } from '../../../../shared/types/track.types';
 
 const Playlist = () => {
   const { handleError, handleRetry } = useFetch();
+  const navigate = useNavigate();
   const { objectURL, setObject } = useObjectURL(null);
   const { id } = useParams();
   const { playPutMutation } = usePlayerHttp();
@@ -56,7 +65,9 @@ const Playlist = () => {
     playlistfollowGet,
     playlistFollowPut,
     playlistTracksGet,
+    removePlaylistItems,
   } = usePlaylistHttp();
+  const { saveTracks } = useTrackHttp();
   const { i18n, t } = useTranslation();
 
   // Refs
@@ -80,14 +91,14 @@ const Playlist = () => {
   // Constants
   const moreMenuItems = [
     {
-      action: PlaylistMoreMenuItemAction.Delete,
+      action: PlaylistAction.Delete,
       title:
         playlist?.owner.id === profile?.id
           ? t('app.actions.delete')
           : t('app.follow.delete.title'),
     },
     {
-      action: PlaylistMoreMenuItemAction.DownloadMetadata,
+      action: PlaylistAction.DownloadMetadata,
       title: t('app.actions.download_metadata'),
     },
   ];
@@ -215,6 +226,50 @@ const Playlist = () => {
     }
   );
 
+  // PUT Save tracks mutation
+  const saveTracksPutMutation = useMutation(
+    (data: SaveTracksPutRequest) => saveTracks(data),
+    {
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: () => {
+        setNotifcation({
+          title: t('track.action.add.success'),
+        });
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
+  // DELETE Remove playlist items mutation
+  const removeItemsDeleteMutation = useMutation(
+    (data: { id: string; body: PlaylistItemsRemoveDeleteRequest }) =>
+      removePlaylistItems(data),
+    {
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data, variables) => {
+        playlist &&
+          setPlaylist(
+            removePlaylistItemsEffect(playlist, variables.body.tracks)
+          );
+        setNotifcation({
+          timeout: 3000,
+          title: t('playlist.detail.track.action.remove_from_playlist.success'),
+        });
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
   // ####### //
   // EFFECTS //
   // ####### //
@@ -264,16 +319,54 @@ const Playlist = () => {
    * Handler on more menu action.
    */
   const onMoreMenuAction = useCallback(
-    (action: PlaylistMoreMenuItemAction) => {
-      action === PlaylistMoreMenuItemAction.Delete &&
+    (action: PlaylistAction) => {
+      action === PlaylistAction.Delete &&
         id &&
         playlistFollowDeleteMutation.mutate(id);
-      action === PlaylistMoreMenuItemAction.DownloadMetadata &&
+      action === PlaylistAction.DownloadMetadata &&
         downloadMetadataRef.current &&
         downloadMetadataRef.current.click();
     },
     // eslint-disable-next-line
     [downloadMetadataRef, id]
+  );
+
+  /**
+   * Handler on playlist track action.
+   * @param track PlaylistTrack
+   * @param action PlaylistTrackAction
+   */
+  const onTrackAction = useCallback(
+    (track: IPlaylistTrack, action: PlaylistTrackAction) => {
+      switch (action) {
+        case PlaylistTrackAction.Add:
+          saveTracksPutMutation.mutate({ ids: [track.id] });
+          break;
+        case PlaylistTrackAction.ShowAlbum:
+          navigate(`/album/${track.album.id}`);
+          break;
+        case PlaylistTrackAction.ShowArtist:
+          navigate(`/artist/${track.artists[0].id}`);
+          break;
+        case PlaylistTrackAction.RemoveFromPlaylist:
+          id &&
+            removeItemsDeleteMutation.mutate({
+              id,
+              body: {
+                tracks: [
+                  {
+                    uri: track.uri,
+                  },
+                ],
+              },
+            });
+          break;
+        default:
+          break;
+      }
+    },
+    // eslint-disable-next-line
+    [id]
   );
 
   /**
@@ -418,7 +511,9 @@ const Playlist = () => {
                 key={track.id}
                 index={index}
                 locale={i18n.language}
+                owner={playlist.owner.id === profile?.id}
                 track={track}
+                onAction={(action) => onTrackAction(track, action)}
                 onPlay={() => onTrackPlay(playlist.uri, track.uri)}
               />
             ))}
