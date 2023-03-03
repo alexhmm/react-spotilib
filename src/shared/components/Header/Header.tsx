@@ -306,13 +306,15 @@ const Header = () => {
         },
       }}
     >
-      {((isMobile && location.pathname === '/') || !isMobile) && (
+      {((isMobile && location.pathname === '/') ||
+        (isMobile && !lgDown) ||
+        !isMobile) && (
         <Link className={clsx(styles['header-logo'], 'app-link')} to="/">
           <Icon icon={['fas', 'record-vinyl']} size="medium" />
           <span className={styles['header-logo-text']}>Spotilib</span>
         </Link>
       )}
-      {isMobile && location.pathname !== '/' && token && (
+      {isMobile && lgDown && location.pathname !== '/' && token && (
         <div className={styles['header-logo']}>
           <IconButton
             icon={['fas', 'arrow-left']}
