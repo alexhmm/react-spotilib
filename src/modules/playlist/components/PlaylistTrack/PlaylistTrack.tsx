@@ -1,20 +1,29 @@
-import { memo } from 'react';
-import { Link } from 'react-router-dom';
+import { memo, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
 
+// Components
+import DetailDrawer from '../../../../shared/components/DetailDrawer/DetailDrawer';
+
 // Hooks
 import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
+import usePlaylist from '../../use-playlist.hook';
 
 // Styles
 import styles from './PlaylistTrack.module.scss';
 
 // Types
-import { PlaylistTrack as IPlaylistTrack } from '../../playlist.types';
+import {
+  PlaylistTrack as IPlaylistTrack,
+  PlaylistTrackAction,
+} from '../../playlist.types';
+import { ImageFallbackType } from '../../../../shared/types/shared.types';
 
 // UI
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
+import Link from '../../../../shared/ui/Link/Link';
+import Menu from '../../../../shared/ui/Menu/Menu';
 
 // Utils
 import { minutesSecondsByMillisecondsGet } from '../../../../shared/utils/shared.utils';
@@ -22,7 +31,9 @@ import { minutesSecondsByMillisecondsGet } from '../../../../shared/utils/shared
 type PlaylistTrackProps = {
   locale: string;
   index: number;
+  owner?: boolean;
   track: IPlaylistTrack;
+  onAction: (action: PlaylistTrackAction) => void;
   onPlay: () => void;
 };
 
@@ -31,7 +42,9 @@ const playlistPropsAreEqual = (
   nextProps: Readonly<PlaylistTrackProps>
 ): boolean => {
   if (
+    prevProps.index === nextProps.index &&
     prevProps.locale === nextProps.locale &&
+    prevProps.owner === nextProps.owner &&
     prevProps.track.id === nextProps.track.id
   ) {
     return true;
@@ -41,6 +54,10 @@ const playlistPropsAreEqual = (
 
 const PlaylistTrack = (props: PlaylistTrackProps) => {
   const { smDown } = useBreakpoints();
+  const { getPlaylistTrackActions } = usePlaylist();
+
+  // Component state
+  const [detailDrawer, setDetailDrawer] = useState<boolean>(false);
 
   return (
     <Box
@@ -52,6 +69,9 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
             '.index': {
               display: 'none',
             },
+            '.more': {
+              visibility: 'visible',
+            },
             '.play': {
               display: 'flex !important',
             },
@@ -59,13 +79,19 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
           '.app-link:hover': {
             color: 'primary.main',
           },
+          '.more': {
+            visibility: 'hidden',
+          },
           '.play': {
             display: 'none !important',
           },
         },
       }}
     >
-      <div className={styles['playlist-track-title']}>
+      <div
+        className={styles['playlist-track-title']}
+        onClick={() => isMobile && props.onPlay()}
+      >
         <Box
           className={clsx(styles['playlist-track-title-index'], 'index')}
           sx={{ color: 'text.secondary' }}
@@ -82,9 +108,9 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
         <img
           alt={props.track.album.name}
           className={styles['playlist-track-title-image']}
-          height={36}
+          height={isMobile ? 48 : 36}
           src={props.track.album.images[2].url}
-          width={36}
+          width={isMobile ? 48 : 36}
           loading="lazy"
         />
         <Box className={styles['playlist-track-title-data']}>
@@ -98,14 +124,19 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
                 className={styles['playlist-track-title-data-artists-item']}
                 sx={{ color: 'text.secondary' }}
               >
-                <Link
-                  key={artist.id}
-                  className={clsx(
-                    styles['playlist-track-title-data-artists-item-link'],
-                    'app-link'
-                  )}
-                  to={`/artist/${artist.id}`}
-                >{`${artist.name}`}</Link>
+                {isMobile ? (
+                  <>{artist.name}</>
+                ) : (
+                  <Link
+                    key={artist.id}
+                    classes={
+                      styles['playlist-track-title-data-artists-item-link']
+                    }
+                    to={`/artist/${artist.id}`}
+                  >
+                    {artist.name}
+                  </Link>
+                )}
                 {`${index < props.track.artists.length - 1 ? ',\xa0' : ''}`}
               </Box>
             ))}
@@ -116,9 +147,13 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
         className={styles['playlist-track-album']}
         sx={{ color: 'text.secondary' }}
       >
-        <Link className="app-link" to={`/album/${props.track.album.id}`}>
-          {props.track.album.name}
-        </Link>
+        {isMobile ? (
+          <div>{props.track.album.name}</div>
+        ) : (
+          <Link to={`/album/${props.track.album.id}`}>
+            {props.track.album.name}
+          </Link>
+        )}
       </Box>
       <Box
         className={styles['playlist-track-added-at']}
@@ -129,11 +164,38 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
         )}
       </Box>
       <Box
-        className={styles['playlist-track-duration']}
+        className={styles['playlist-track-more']}
         sx={{ color: 'text.secondary' }}
       >
-        {minutesSecondsByMillisecondsGet(props.track.duration_ms)}
+        <span className={styles['playlist-track-more-duration']}>
+          {minutesSecondsByMillisecondsGet(props.track.duration_ms)}
+        </span>
+        {isMobile ? (
+          <IconButton
+            classes={styles['playlist-track-more-button']}
+            icon={['fas', 'ellipsis-v']}
+            onClick={() => setDetailDrawer(true)}
+          />
+        ) : (
+          <Menu
+            classes={clsx(styles['playlist-track-more-button'], 'more')}
+            hideItemIcon
+            icon={['fas', 'ellipsis']}
+            items={getPlaylistTrackActions(props.owner)}
+            onAction={props.onAction}
+          />
+        )}
       </Box>
+      <DetailDrawer
+        items={getPlaylistTrackActions(props.owner)}
+        image={props.track.album.images[1]?.url}
+        open={detailDrawer}
+        subtitle={`${props.track.artists[0].name} • ${props.track.album.name}`}
+        title={props.track.name}
+        type={ImageFallbackType.Playlist}
+        onAction={props.onAction}
+        onClose={() => setDetailDrawer(false)}
+      />
     </Box>
   );
 };

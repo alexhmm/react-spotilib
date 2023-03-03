@@ -1,8 +1,10 @@
 import { memo } from 'react';
-import { Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
+
+// Hooks
+import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
 
 // Styles
 import styles from './ArtistTopTrack.module.scss';
@@ -12,11 +14,13 @@ import { SpotifyTrack } from '../../../../shared/types/spotify.types';
 
 // UI
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
+import Link from '../../../../shared/ui/Link/Link';
 
 // Utils
 import { minutesSecondsByMillisecondsGet } from '../../../../shared/utils/shared.utils';
 
 type ArtistTopTrackProps = {
+  index: number;
   track: SpotifyTrack;
   onPlay: () => void;
 };
@@ -32,6 +36,8 @@ const artistTopTrackPropsAreEqual = (
 };
 
 const ArtistTopTrack = (props: ArtistTopTrackProps) => {
+  const { smDown } = useBreakpoints();
+
   return (
     <Box
       className={styles['artist-top-track']}
@@ -39,7 +45,7 @@ const ArtistTopTrack = (props: ArtistTopTrackProps) => {
         '@media (hover: hover)': {
           ':hover': {
             backgroundColor: 'action.hover',
-            '.image': {
+            '.index': {
               display: 'none',
             },
             '.play': {
@@ -57,6 +63,19 @@ const ArtistTopTrack = (props: ArtistTopTrackProps) => {
       onClick={() => isMobile && props.onPlay()}
     >
       <div className={styles['artist-top-track-title']}>
+        <Box
+          className={clsx(styles['artist-top-track-title-index'], 'index')}
+          sx={{ color: 'text.secondary' }}
+        >
+          {props.index + 1}
+        </Box>
+        {!isMobile && !smDown && (
+          <IconButton
+            classes={clsx(styles['artist-top-track-title-play'], 'play')}
+            icon={['fas', 'play']}
+            onClick={props.onPlay}
+          />
+        )}
         <img
           alt={props.track.album.name}
           className={clsx(styles['artist-top-track-title-image'], 'image')}
@@ -65,13 +84,6 @@ const ArtistTopTrack = (props: ArtistTopTrackProps) => {
           width={36}
           loading="lazy"
         />
-        {!isMobile && (
-          <IconButton
-            classes={clsx(styles['artist-top-track-title-play'], 'play')}
-            icon={['fas', 'play']}
-            onClick={props.onPlay}
-          />
-        )}
         <div className={styles['artist-top-track-title-name']}>
           {props.track.name}
         </div>
@@ -80,7 +92,7 @@ const ArtistTopTrack = (props: ArtistTopTrackProps) => {
         className={styles['artist-top-track-album']}
         sx={{ color: 'text.secondary' }}
       >
-        <Link className="app-link" to={`/album/${props.track.album.id}`}>
+        <Link to={`/album/${props.track.album.id}`}>
           {props.track.album.name}
         </Link>
       </Box>

@@ -1,8 +1,10 @@
 import { memo } from 'react';
-import { Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
+
+// Hooks
+import useBreakpoints from '../../hooks/use-breakpoints.hook';
 
 // Styles
 import styles from './TrackCard.module.scss';
@@ -12,6 +14,7 @@ import { TrackCard as ITrackCard } from '../../types/track.types';
 
 // UI
 import IconButton from '../../ui/IconButton/IconButton';
+import Link from '../../ui/Link/Link';
 
 type TrackCardProps = {
   track: ITrackCard;
@@ -19,11 +22,13 @@ type TrackCardProps = {
 };
 
 const TrackCard = (props: TrackCardProps) => {
+  const { smDown } = useBreakpoints();
+
   return (
     <Box
       className={styles['track-card']}
       sx={{
-        backgroundColor: 'background.paper',
+        backgroundColor: smDown ? undefined : 'background.paper',
         '@media (hover: hover)': {
           ':hover': {
             backgroundColor: 'action.hover',
@@ -77,7 +82,7 @@ const TrackCard = (props: TrackCardProps) => {
               ) : (
                 <Link
                   key={artist.id}
-                  className={clsx(
+                  classes={clsx(
                     styles['track-card-info-artists-item-link'],
                     'app-link'
                   )}

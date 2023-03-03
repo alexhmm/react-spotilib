@@ -15,7 +15,7 @@ import clsx from 'clsx';
 import styles from './Menu.module.scss';
 
 // Types
-import { ColorType } from '../../types/mui.types';
+import { ColorType, FontSize } from '../../types/mui.types';
 import { MenuItem as IMenuItem } from '../../types/shared.types';
 
 // UI
@@ -23,6 +23,7 @@ import IconButton from '../IconButton/IconButton';
 
 type MenuItemProps = {
   classes?: string;
+  hideIcon?: boolean;
   title: string;
   onClick: () => void;
 };
@@ -43,8 +44,9 @@ type MenuProps = {
   anchorOrigin?: PopoverOrigin;
   classes?: string;
   color?: ColorType;
+  hideItemIcon?: boolean;
   icon?: [IconPrefix, IconName];
-  iconSize?: 'medium' | 'small' | 'large' | undefined;
+  iconSize?: FontSize;
   items: IMenuItem[];
   padding?: string | undefined;
   sx?: SxProps<Theme>;
@@ -116,6 +118,7 @@ const Menu = (props: MenuProps) => {
           {props.items.map((item, index) => (
             <MenuItem
               key={index}
+              hideIcon={props.hideItemIcon}
               title={item.title}
               onClick={() => {
                 onMenuClose();

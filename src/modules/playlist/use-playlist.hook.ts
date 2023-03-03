@@ -1,19 +1,66 @@
+import { useTranslation } from 'react-i18next';
+
 // Stores
 import usePlaylistStore from './use-playlist.store';
 
 // Types
-import { Playlists, Playlist } from './playlist.types';
+import { Playlists, Playlist, PlaylistTrackAction } from './playlist.types';
 import { SpotifyTrackMetaData } from '../../shared/types/spotify.types';
 
 // Utils
 import { playlistTracksMap } from './playlist.utils';
+import { MenuItem } from '../../shared/types/shared.types';
 
 const usePlaylist = () => {
+  const { t } = useTranslation();
+
   // Playlists store state
   const [playlists, setPlaylists] = usePlaylistStore((state) => [
     state.playlists,
     state.setPlaylists,
   ]);
+
+  /**
+   * GET Playlist track actions.
+   * @param owner Owner of playlist
+   * @returns Playlist track actions
+   */
+  const getPlaylistTrackActions = (owner: boolean | undefined): MenuItem[] => {
+    const actions: MenuItem[] = [
+      {
+        // action: favorite
+        //   ? PlaylistTrackAction.Unfavorite
+        //   : PlaylistTrackAction.Favorite,
+        // title: favorite
+        //   ? t('playlist.detail.tracks.actions.unfavorite')
+        //   : t('playlist.detail.tracks.actions.favorite'),
+        action: PlaylistTrackAction.Add,
+        icon: ['far', 'heart'],
+        title: t('track.action.add.title'),
+      },
+    ];
+    owner &&
+      actions.push({
+        action: PlaylistTrackAction.RemoveFromPlaylist,
+        icon: ['far', 'square-minus'],
+        title: t('playlist.detail.track.action.remove_from_playlist.title'),
+      });
+
+    actions.push(
+      {
+        action: PlaylistTrackAction.ShowAlbum,
+        icon: ['fas', 'record-vinyl'],
+        title: t('playlist.detail.track.action.show_album'),
+      },
+      {
+        action: PlaylistTrackAction.ShowArtist,
+        icon: ['fas', 'user'],
+        title: t('playlist.detail.track.action.show_artist'),
+      }
+    );
+
+    return actions;
+  };
 
   /**
    * Add playlists to store. Update offset.
@@ -82,6 +129,7 @@ const usePlaylist = () => {
   };
 
   return {
+    getPlaylistTrackActions,
     playlistsAddEffect,
     playlistsGetEffect,
     playlistTracksGetEffect,

@@ -23,6 +23,7 @@ export const appTranslationsDE: AppTranslations = {
   from: 'von',
   hello: 'Guten Tag!',
   logout: 'Abmelden',
+  search: 'Suche',
   settings: {
     language: {
       english: 'Englisch',
@@ -40,7 +41,6 @@ export const appTranslationsDE: AppTranslations = {
   sidebar: {
     home: 'Start',
     library: 'Bibliothek',
-    search: 'Suche',
   },
   top: {
     artists: 'Deine Lieblingskünstli',

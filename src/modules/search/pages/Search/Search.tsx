@@ -1,5 +1,5 @@
 import { CircularProgress } from '@mui/material';
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // Components
@@ -19,6 +19,9 @@ import styles from './Search.module.scss';
 
 // UI
 import H3 from '../../../../shared/ui/H3/H3';
+
+// Utils
+import { setTitle } from '../../../../shared/utils/shared.utils';
 
 const Search = () => {
   const { playPutMutation } = usePlayerHttp();
@@ -44,6 +47,21 @@ const Search = () => {
         uris: [track_uri],
       },
     });
+    // eslint-disable-next-line
+  }, []);
+
+  // ####### //
+  // EFFECTS //
+  // ####### //
+
+  /**
+   * Set page title on mount.
+   */
+  useEffect(() => {
+    setTitle(t('app.search').toString());
+    return () => {
+      setTitle();
+    };
     // eslint-disable-next-line
   }, []);
 

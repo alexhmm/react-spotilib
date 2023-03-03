@@ -8,13 +8,25 @@ import {
   SpotifyTrackMetaData,
 } from '../../shared/types/spotify.types';
 
-export enum PlaylistMoreMenuItemAction {
+export enum PlaylistAction {
   Delete = 'DELETE',
-  DownloadMetadata = 'DOWNLOADMETADATA',
+  DownloadMetadata = 'DOWNLOAD_METADATA',
+}
+
+export enum PlaylistTrackAction {
+  Add = 'ADD',
+  RemoveFromPlaylist = 'REMOVE_FROM_PLAYLIST',
+  ShowAlbum = 'SHOW_ALBUM',
+  ShowArtist = 'SHOW_ARTIST',
+  Unfavorite = 'UNFAVORITE',
 }
 
 export interface PlaylistFollowPutRequest {
   public?: boolean;
+}
+
+export interface PlaylistItemsRemoveDeleteRequest {
+  tracks: Pick<SpotifyTrack, 'uri'>[];
 }
 
 export interface PlaylistTracks {

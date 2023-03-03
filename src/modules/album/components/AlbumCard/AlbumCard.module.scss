@@ -1,30 +1,31 @@
 .album-card {
-  @apply cursor-pointer duration-200 flex flex-col p-4 relative rounded-md transition-colors w-full;
-  &-data {
-    @apply h-10 text-sm overflow-hidden text-ellipsis w-full z-10;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    &-artist {
-      @apply duration-200 transition-colors;
-    }
-  }
-  &-fallback {
-    @apply aspect-square flex justify-center items-center relative w-full;
-  }
+  @apply cursor-pointer duration-200 flex py-1 relative rounded-md transition-colors w-full sm:flex-col sm:p-4;
+
   &-image {
-    @apply aspect-square relative w-full;
+    @apply h-12 relative shrink-0 w-12 sm:aspect-square sm:h-auto sm:w-full;
     & img {
-      @apply absolute aspect-square left-0 object-cover rounded-md shadow-xl top-0 w-full;
+      @apply absolute aspect-square left-0 object-cover shadow-xl top-0 w-full sm:rounded-md;
     }
     &-play {
       @apply absolute bottom-0 duration-300 right-2 shadow-xl transform transition-all z-10;
     }
   }
+  &-info {
+    @apply flex flex-col ml-4 truncate w-full sm:ml-0;
+    &-data {
+      @apply text-sm overflow-hidden w-full;
+      &-artist {
+        @apply duration-200 inline-block transition-colors;
+      }
+      &-link {
+        @apply z-10;
+      }
+    }
+    &-name {
+      @apply font-semibold text-sm truncate sm:mb-2 sm:mt-4;
+    }
+  }
   &-link {
     @apply absolute h-full left-0 top-0 w-full;
-  }
-  &-name {
-    @apply font-semibold mb-2 mt-4 text-sm truncate;
   }
 }

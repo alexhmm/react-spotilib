@@ -1,5 +1,5 @@
 .track-card {
-  @apply duration-200 flex items-center px-2 py-1 rounded-md transition-colors w-full;
+  @apply duration-200 flex items-center py-1 rounded-md transition-colors w-full sm:px-2;
   &-image {
     @apply aspect-square h-9 object-cover shadow-md w-9;
   }

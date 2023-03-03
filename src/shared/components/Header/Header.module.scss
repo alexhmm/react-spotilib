@@ -5,6 +5,12 @@
     @apply lg:px-8;
     &-actions {
       @apply flex items-center z-10;
+      &-nav {
+        @apply flex items-center mr-4;
+        & button:first-of-type {
+          @apply mr-2;
+        }
+      }
       &-search {
         @apply grow w-full md:w-96;
       }
@@ -25,7 +31,7 @@
     @apply flex font-bold h-full items-center px-4 shrink-0;
     @apply lg:px-6 lg:w-64;
     &-text {
-      @apply ml-1 lg:ml-2;
+      @apply ml-2;
     }
   }
 }

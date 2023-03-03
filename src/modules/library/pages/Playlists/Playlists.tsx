@@ -28,7 +28,7 @@ import H3 from '../../../../shared/ui/H3/H3';
 
 // Utils
 import { playlistDataMap } from '../../../playlist/playlist.utils';
-import { concatArray } from '../../../../shared/utils/shared.utils';
+import { concatArray, setTitle } from '../../../../shared/utils/shared.utils';
 
 const Playlists = () => {
   const { handleError, handleRetry } = useFetch();
@@ -82,13 +82,15 @@ const Playlists = () => {
   // ####### //
 
   /**
-   * Set pathname on mount.
+   * Set pathname and page title on mount.
    */
   useEffect(() => {
     setPathName('/library/playlists');
+    setTitle(t('playlist.title').toString());
     return () => {
       setPathName(undefined);
       setPlaylists([]);
+      setTitle();
     };
     // eslint-disable-next-line
   }, []);

@@ -21,7 +21,7 @@
   &-link {
     @apply duration-200 flex items-center no-underline transition-colors truncate w-full;
     &-icon {
-      @apply flex items-center w-10;
+      @apply flex items-center w-8;
     }
     &-text {
       @apply font-semibold no-underline text-sm truncate;

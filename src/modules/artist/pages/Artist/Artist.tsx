@@ -8,11 +8,13 @@ import { CircularProgress } from '@mui/material';
 import AlbumCard from '../../../album/components/AlbumCard/AlbumCard';
 import ArtistCard from '../../components/ArtistCard/ArtistCard';
 import ArtistTopTrack from '../../components/ArtistTopTrack/ArtistTopTrack';
+import ImageFallback from '../../../../shared/components/ImageFallback/ImageFallback';
 
 // Hooks
 import useArtistHttp from '../../use-artist-http.hook';
 import useFetch from '../../../../shared/hooks/use-fetch.hook';
 import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';
+import useUserHttp from '../../../user/use-user-http.hook';
 
 // Stores
 import useSharedStore from '../../../../shared/stores/use-shared.store';
@@ -27,6 +29,10 @@ import {
   ArtistCard as IArtistCard,
   ArtistTopTracksGetResponse,
 } from '../../artist.types';
+import {
+  ImageFallbackType,
+  RequestMethod,
+} from '../../../../shared/types/shared.types';
 import {
   SpotifyAlbumType,
   SpotifyArtist,
@@ -46,8 +52,7 @@ import TextButtonOutlined from '../../../../shared/ui/TextButtonOutlined/TextBut
 // Utils
 import { albumDataMap } from '../../../album/album.utils';
 import { artistDataMap } from '../../artist.utils';
-import useUserHttp from '../../../user/use-user-http.hook';
-import { RequestMethod } from '../../../../shared/types/shared.types';
+import { setTitle } from '../../../../shared/utils/shared.utils';
 
 type ArtistAlbumsTypeButtonProps = {
   currentType: SpotifyAlbumType | undefined;
@@ -164,9 +169,10 @@ const Artist = () => {
     onSuccess: (data) => {
       if (data) {
         setArtist(data);
+        setTitle(data.name);
         // Wait for transition animation
         setTimeout(() => {
-          setHeaderTitle(data?.name);
+          setHeaderTitle(data.name);
         }, 500);
       }
     },
@@ -308,13 +314,16 @@ const Artist = () => {
   // EFFECTS //
   // ####### //
 
-  // Reset following state on component unmount.
+  // Reset data on id change.
   useEffect(() => {
     return () => {
+      setArtist(undefined);
       setFollowing(undefined);
+      setHeaderTitle(undefined);
+      setTitle();
     };
     // eslint-disable-next-line
-  }, []);
+  }, [id]);
 
   return (
     <>
@@ -323,10 +332,14 @@ const Artist = () => {
         <div className={styles['artist']}>
           <div className={styles['artist-header']}>
             <div className={styles['artist-header-image']}>
-              <img
-                alt={`${t('artist.title')} ${artist.name}`}
-                src={artist.images[0].url}
-              />
+              {artist.images[0]?.url ? (
+                <img
+                  alt={`${t('artist.title')} ${artist.name}`}
+                  src={artist.images[0].url}
+                />
+              ) : (
+                <ImageFallback type={ImageFallbackType.Artist} />
+              )}
             </div>
             <div className={styles['artist-header-info']}>
               <H2 classes={styles['artist-header-info-name']}>{artist.name}</H2>
@@ -370,6 +383,7 @@ const Artist = () => {
                   return (
                     <ArtistTopTrack
                       key={track.id}
+                      index={index}
                       track={track}
                       onPlay={() => onPlayTopTrack(index)}
                     />
@@ -377,13 +391,17 @@ const Artist = () => {
                 }
                 return null;
               })}
-            <TextButton
-              onClick={() =>
-                topTracksMore ? setTopTracksMore(false) : setTopTracksMore(true)
-              }
-            >
-              {topTracksMore ? t('app.show.less') : t('app.show.more')}
-            </TextButton>
+            {topTracks.length > 5 && (
+              <TextButton
+                onClick={() =>
+                  topTracksMore
+                    ? setTopTracksMore(false)
+                    : setTopTracksMore(true)
+                }
+              >
+                {topTracksMore ? t('app.show.less') : t('app.show.more')}
+              </TextButton>
+            )}
           </section>
           <section className={styles['artist-section']}>
             <H3>{t('artist.detail.discography.title')}</H3>

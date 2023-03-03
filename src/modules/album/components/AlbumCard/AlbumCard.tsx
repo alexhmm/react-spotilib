@@ -1,8 +1,11 @@
 import { Fragment, memo, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
+
+// Components
+import ImageFallback from '../../../../shared/components/ImageFallback/ImageFallback';
 
 // Hooks
 import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
@@ -13,18 +16,19 @@ import styles from './AlbumCard.module.scss';
 
 // Types
 import { AlbumCard as IAlbumCard } from '../../album.types';
+import { ImageFallbackType } from '../../../../shared/types/shared.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
-import Icon from '../../../../shared/ui/Icon/Icon';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
+import Link from '../../../../shared/ui/Link/Link';
 
 type AlbumCardProps = {
   album: IAlbumCard;
 };
 
 const AlbumCard = (props: AlbumCardProps) => {
-  const { lgDown } = useBreakpoints();
+  const { lgDown, smDown } = useBreakpoints();
   const { playPutMutation } = usePlayerHttp();
 
   // ######### //
@@ -48,7 +52,7 @@ const AlbumCard = (props: AlbumCardProps) => {
     <Box
       className={clsx(styles['album-card'], 'no-highlight')}
       sx={{
-        backgroundColor: 'background.paper',
+        backgroundColor: smDown ? undefined : 'background.paper',
         '@media (hover: hover)': {
           ':hover': {
             backgroundColor: 'action.hover',
@@ -80,11 +84,12 @@ const AlbumCard = (props: AlbumCardProps) => {
             }
           />
         ) : (
-          <div className={clsx(styles['album-card-fallback'], 'image')}>
-            <Icon icon={['fas', 'music']} size="large" />
-          </div>
+          <ImageFallback
+            classes="sm:rounded-md"
+            type={ImageFallbackType.Album}
+          />
         )}
-        {!isMobile && (
+        {!isMobile && !smDown && (
           <IconButton
             borderRadius="rounded-full"
             classes={clsx(styles['album-card-image-play'], 'play')}
@@ -101,38 +106,58 @@ const AlbumCard = (props: AlbumCardProps) => {
           />
         )}
       </div>
-      <div className={styles['album-card-name']}>{props.album.name}</div>
-      <Box
-        className={styles['album-card-data']}
-        sx={{
-          color: 'text.secondary',
-          '.app-link:hover': {
-            color: 'primary.main',
-          },
-        }}
-      >
-        <time className="inline-block" dateTime={props.album.release_date}>
-          {new Date(props.album.release_date).getFullYear()}
-          <>{' • '}</>
-        </time>
-        {props.album.artists.map((artist, index) => (
-          <Fragment key={artist.id}>
-            <> </>
-            <Link
-              className={clsx(styles['album-card-data-artist'], 'app-link')}
-              to={`/artist/${artist.id}`}
-              onClick={() => {
-                return false;
-              }}
-            >
-              {artist.name}
-            </Link>
-            {`${index < props.album.artists.length - 1 ? ',' : ''}`}
-          </Fragment>
-        ))}
-      </Box>
-      <Link
-        className={clsx(styles['album-card-link'], 'app-link')}
+      <div className={styles['album-card-info']}>
+        <div className={styles['album-card-info-name']}>{props.album.name}</div>
+        <Box
+          className={styles['album-card-info-data']}
+          sx={{
+            color: 'text.secondary',
+            '.app-link:hover': {
+              color: 'primary.main',
+            },
+            zIndex: isMobile ? undefined : 10,
+          }}
+        >
+          {!smDown && (
+            <time className="inline-block" dateTime={props.album.release_date}>
+              {new Date(props.album.release_date).getFullYear()}
+              <>{' • '}</>
+            </time>
+          )}
+          {props.album.artists.map((artist, index) => (
+            <Fragment key={artist.id}>
+              <> </>
+              {isMobile ? (
+                <Box
+                  className={styles['album-card-info-data-artist']}
+                  sx={{
+                    color: 'text.secondary',
+                  }}
+                >
+                  {artist.name}
+                </Box>
+              ) : (
+                <Link
+                  classes={clsx(
+                    styles['album-card-info-data-artist'],
+                    styles['album-card-info-data-artist-link']
+                  )}
+                  to={`/artist/${artist.id}`}
+                  onClick={() => {
+                    return false;
+                  }}
+                >
+                  {artist.name}
+                </Link>
+              )}
+
+              {`${index < props.album.artists.length - 1 ? ',' : ''}`}
+            </Fragment>
+          ))}
+        </Box>
+      </div>
+      <RouterLink
+        className={styles['album-card-link']}
         to={`/album/${props.album.id}`}
       />
     </Box>

@@ -6,6 +6,10 @@ import {
   SpotifyTrackMetaData,
 } from './spotify.types';
 
+export interface SaveTracksPutRequest {
+  ids: string[];
+}
+
 export interface TrackCardAlbumData {
   album: Pick<SpotifyAlbum, 'images' | 'name'>;
 }

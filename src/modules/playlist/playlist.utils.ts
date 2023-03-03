@@ -90,3 +90,32 @@ export const playlistTracksMap = (
 
   return tracks;
 };
+
+/**
+ * Utility function to remove specified tracks from playlist.
+ * @param playlist Playlist
+ * @param removedTracks Removed tracks
+ * @returns Playlist without removed tracks.
+ */
+export const removePlaylistItemsEffect = (
+  playlist: Playlist,
+  removedTracks: { uri: string }[]
+): Playlist => {
+  const updatedPlaylistTracks = [...playlist.tracks];
+  for (const removedTrack of removedTracks) {
+    const index = updatedPlaylistTracks.findIndex(
+      (track) => track.uri === removedTrack.uri
+    );
+    if (index > -1) {
+      updatedPlaylistTracks.splice(index, 1);
+    }
+  }
+
+  const updatedPlaylist: Playlist = {
+    ...playlist,
+    tracks: updatedPlaylistTracks,
+    tracks_total: playlist.tracks_total - removedTracks.length,
+  };
+
+  return updatedPlaylist;
+};

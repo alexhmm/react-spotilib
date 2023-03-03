@@ -25,3 +25,15 @@ export const minutesSecondsByMillisecondsGet = (ms: number): string => {
     ? `${minutes + 1}:00`
     : `${minutes}:${add2Digits(seconds)}`;
 };
+
+/**
+ * Set HTML page title.
+ * @param subtitle Subtitle
+ */
+export const setTitle = (subtitle?: string) => {
+  if (subtitle) {
+    document.title = `${subtitle} • Spotilib`;
+  } else {
+    document.title = 'Spotilib';
+  }
+};

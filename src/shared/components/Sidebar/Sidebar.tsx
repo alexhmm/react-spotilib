@@ -6,7 +6,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import {
@@ -39,6 +39,7 @@ import { SidebarTabType } from '../../types/shared.types';
 
 // UI
 import Icon from '../../ui/Icon/Icon';
+import Link from '../../ui/Link/Link';
 
 type SidebarItemProps = {
   active?: boolean;
@@ -56,12 +57,9 @@ const SidebarItem = (props: SidebarItemProps) => {
         a: {
           color: props.active ? 'text.primary' : 'text.secondary',
         },
-        'a:hover': {
-          color: 'primary.main',
-        },
       }}
     >
-      <Link className={styles['sidebar-item-link']} to={props.to}>
+      <Link classes={styles['sidebar-item-link']} to={props.to}>
         {props.icon && (
           <div className={styles['sidebar-item-link-icon']}>
             <Icon icon={props.icon} />
@@ -222,7 +220,7 @@ const Sidebar = () => {
             icon={['fas', 'magnifying-glass']}
             to="/search"
           >
-            {t('app.sidebar.search')}
+            {t('app.search')}
           </SidebarItem>
           <SidebarItem
             active={location.pathname.includes('library') ? true : false}
@@ -300,7 +298,7 @@ const Sidebar = () => {
           )}
           {playlistsAddMutation.isLoading && <CircularProgress />}
         </InfiniteScroll>
-        <div className={styles['sidebar-content-info']}>© 2022 Spotilib</div>
+        <div className={styles['sidebar-content-info']}>© 2023 Spotilib</div>
       </div>
     </Box>
   );

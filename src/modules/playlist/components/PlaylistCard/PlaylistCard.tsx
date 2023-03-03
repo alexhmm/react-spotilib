@@ -1,9 +1,12 @@
 import { memo, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
+
+// Components
+import ImageFallback from '../../../../shared/components/ImageFallback/ImageFallback';
 
 // Hooks
 import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
@@ -14,11 +17,12 @@ import styles from './PlaylistCard.module.scss';
 
 // Types
 import { PlaylistCard as IPlaylistCard } from '../../playlist.types';
+import { ImageFallbackType } from '../../../../shared/types/shared.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
-import Icon from '../../../../shared/ui/Icon/Icon';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
+import Link from '../../../../shared/ui/Link/Link';
 
 type PlaylistCardProps = {
   hideOwner?: boolean;
@@ -26,7 +30,7 @@ type PlaylistCardProps = {
 };
 
 const PlaylistCard = (props: PlaylistCardProps) => {
-  const { lgDown } = useBreakpoints();
+  const { smDown, lgDown } = useBreakpoints();
   const { playPutMutation } = usePlayerHttp();
   const { t } = useTranslation();
 
@@ -51,7 +55,7 @@ const PlaylistCard = (props: PlaylistCardProps) => {
     <Box
       className={styles['playlist-card']}
       sx={{
-        backgroundColor: 'background.paper',
+        backgroundColor: smDown ? undefined : 'background.paper',
         '@media (hover: hover)': {
           ':hover': {
             backgroundColor: 'action.hover',
@@ -83,11 +87,12 @@ const PlaylistCard = (props: PlaylistCardProps) => {
             }
           />
         ) : (
-          <div className={clsx(styles['playlist-card-fallback'], 'image')}>
-            <Icon icon={['fas', 'music']} size="large" />
-          </div>
+          <ImageFallback
+            classes="sm:rounded-md"
+            type={ImageFallbackType.Playlist}
+          />
         )}
-        {!isMobile && (
+        {!isMobile && !smDown && (
           <IconButton
             borderRadius="rounded-full"
             classes={clsx(styles['playlist-card-image-play'], 'play')}
@@ -104,38 +109,58 @@ const PlaylistCard = (props: PlaylistCardProps) => {
           />
         )}
       </div>
-      <div className={styles['playlist-card-name']}>{props.playlist.name}</div>
-      {!props.hideOwner ? (
-        <>
-          {props.playlist.owner.id !== 'spotify' ? (
-            <div className={styles['playlist-card-owner']}>
+      <div className={styles['playlist-card-info']}>
+        <div className={styles['playlist-card-info-name']}>
+          {props.playlist.name}
+        </div>
+        {!props.hideOwner ? (
+          <>
+            {props.playlist.owner.id !== 'spotify' ? (
+              <div className={styles['playlist-card-info-owner']}>
+                {!smDown && (
+                  <>
+                    <Box
+                      className={styles['playlist-card-info-owner-from']}
+                      sx={{ color: 'text.secondary' }}
+                    >
+                      {t('app.from')}
+                    </Box>
+                    <span className="whitespace-pre-wrap shrink-0"> </span>
+                  </>
+                )}
+                {isMobile ? (
+                  <Box
+                    className={styles['playlist-card-info-owner-name']}
+                    sx={{ color: 'text.secondary' }}
+                  >
+                    {props.playlist.owner.display_name}
+                  </Box>
+                ) : (
+                  <Link
+                    classes={clsx(
+                      styles['playlist-card-info-owner-link'],
+                      styles['playlist-card-info-owner-name']
+                    )}
+                    to={`/user/${props.playlist.owner.id}`}
+                  >
+                    {props.playlist.owner.display_name}
+                  </Link>
+                )}
+              </div>
+            ) : (
               <Box
-                className={styles['playlist-card-owner-from']}
+                className={styles['playlist-card-info-description']}
                 sx={{ color: 'text.secondary' }}
               >
-                {t('app.from')}
+                {props.playlist.description}
               </Box>
-              <span className="whitespace-pre-wrap shrink-0"> </span>
-              <Link
-                className={clsx(styles['playlist-card-owner-name'], 'app-link')}
-                to={`/user/${props.playlist.owner.id}`}
-              >
-                {props.playlist.owner.display_name}
-              </Link>
-            </div>
-          ) : (
-            <Box
-              className={styles['playlist-card-owner']}
-              sx={{ color: 'text.secondary' }}
-            >
-              {props.playlist.description}
-            </Box>
-          )}
-        </>
-      ) : (
-        <div className={styles['playlist-card-owner']}></div>
-      )}
-      <Link
+            )}
+          </>
+        ) : (
+          <div className={styles['playlist-card-info-owner']}></div>
+        )}
+      </div>
+      <RouterLink
         className={clsx(styles['playlist-card-link'], 'app-link')}
         to={`/playlist/${props.playlist.id}`}
       />

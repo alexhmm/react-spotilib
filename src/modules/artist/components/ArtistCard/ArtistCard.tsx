@@ -4,6 +4,9 @@ import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
 
+// Components
+import ImageFallback from '../../../../shared/components/ImageFallback/ImageFallback';
+
 // Hooks
 import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
 import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';
@@ -13,10 +16,10 @@ import styles from './ArtistCard.module.scss';
 
 // Types
 import { ArtistCard as IArtistCard } from '../../artist.types';
+import { ImageFallbackType } from '../../../../shared/types/shared.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
-import Icon from '../../../../shared/ui/Icon/Icon';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
 
 type ArtistCardProps = {
@@ -24,7 +27,7 @@ type ArtistCardProps = {
 };
 
 const ArtistCard = (props: ArtistCardProps) => {
-  const { lgDown } = useBreakpoints();
+  const { smDown, lgDown } = useBreakpoints();
   const { playPutMutation } = usePlayerHttp();
 
   /**
@@ -44,7 +47,7 @@ const ArtistCard = (props: ArtistCardProps) => {
     <Box
       className={styles['artist-card']}
       sx={{
-        backgroundColor: 'background.paper',
+        backgroundColor: smDown ? undefined : 'background.paper',
         '@media (hover: hover)': {
           ':hover': {
             backgroundColor: 'action.hover',
@@ -76,11 +79,9 @@ const ArtistCard = (props: ArtistCardProps) => {
             }
           />
         ) : (
-          <div className={clsx(styles['artist-card-fallback'], 'image')}>
-            <Icon icon={['fas', 'user']} size="large" />
-          </div>
+          <ImageFallback type={ImageFallbackType.Artist} />
         )}
-        {!isMobile && (
+        {!isMobile && !smDown && (
           <IconButton
             borderRadius="rounded-full"
             classes={clsx(styles['artist-card-image-play'], 'play')}
@@ -99,7 +100,7 @@ const ArtistCard = (props: ArtistCardProps) => {
       </div>
       <div className={styles['artist-card-name']}>{props.artist.name}</div>
       <Link
-        className={clsx(styles['artist-card-link'], 'app-link')}
+        className={styles['artist-card-link']}
         to={`/artist/${props.artist.id}`}
       />
     </Box>

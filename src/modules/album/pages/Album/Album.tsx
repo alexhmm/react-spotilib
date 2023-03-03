@@ -1,13 +1,13 @@
 import { memo, useCallback, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import { Box, CircularProgress } from '@mui/material';
-import clsx from 'clsx';
 
 // Components
 import AlbumCard from '../../components/AlbumCard/AlbumCard';
 import AlbumTrack from '../../components/AlbumTrack/AlbumTrack';
+import ImageFallback from '../../../../shared/components/ImageFallback/ImageFallback';
 
 // Hooks
 import useAlbum from '../../use-album.hook';
@@ -27,21 +27,24 @@ import useUserStore from '../../../user/use-user.store';
 
 // Types
 import { AlbumCard as IAlbumCard, AlbumWithDuration } from '../../album.types';
+import { ImageFallbackType } from '../../../../shared/types/shared.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
 import H2 from '../../../../shared/ui/H2/H2';
 import H3 from '../../../../shared/ui/H3/H3';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
+import Link from '../../../../shared/ui/Link/Link';
 
 // Utils
 import { albumDataMap } from '../../album.utils';
+import { setTitle } from '../../../../shared/utils/shared.utils';
 
 const Album = () => {
   const { typeTranslationByTypeGet } = useAlbum();
   const { albumGet } = useAlbumHttp();
   const { albumsGet } = useArtistHttp();
-  const { mdDown } = useBreakpoints();
+  const { smDown } = useBreakpoints();
   const { handleError, handleRetry } = useFetch();
   const { id } = useParams();
   const { playPutMutation } = usePlayerHttp();
@@ -87,9 +90,10 @@ const Album = () => {
           };
           setAlbum(album);
         }
+        setTitle(data.name);
         // Wait for transition animation
         setTimeout(() => {
-          setHeaderTitle(data?.name);
+          setHeaderTitle(data.name);
         }, 500);
       }
     },
@@ -123,12 +127,12 @@ const Album = () => {
   // EFFECTS //
   // ####### //
 
-  // Reset playlist on id change
+  // Reset data on id change.
   useEffect(() => {
-    album && setAlbum(undefined);
-    // Reset header title
     return () => {
+      setAlbum(undefined);
       setHeaderTitle(undefined);
+      setTitle();
     };
     // eslint-disable-next-line
   }, [id]);
@@ -169,13 +173,17 @@ const Album = () => {
         >
           <div className={styles['album-header']}>
             <div className={styles['album-header-image']}>
-              <img
-                alt={`${t('album.detail.title')} ${album.name}`}
-                src={album.images[0].url}
-              />
+              {album.images[0]?.url ? (
+                <img
+                  alt={`${t('album.detail.title')} ${album.name}`}
+                  src={album.images[0].url}
+                />
+              ) : (
+                <ImageFallback type={ImageFallbackType.Album} />
+              )}
             </div>
             <div className={styles['album-header-info']}>
-              {!mdDown && (
+              {!smDown && (
                 <Box
                   className={styles['album-header-info-type']}
                   sx={{ color: 'text.secondary' }}
@@ -183,7 +191,7 @@ const Album = () => {
                   {typeTranslationByTypeGet(album.album_type)}
                 </Box>
               )}
-              {mdDown ? (
+              {smDown ? (
                 <H3 classes={styles['album-header-title']}>{album.name}</H3>
               ) : (
                 <H2>{album.name}</H2>
@@ -197,10 +205,7 @@ const Album = () => {
                     >
                       <Link
                         key={artist.id}
-                        className={clsx(
-                          styles['album-header-info-data-artist-link'],
-                          'app-link'
-                        )}
+                        classes={styles['album-header-info-data-artist-link']}
                         to={`/artist/${artist.id}`}
                       >{`${artist.name}`}</Link>
                       {`${index < album.artists.length - 1 ? ',\xa0' : ''}`}
@@ -211,7 +216,7 @@ const Album = () => {
                   className={styles['album-header-info-data-section']}
                   sx={{ color: 'text.secondary' }}
                 >
-                  {mdDown && typeTranslationByTypeGet(album.album_type)}{' '}
+                  {smDown && typeTranslationByTypeGet(album.album_type)}{' '}
                   <span className="whitespace-pre-wrap"> </span>
                   {' • '}
                   {new Intl.DateTimeFormat(i18n.language, {
@@ -222,7 +227,7 @@ const Album = () => {
                   className={styles['album-header-info-data-section']}
                   sx={{ color: 'text.secondary' }}
                 >
-                  {!mdDown && (
+                  {!smDown && (
                     <>
                       <span className="whitespace-pre-wrap"> </span>
                       {'• '}

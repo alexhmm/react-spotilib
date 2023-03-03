@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // Stores
@@ -17,6 +18,9 @@ import {
 import H3 from '../../../../shared/ui/H3/H3';
 import Select from '../../../../shared/ui/Select/Select';
 import Switch from '../../../../shared/ui/Switch/Switch';
+
+// Utils
+import { setTitle } from '../../../../shared/utils/shared.utils';
 
 type SettingsFormItemProps = {
   items?: FormItem[];
@@ -54,6 +58,15 @@ const Settings = () => {
     state.theme,
     state.setTheme,
   ]);
+
+  // Set page title on mount.
+  useEffect(() => {
+    setTitle(t('app.settings.title').toString());
+    return () => {
+      setTitle();
+    };
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className={styles['settings']}>

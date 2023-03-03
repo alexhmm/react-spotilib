@@ -21,6 +21,7 @@ export interface AppTranslations {
   from: string;
   hello: string;
   logout: string;
+  search: string;
   settings: {
     language: {
       english: string;
@@ -38,7 +39,6 @@ export interface AppTranslations {
   sidebar: {
     home: string;
     library: string;
-    search: string;
   };
   top: {
     artists: string;
