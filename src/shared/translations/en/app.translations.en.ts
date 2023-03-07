@@ -25,7 +25,6 @@ export const appTranslationsEN: AppTranslations = {
       title: 'Add to library',
     },
   },
-  search: 'Search',
   settings: {
     language: {
       english: 'English',

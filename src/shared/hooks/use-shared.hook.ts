@@ -63,7 +63,7 @@ const useShared = () => {
       {
         icon: ['fas', 'magnifying-glass'],
         pathname: '/search',
-        title: t('app.search'),
+        title: t('search.title'),
       },
       {
         icon: ['fas', 'book'],

@@ -1,13 +1,11 @@
 import { memo, useEffect } from 'react';
-import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { InputAdornment, OutlinedInput } from '@mui/material';
 import clsx from 'clsx';
 
 // Hooks
 import useDebouncedEffect from '../../hooks/use-debounced-effect.hook';
-import useFetch from '../../hooks/use-fetch.hook';
-import useSearchHttp from '../../../modules/search/use-search-http.hook';
 
 // Stores
 import useSearchStore from '../../../modules/search/use-search.store';
@@ -15,16 +13,9 @@ import useSearchStore from '../../../modules/search/use-search.store';
 // Styles
 import styles from './Search.module.scss';
 
-// Types
-import { SearchGetParams } from '../../../modules/search/search.types';
-import { SpotifyItemType } from '../../types/spotify.types';
-
 // UI
 import Icon from '../../ui/Icon/Icon';
 import IconButton from '../../ui/IconButton/IconButton';
-
-// Utils
-import { searchDataCreate } from '../../../modules/search/search.utils';
 
 type SearchProps = {
   classes?: string;
@@ -34,75 +25,36 @@ type SearchProps = {
 };
 
 const Search = (props: SearchProps) => {
-  const { handleError, handleRetry } = useFetch();
-  const { searchGet } = useSearchHttp();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   // Search store state
-  const [setSearch, setSearchData, setSearchLoading] = useSearchStore(
-    (state) => [state.setSearch, state.setSearchData, state.setSearchLoading]
-  );
+  const [setSearch, setSearchData] = useSearchStore((state) => [
+    state.setSearch,
+    state.setSearchData,
+  ]);
 
-  // ######### //
-  // MUTATIONS //
-  // ######### //
-
-  // GET Search mutation
-  const searchGetMutation = useMutation(
-    (params: SearchGetParams) => searchGet(params),
-    {
-      onError: (error: any) => {
-        setSearchLoading(false);
-        const errRes = error?.response;
-        if (errRes) {
-          handleError(errRes.status);
-        }
-      },
-      onMutate: () => {
-        setSearchData(undefined);
-        setSearchLoading(true);
-      },
-      onSuccess: (data) => {
-        setSearchLoading(false);
-        data && setSearchData(searchDataCreate(data));
-      },
-      retry: (failureCount, error: any) => handleRetry(failureCount, error),
-    }
-  );
-
-  // ####### //
-  // EFFECTS //
-  // ####### //
-
-  // Reset search state on component unmount.
-  useEffect(() => {
-    return () => {
-      setSearchData(undefined);
-      setSearch(undefined);
-    };
-    // eslint-disable-next-line
-  }, []);
-
-  // Search after debounced input.
+  // Navigate to search result page after debounced input
   useDebouncedEffect(
     () => {
-      if (props.value && props.value.length > 2) {
-        searchGetMutation.mutate({
-          q: props.value,
-          type: [
-            SpotifyItemType.Album,
-            SpotifyItemType.Artist,
-            SpotifyItemType.Playlist,
-            SpotifyItemType.Track,
-          ],
-        });
+      setSearchData(undefined);
+      if (props.value && props.value.length > 0) {
+        navigate(`/search/${props.value}`);
       } else {
-        setSearchData(undefined);
+        navigate('/search');
       }
     },
     [props.value],
     500
   );
+
+  // Reset search string on component unmount
+  useEffect(() => {
+    return () => {
+      setSearch(undefined);
+    };
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <OutlinedInput
@@ -113,7 +65,7 @@ const Search = (props: SearchProps) => {
         notchedOutline: styles['search-outline'],
       }}
       disabled={props.disabled}
-      placeholder={t('app.search').toString()}
+      placeholder={t('search.title').toString()}
       size="small"
       startAdornment={
         <InputAdornment
