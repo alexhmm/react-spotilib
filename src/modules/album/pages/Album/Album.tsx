@@ -1,8 +1,8 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, Tooltip } from '@mui/material';
 
 // Components
 import AlbumCard from '../../components/AlbumCard/AlbumCard';
@@ -17,6 +17,7 @@ import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
 import useFetch from '../../../../shared/hooks/use-fetch.hook';
 import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';
 import useShared from '../../../../shared/hooks/use-shared.hook';
+import useUserHttp from '../../../user/use-user-http.hook';
 
 // Styles
 import styles from './Album.module.scss';
@@ -29,6 +30,7 @@ import useUserStore from '../../../user/use-user.store';
 import { AlbumCard as IAlbumCard, AlbumWithDuration } from '../../album.types';
 import { ImageFallbackType } from '../../../../shared/types/shared.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
+import { SaveAlbumsPutDeleteRequest } from '../../../user/user.types';
 
 // UI
 import H2 from '../../../../shared/ui/H2/H2';
@@ -50,15 +52,21 @@ const Album = () => {
   const { playPutMutation } = usePlayerHttp();
   const { durationByMillisecondsGet } = useShared();
   const { i18n, t } = useTranslation();
+  const { savedAlbumsCheckGet, savedAlbumsDelete, saveAlbumsPut } =
+    useUserHttp();
 
   // Shared store state
-  const [setHeaderTitle] = useSharedStore((state) => [state.setHeaderTitle]);
+  const [setHeaderTitle, setNotification] = useSharedStore((state) => [
+    state.setHeaderTitle,
+    state.setNotification,
+  ]);
 
   // User store state
   const [profile] = useUserStore((state) => [state.profile]);
 
   // Component state
   const [album, setAlbum] = useState<AlbumWithDuration | undefined>(undefined);
+  const [savedAlbum, setSavedAlbum] = useState<boolean>(false);
   const [otherAlbums, setOtherAlbums] = useState<IAlbumCard[]>([]);
 
   // ####### //
@@ -123,6 +131,71 @@ const Album = () => {
     }
   );
 
+  // Get saved album state by id.
+  // eslint-disable-next-line
+  const savedAlbumQuery = useQuery(
+    ['following', id],
+    () => savedAlbumsCheckGet(id ? { ids: [id] } : { ids: [] }),
+    {
+      refetchOnWindowFocus: false,
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          console.error('Error on getting saved album states:', error);
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data) => {
+        data && setSavedAlbum(data[0]);
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
+  // ######### //
+  // MUTATIONS //
+  // ######### //
+
+  // GET Saved album delete mutation
+  const savedAlbumDeleteMutation = useMutation(
+    (params: SaveAlbumsPutDeleteRequest) => savedAlbumsDelete(params),
+    {
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data) => {
+        setSavedAlbum(false);
+        setNotification({
+          title: `${album?.name} ${t('app.save.delete.success')}`,
+        });
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
+  // GET Save album put mutation
+  const saveAlbumPutMutation = useMutation(
+    (params: SaveAlbumsPutDeleteRequest) => saveAlbumsPut(params),
+    {
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data) => {
+        setSavedAlbum(true);
+        setNotification({
+          title: `${album?.name} ${t('app.save.put.success')}`,
+        });
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
   // ####### //
   // EFFECTS //
   // ####### //
@@ -158,6 +231,20 @@ const Album = () => {
     // eslint-disable-next-line
     []
   );
+
+  /**
+   * Handler to change saved album state.
+   */
+  const onSavedAlbumStateChange = useCallback(() => {
+    if (id) {
+      if (savedAlbum) {
+        savedAlbumDeleteMutation.mutate({ ids: [id] });
+      } else {
+        saveAlbumPutMutation.mutate({ ids: [id] });
+      }
+    }
+    // eslint-disable-next-line
+  }, [savedAlbum, id]);
 
   return (
     <>
@@ -253,6 +340,22 @@ const Album = () => {
               }}
               onClick={() => onPlayContext(album.uri)}
             />
+            <Tooltip
+              placement="top"
+              title={
+                savedAlbum
+                  ? t('app.save.delete.title')
+                  : t('app.save.put.title')
+              }
+            >
+              <IconButton
+                classes={styles['album-actions-save']}
+                color={savedAlbum ? 'primary' : 'inherit'}
+                icon={[savedAlbum ? 'fas' : 'far', 'heart']}
+                iconSize="medium"
+                onClick={onSavedAlbumStateChange}
+              />
+            </Tooltip>
           </div>
           <div className={styles['album-content']}>
             {album.tracks.items.map((track, index) => (

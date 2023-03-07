@@ -9,20 +9,22 @@ export const appTranslationsDE: AppTranslations = {
   coming_soon: 'Bald verfügbar ...',
   follow: {
     active: 'Folge ich',
-    delete: {
-      success: 'aus Bibliothek entfernt',
-      title: 'Aus Bibliothek entfernen',
-    },
     inactive: 'Folgen',
-    put: {
-      success: 'in Bibliothek gespeichert',
-      title: 'In Bibliothek speichern',
-    },
   },
   followers: 'Followli',
   from: 'Von',
   hello: 'Guten Tag!',
   logout: 'Abmelden',
+  save: {
+    delete: {
+      success: 'aus Bibliothek entfernt',
+      title: 'Aus Bibliothek entfernen',
+    },
+    put: {
+      success: 'in Bibliothek gespeichert',
+      title: 'In Bibliothek speichern',
+    },
+  },
   search: 'Suche',
   settings: {
     language: {

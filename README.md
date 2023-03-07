@@ -14,11 +14,12 @@ Implemented Features:
 - [x] Library Playlists page
 - [x] Library Artists page
 - [x] Library Albums page
-- [x] Playlist detail page (Read)
+- [x] Playlist detail page (Read, Update + Delete)
 - [x] Artist detail page (Read + Update)
-- [x] Album detail page (Read)
+- [x] Album detail page (Read + Update)
 - [x] Settings page
 - [x] Profile / User page
+- [x] Header back and forward navigation
 - [x] Global state management (Zustand)
 - [x] Internationalization (i18n)
 - [x] Start music
@@ -26,9 +27,6 @@ Implemented Features:
 
 To be implemented Features:
 
-- [ ] Header back and forward navigation
-- [ ] Playlist page (Update + Delete)
-- [ ] Album page (Update)
 - [ ] Search (Add string to pathname for better navigation, show last searchs etc..)
 - [ ] Collections to organize releases / albums (playlist like with sorting and display options)
 - [ ] SEO (React Helmet)
