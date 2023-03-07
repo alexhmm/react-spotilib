@@ -15,12 +15,14 @@ const useSearchHttp = () => {
   const searchGet = async (
     params: SearchGetParams
   ): Promise<SearchGetResponse | undefined> => {
-    return await fetchData(`search`, {
-      params: new URLSearchParams({
-        q: params.q,
-        type: params.type.toString(),
-      }),
-    });
+    if (params.q.length > 0) {
+      return await fetchData(`search`, {
+        params: new URLSearchParams({
+          q: params.q,
+          type: params.type.toString(),
+        }),
+      });
+    }
   };
 
   return {

@@ -23,7 +23,6 @@ export interface AppTranslations {
       title: string;
     };
   };
-  search: string;
   settings: {
     language: {
       english: string;

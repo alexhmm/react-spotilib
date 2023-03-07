@@ -25,7 +25,6 @@ export const appTranslationsDE: AppTranslations = {
       title: 'In Bibliothek speichern',
     },
   },
-  search: 'Suche',
   settings: {
     language: {
       english: 'Englisch',

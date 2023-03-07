@@ -7,17 +7,14 @@ import { SearchData } from './search.types';
 export interface SearchState {
   search: string | undefined;
   searchData: SearchData | undefined;
-  searchLoading: boolean;
   resetState: () => void;
   setSearch: (search: string | undefined) => void;
   setSearchData: (searchData: SearchData | undefined) => void;
-  setSearchLoading: (searchLoading: boolean) => void;
 }
 
 const initialSearchState = {
   search: undefined,
   searchData: undefined,
-  searchLoading: false,
 };
 
 const useSearchStore = create<SearchState>((set) => ({
@@ -30,9 +27,6 @@ const useSearchStore = create<SearchState>((set) => ({
   },
   setSearchData: (searchData: SearchData | undefined) => {
     set({ searchData });
-  },
-  setSearchLoading: (searchLoading: boolean) => {
-    set({ searchLoading });
   },
 }));
 

@@ -215,12 +215,12 @@ const Sidebar = () => {
             {t('app.sidebar.home')}
           </SidebarItem>
           <SidebarItem
-            active={location.pathname === '/search' ? true : false}
+            active={location.pathname.includes('search') ? true : false}
             classes="mb-4"
             icon={['fas', 'magnifying-glass']}
             to="/search"
           >
-            {t('app.search')}
+            {t('search.title')}
           </SidebarItem>
           <SidebarItem
             active={location.pathname.includes('library') ? true : false}
