@@ -20,7 +20,7 @@ export const appTranslationsEN: AppTranslations = {
     },
   },
   followers: 'Followers',
-  from: 'from',
+  from: 'From',
   hello: 'Hello!',
   logout: 'Logout',
   search: 'Search',

@@ -20,7 +20,7 @@ export const appTranslationsDE: AppTranslations = {
     },
   },
   followers: 'Followli',
-  from: 'von',
+  from: 'Von',
   hello: 'Guten Tag!',
   logout: 'Abmelden',
   search: 'Suche',

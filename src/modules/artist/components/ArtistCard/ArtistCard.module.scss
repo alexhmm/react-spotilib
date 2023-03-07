@@ -13,6 +13,6 @@
     @apply absolute h-full left-0 top-0 w-full;
   }
   &-name {
-    @apply font-semibold ml-4 text-sm truncate sm:ml-0 sm:my-4;
+    @apply font-semibold ml-4 text-sm truncate w-full sm:ml-0 sm:my-4;
   }
 }

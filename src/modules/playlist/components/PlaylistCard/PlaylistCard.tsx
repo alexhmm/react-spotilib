@@ -1,5 +1,5 @@
 import { memo, useCallback } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
@@ -22,7 +22,6 @@ import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
-import Link from '../../../../shared/ui/Link/Link';
 
 type PlaylistCardProps = {
   hideOwner?: boolean;
@@ -113,54 +112,17 @@ const PlaylistCard = (props: PlaylistCardProps) => {
         <div className={styles['playlist-card-info-name']}>
           {props.playlist.name}
         </div>
-        {!props.hideOwner ? (
-          <>
-            {props.playlist.owner.id !== 'spotify' ? (
-              <div className={styles['playlist-card-info-owner']}>
-                {!smDown && (
-                  <>
-                    <Box
-                      className={styles['playlist-card-info-owner-from']}
-                      sx={{ color: 'text.secondary' }}
-                    >
-                      {t('app.from')}
-                    </Box>
-                    <span className="whitespace-pre-wrap shrink-0"> </span>
-                  </>
-                )}
-                {isMobile ? (
-                  <Box
-                    className={styles['playlist-card-info-owner-name']}
-                    sx={{ color: 'text.secondary' }}
-                  >
-                    {props.playlist.owner.display_name}
-                  </Box>
-                ) : (
-                  <Link
-                    classes={clsx(
-                      styles['playlist-card-info-owner-link'],
-                      styles['playlist-card-info-owner-name']
-                    )}
-                    to={`/user/${props.playlist.owner.id}`}
-                  >
-                    {props.playlist.owner.display_name}
-                  </Link>
-                )}
-              </div>
-            ) : (
-              <Box
-                className={styles['playlist-card-info-description']}
-                sx={{ color: 'text.secondary' }}
-              >
-                {props.playlist.description}
-              </Box>
-            )}
-          </>
-        ) : (
-          <div className={styles['playlist-card-info-owner']}></div>
-        )}
+
+        <Box
+          className={styles['playlist-card-info-owner']}
+          sx={{ color: 'text.secondary' }}
+        >
+          {props.playlist.owner.id !== 'spotify'
+            ? `${t('app.from')} ${props.playlist.owner.display_name}`
+            : props.playlist.description}
+        </Box>
       </div>
-      <RouterLink
+      <Link
         className={clsx(styles['playlist-card-link'], 'app-link')}
         to={`/playlist/${props.playlist.id}`}
       />
