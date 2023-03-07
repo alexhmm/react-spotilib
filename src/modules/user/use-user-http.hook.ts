@@ -18,6 +18,8 @@ import {
   SavedAlbumsGetParams,
   SavedAlbum,
   UserProfile,
+  SavedAlbumsCheckGetRequest,
+  SaveAlbumsPutDeleteRequest,
 } from './user.types';
 
 // Stores
@@ -166,6 +168,60 @@ const useUserHttp = () => {
     });
   };
 
+  /**
+   * GET Check if one or more albums is already saved in the current Spotify user's 'Your Music' library.
+   * @param params Album ids
+   * @returns Array of booleans
+   */
+  const savedAlbumsCheckGet = async (
+    params: SavedAlbumsCheckGetRequest
+  ): Promise<boolean[] | undefined> => {
+    if (params.ids.length > 0) {
+      return await fetchData(`me/albums/contains`, {
+        params: new URLSearchParams({
+          ids: params.ids.toString(),
+        }),
+      });
+    }
+  };
+
+  /**
+   * DELETE Remove one or more albums from the current user's 'Your Music' library.
+   * @param params Album ids
+   * @returns Message
+   */
+  const savedAlbumsDelete = async (
+    params: SaveAlbumsPutDeleteRequest
+  ): Promise<any> => {
+    console.log('savedAlbumsDelete', params.ids);
+    if (params.ids.length > 0) {
+      return await fetchData('me/albums', {
+        params: new URLSearchParams({
+          ids: params.ids.toString(),
+        }),
+        method: RequestMethod.Delete,
+      });
+    }
+  };
+
+  /**
+   * PUT Save one or more albums to the current user's 'Your Music' library.
+   * @param params Album ids
+   * @returns Message
+   */
+  const saveAlbumsPut = async (
+    params: SaveAlbumsPutDeleteRequest
+  ): Promise<any> => {
+    if (params.ids.length > 0) {
+      return await fetchData('me/albums', {
+        params: new URLSearchParams({
+          ids: params.ids.toString(),
+        }),
+        method: RequestMethod.Put,
+      });
+    }
+  };
+
   return {
     followedArtistsGet,
     followingStateGet,
@@ -173,6 +229,9 @@ const useUserHttp = () => {
     playlistsGet,
     profileGet,
     savedAlbumsGet,
+    savedAlbumsCheckGet,
+    savedAlbumsDelete,
+    saveAlbumsPut,
   };
 };
 

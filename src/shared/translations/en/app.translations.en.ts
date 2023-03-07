@@ -9,20 +9,22 @@ export const appTranslationsEN: AppTranslations = {
   coming_soon: 'Coming soon ...',
   follow: {
     active: 'Following',
+    inactive: 'Follow',
+  },
+  followers: 'Followers',
+  from: 'From',
+  hello: 'Hello!',
+  logout: 'Logout',
+  save: {
     delete: {
       success: 'removed from library',
       title: 'Remove from library',
     },
-    inactive: 'Follow',
     put: {
       success: 'added to library',
       title: 'Add to library',
     },
   },
-  followers: 'Followers',
-  from: 'from',
-  hello: 'Hello!',
-  logout: 'Logout',
   search: 'Search',
   settings: {
     language: {

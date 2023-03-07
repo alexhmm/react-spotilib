@@ -74,7 +74,7 @@ const Playlist = () => {
   const downloadMetadataRef = useRef<HTMLAnchorElement>(null);
 
   // Shared store state
-  const [following, setHeaderTitle, setFollowing, setNotifcation] =
+  const [following, setHeaderTitle, setFollowing, setNotification] =
     useSharedStore((state) => [
       state.following,
       state.setHeaderTitle,
@@ -95,7 +95,7 @@ const Playlist = () => {
       title:
         playlist?.owner.id === profile?.id
           ? t('app.actions.delete')
-          : t('app.follow.delete.title'),
+          : t('app.save.delete.title'),
     },
     {
       action: PlaylistAction.DownloadMetadata,
@@ -177,7 +177,7 @@ const Playlist = () => {
       },
       onSuccess: (data) => {
         setFollowing(false);
-        setNotifcation({
+        setNotification({
           title: `${playlist?.name} ${t('app.follow.delete.success')}`,
         });
       },
@@ -198,8 +198,8 @@ const Playlist = () => {
       },
       onSuccess: (data) => {
         setFollowing(true);
-        setNotifcation({
-          title: `${playlist?.name} ${t('app.follow.put.success')}`,
+        setNotification({
+          title: `${playlist?.name} ${t('app.save.put.success')}`,
         });
       },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),
@@ -237,7 +237,7 @@ const Playlist = () => {
         }
       },
       onSuccess: () => {
-        setNotifcation({
+        setNotification({
           title: t('track.action.add.success'),
         });
       },
@@ -261,7 +261,7 @@ const Playlist = () => {
           setPlaylist(
             removePlaylistItemsEffect(playlist, variables.body.tracks)
           );
-        setNotifcation({
+        setNotification({
           timeout: 3000,
           title: t('playlist.detail.track.action.remove_from_playlist.success'),
         });
@@ -474,13 +474,13 @@ const Playlist = () => {
                 placement="top"
                 title={
                   following
-                    ? t('app.follow.delete.title')
-                    : t('app.follow.put.title')
+                    ? t('app.save.delete.title')
+                    : t('app.save.put.title')
                 }
               >
                 <IconButton
                   classes={styles['playlist-actions-follow']}
-                  color={following ? 'primary' : 'secondary'}
+                  color={following ? 'primary' : 'inherit'}
                   icon={[following ? 'fas' : 'far', 'heart']}
                   iconSize="medium"
                   onClick={onFollowingStateChange}

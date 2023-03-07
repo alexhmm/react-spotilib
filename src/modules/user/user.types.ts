@@ -29,6 +29,10 @@ export interface SavedAlbumsGetParams {
   offset?: number;
 }
 
+export interface SavedAlbumsCheckGetRequest {
+  ids: string[];
+}
+
 export interface UserFollowingStateGetRequest extends FollowingStateGetRequest {
   type: SpotifyFollowType;
 }
@@ -66,3 +70,5 @@ export type FollowingStatePutDeleteRequest = Pick<
   UserFollowingStateGetRequest,
   'ids'
 >;
+
+export type SaveAlbumsPutDeleteRequest = SavedAlbumsCheckGetRequest;

@@ -5,6 +5,9 @@
 
 .album-actions {
   @apply flex items-center mb-4 lg:mb-8;
+  &-save {
+    @apply ml-4 lg:ml-8;
+  }
 }
 
 .album-content {

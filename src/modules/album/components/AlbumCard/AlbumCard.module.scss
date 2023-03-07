@@ -11,7 +11,7 @@
     }
   }
   &-info {
-    @apply flex flex-col ml-4 truncate w-full sm:ml-0;
+    @apply flex flex-col ml-4 truncate w-full sm:mb-4 sm:ml-0 sm:mt-2;
     &-data {
       @apply text-sm overflow-hidden w-full;
       &-artist {

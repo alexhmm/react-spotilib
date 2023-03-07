@@ -14,23 +14,11 @@
   }
   &-info {
     @apply flex flex-col ml-4 truncate w-full sm:ml-0;
-    &-description {
-      @apply text-sm truncate w-full sm:mb-4 sm:mt-2;
-    }
     &-name {
       @apply font-semibold text-sm truncate sm:mt-4;
     }
     &-owner {
-      @apply flex items-center text-sm truncate w-full sm:mb-4 sm:mt-2;
-      &-from {
-        @apply inline-block;
-      }
-      &-link {
-        @apply z-10;
-      }
-      &-name {
-        @apply duration-200 inline-block transition-colors truncate max-w-full w-fit;
-      }
+      @apply text-sm truncate w-full sm:mb-4 sm:mt-2;
     }
   }
 }
