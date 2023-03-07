@@ -480,7 +480,7 @@ const Playlist = () => {
               >
                 <IconButton
                   classes={styles['playlist-actions-follow']}
-                  color={following ? 'primary' : 'secondary'}
+                  color={following ? 'primary' : 'inherit'}
                   icon={[following ? 'fas' : 'far', 'heart']}
                   iconSize="medium"
                   onClick={onFollowingStateChange}
