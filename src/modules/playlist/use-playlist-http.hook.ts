@@ -6,6 +6,7 @@ import {
   PlaylistFollowPutRequest,
   PlaylistItemsRemoveDeleteRequest,
   PlaylistsGetParams,
+  PlaylistUpdateRequest,
 } from './playlist.types';
 import {
   FollowingStateGetRequest,
@@ -61,13 +62,17 @@ const usePlaylistHttp = () => {
   };
 
   /**
-   * DELETE Remove the current user as a follower of a playlist.
-   * @param id Playlist id
+   * PUT Change a playlist's name and public/private state by id (the user must, of course, own the playlist).
+   * @param data Playlist id and PlaylistUpdateRequest
    * @returns Message
    */
-  const playlistFollowDelete = async (id: string): Promise<any> => {
-    return await fetchData(`playlists/${id}/followers`, {
-      method: RequestMethod.Delete,
+  const playlistUpdate = async (data: {
+    id: string;
+    body: PlaylistUpdateRequest;
+  }): Promise<SpotifyDataGetResponse<SpotifyPlaylist[]> | undefined> => {
+    return await fetchData(`playlists/${data.id}`, {
+      body: data.body,
+      method: RequestMethod.Put,
     });
   };
 
@@ -76,7 +81,7 @@ const usePlaylistHttp = () => {
    * @param params FollowingStateGetPutRequest
    * @returns Array of booleans.
    */
-  const playlistfollowGet = async (
+  const playlistFollowGet = async (
     id: string,
     params: FollowingStateGetRequest
   ): Promise<boolean[] | undefined> => {
@@ -87,6 +92,17 @@ const usePlaylistHttp = () => {
         }),
       });
     }
+  };
+
+  /**
+   * DELETE Remove the current user as a follower of a playlist.
+   * @param id Playlist id
+   * @returns Message
+   */
+  const playlistFollowDelete = async (id: string): Promise<any> => {
+    return await fetchData(`playlists/${id}/followers`, {
+      method: RequestMethod.Delete,
+    });
   };
 
   /**
@@ -130,7 +146,7 @@ const usePlaylistHttp = () => {
    * @param data Playlist id and PlaylistItemsRemoveDeleteRequest
    * @returns Message
    */
-  const removePlaylistItems = async (data: {
+  const playlistTracksDelete = async (data: {
     id: string;
     body: PlaylistItemsRemoveDeleteRequest;
   }): Promise<any> => {
@@ -143,11 +159,12 @@ const usePlaylistHttp = () => {
   return {
     playlistsGet,
     playlistGet,
+    playlistUpdate,
+    playlistFollowGet,
     playlistFollowDelete,
-    playlistfollowGet,
     playlistFollowPut,
     playlistTracksGet,
-    removePlaylistItems,
+    playlistTracksDelete,
   };
 };
 

@@ -1,5 +1,15 @@
 export interface PlaylistTranslations {
   detail: {
+    action: {
+      make_private: {
+        success: string;
+        title: string;
+      };
+      make_public: {
+        success: string;
+        title: string;
+      };
+    };
     public: {
       false: string;
       true: string;

@@ -11,6 +11,8 @@ import {
 export enum PlaylistAction {
   Delete = 'DELETE',
   DownloadMetadata = 'DOWNLOAD_METADATA',
+  MakePrivate = 'MAKE_PRIVATE',
+  MakePublic = 'MAKE_PUBLIC',
 }
 
 export enum PlaylistTrackAction {
@@ -48,6 +50,13 @@ export interface PlaylistTrackArtists {
 export interface PlaylistsGetParams {
   limit: number;
   offset: number;
+}
+
+export interface PlaylistUpdateRequest {
+  name?: string;
+  public?: boolean;
+  collaborative?: boolean;
+  description?: string;
 }
 
 export type Playlists = Pick<
