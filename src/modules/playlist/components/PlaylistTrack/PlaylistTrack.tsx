@@ -54,7 +54,7 @@ const playlistPropsAreEqual = (
 
 const PlaylistTrack = (props: PlaylistTrackProps) => {
   const { smDown } = useBreakpoints();
-  const { getPlaylistTrackActions } = usePlaylist();
+  const { playlistTrackActionsGet } = usePlaylist();
 
   // Component state
   const [detailDrawer, setDetailDrawer] = useState<boolean>(false);
@@ -181,13 +181,13 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
             classes={clsx(styles['playlist-track-more-button'], 'more')}
             hideItemIcon
             icon={['fas', 'ellipsis']}
-            items={getPlaylistTrackActions(props.owner)}
+            items={playlistTrackActionsGet(props.owner)}
             onAction={props.onAction}
           />
         )}
       </Box>
       <DetailDrawer
-        items={getPlaylistTrackActions(props.owner)}
+        items={playlistTrackActionsGet(props.owner)}
         image={props.track.album.images[1]?.url}
         open={detailDrawer}
         subtitle={`${props.track.artists[0].name} • ${props.track.album.name}`}

@@ -58,7 +58,7 @@ const Playlist = () => {
   const { objectURL, setObject } = useObjectURL(null);
   const { id } = useParams();
   const { playPutMutation } = usePlayerHttp();
-  const { playlistTracksGetEffect } = usePlaylist();
+  const { playlistTracksGetEffect, playlistDeleteEffect } = usePlaylist();
   const {
     playlistGet,
     playlistFollowDelete,
@@ -175,10 +175,12 @@ const Playlist = () => {
           handleError(errRes.status);
         }
       },
-      onSuccess: (data) => {
+      onSuccess: (data, variables) => {
         setFollowing(false);
+        playlistDeleteEffect(variables);
+        navigate('/library');
         setNotification({
-          title: `${playlist?.name} ${t('app.follow.delete.success')}`,
+          title: `${playlist?.name} ${t('app.save.delete.success')}`,
         });
       },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),
