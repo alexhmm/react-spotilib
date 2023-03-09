@@ -27,7 +27,6 @@ Implemented Features:
 
 To be implemented Features:
 
-- [ ] Search (Add string to pathname for better navigation, show last searchs etc..)
 - [ ] Collections to organize releases / albums (playlist like with sorting and display options)
 - [ ] SEO (React Helmet)
 - [ ] Cookie banner
