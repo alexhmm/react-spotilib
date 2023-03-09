@@ -33,6 +33,7 @@ import {
   PlaylistTrackAction,
   PlaylistItemsRemoveDeleteRequest,
   PlaylistTrack as IPlaylistTrack,
+  PlaylistUpdateRequest,
 } from '../../playlist.types';
 import { ImageFallbackType } from '../../../../shared/types/shared.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
@@ -61,11 +62,12 @@ const Playlist = () => {
   const { playlistTracksGetEffect, playlistDeleteEffect } = usePlaylist();
   const {
     playlistGet,
+    playlistUpdate,
     playlistFollowDelete,
-    playlistfollowGet,
+    playlistFollowGet,
     playlistFollowPut,
     playlistTracksGet,
-    removePlaylistItems,
+    playlistTracksDelete,
   } = usePlaylistHttp();
   const { saveTracks } = useTrackHttp();
   const { i18n, t } = useTranslation();
@@ -98,6 +100,14 @@ const Playlist = () => {
           : t('app.save.delete.title'),
     },
     {
+      action: playlist?.public
+        ? PlaylistAction.MakePrivate
+        : PlaylistAction.MakePublic,
+      title: playlist?.public
+        ? t('playlist.detail.action.make_private.title')
+        : t('playlist.detail.action.make_public.title'),
+    },
+    {
       action: PlaylistAction.DownloadMetadata,
       title: t('app.actions.download_metadata'),
     },
@@ -112,7 +122,7 @@ const Playlist = () => {
   const followingQuery = useQuery(
     ['following', id, profile?.id],
     () =>
-      playlistfollowGet(id ?? '', {
+      playlistFollowGet(id ?? '', {
         ids: profile?.id ? [profile?.id] : [],
       }),
     {
@@ -164,6 +174,39 @@ const Playlist = () => {
   // ######### //
   // MUTATIONS //
   // ######### //
+
+  // PUT Update playlist mutation
+  const playlistUpdateMutation = useMutation(
+    (data: {
+      id: string;
+      action: PlaylistAction;
+      body: PlaylistUpdateRequest;
+    }) => playlistUpdate(data),
+    {
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          console.error('Error on updating playlist:', error);
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data, variables) => {
+        if (playlist && variables.action === PlaylistAction.MakePrivate) {
+          setPlaylist({ ...playlist, public: false });
+          setNotification({
+            title: t('playlist.detail.action.make_private.success'),
+          });
+        }
+        if (playlist && variables.action === PlaylistAction.MakePublic) {
+          setPlaylist({ ...playlist, public: true });
+          setNotification({
+            title: t('playlist.detail.action.make_public.success'),
+          });
+        }
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
 
   // GET Playlist follow delete mutation
   const playlistFollowDeleteMutation = useMutation(
@@ -250,7 +293,7 @@ const Playlist = () => {
   // DELETE Remove playlist items mutation
   const removeItemsDeleteMutation = useMutation(
     (data: { id: string; body: PlaylistItemsRemoveDeleteRequest }) =>
-      removePlaylistItems(data),
+      playlistTracksDelete(data),
     {
       onError: (error: any) => {
         const errRes = error?.response;
@@ -328,6 +371,24 @@ const Playlist = () => {
       action === PlaylistAction.DownloadMetadata &&
         downloadMetadataRef.current &&
         downloadMetadataRef.current.click();
+      action === PlaylistAction.MakePrivate &&
+        id &&
+        playlistUpdateMutation.mutate({
+          id,
+          action: PlaylistAction.MakePrivate,
+          body: {
+            public: false,
+          },
+        });
+      action === PlaylistAction.MakePublic &&
+        id &&
+        playlistUpdateMutation.mutate({
+          id,
+          action: PlaylistAction.MakePublic,
+          body: {
+            public: true,
+          },
+        });
     },
     // eslint-disable-next-line
     [downloadMetadataRef, id]
