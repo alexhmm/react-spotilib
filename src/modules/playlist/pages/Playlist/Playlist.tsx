@@ -16,6 +16,7 @@ import useObjectURL from '../../../../shared/hooks/use-object-url.hook';
 import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';
 import usePlaylist from '../../use-playlist.hook';
 import usePlaylistHttp from '../../use-playlist-http.hook';
+import useTrackHttp from '../../../../shared/hooks/use-track-http.hook';
 
 // Styles
 import styles from './Playlist.module.scss';
@@ -35,10 +36,15 @@ import {
   PlaylistTrack as IPlaylistTrack,
   PlaylistUpdateRequest,
 } from '../../playlist.types';
-import { ImageFallbackType } from '../../../../shared/types/shared.types';
+import {
+  ImageFallbackType,
+  MenuItem,
+} from '../../../../shared/types/shared.types';
+import { SaveTracksPutRequest } from '../../../../shared/types/track.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
+import Dialog from '../../../../shared/ui/Dialog/Dialog';
 import H2 from '../../../../shared/ui/H2/H2';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
 import Link from '../../../../shared/ui/Link/Link';
@@ -50,8 +56,6 @@ import {
   removePlaylistItemsEffect,
 } from '../../playlist.utils';
 import { setTitle } from '../../../../shared/utils/shared.utils';
-import useTrackHttp from '../../../../shared/hooks/use-track-http.hook';
-import { SaveTracksPutRequest } from '../../../../shared/types/track.types';
 
 const Playlist = () => {
   const { handleError, handleRetry } = useFetch();
@@ -88,10 +92,16 @@ const Playlist = () => {
   const [profile] = useUserStore((state) => [state.profile]);
 
   // Component state
+  const [dialogDetailsEdit, setDialogDetailsEdit] = useState<boolean>(false);
   const [playlist, setPlaylist] = useState<IPlaylist | undefined>(undefined);
 
   // Constants
-  const moreMenuItems = [
+  const moreMenuItems: MenuItem[] = [
+    {
+      action: PlaylistAction.EditDetails,
+      title: t('playlist.detail.action.edit_details.title'),
+      undefined: playlist?.owner.id !== profile?.id,
+    },
     {
       action: PlaylistAction.Delete,
       title:
@@ -106,6 +116,7 @@ const Playlist = () => {
       title: playlist?.public
         ? t('playlist.detail.action.make_private.title')
         : t('playlist.detail.action.make_public.title'),
+      undefined: playlist?.owner.id !== profile?.id,
     },
     {
       action: PlaylistAction.DownloadMetadata,
@@ -371,6 +382,7 @@ const Playlist = () => {
       action === PlaylistAction.DownloadMetadata &&
         downloadMetadataRef.current &&
         downloadMetadataRef.current.click();
+      action === PlaylistAction.EditDetails && id && setDialogDetailsEdit(true);
       action === PlaylistAction.MakePrivate &&
         id &&
         playlistUpdateMutation.mutate({
@@ -595,6 +607,13 @@ const Playlist = () => {
           )}
         </InfiniteScroll>
       )}
+      <Dialog
+        open={dialogDetailsEdit && !!playlist}
+        title={t('playlist.detail.action.edit_details.title')}
+        onClose={() => setDialogDetailsEdit(false)}
+      >
+        Test
+      </Dialog>
     </>
   );
 };

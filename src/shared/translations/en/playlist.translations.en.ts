@@ -3,6 +3,18 @@ import { PlaylistTranslations } from '../types/playlist.translations.interface';
 export const playlistTranslationsEN: PlaylistTranslations = {
   detail: {
     action: {
+      edit_details: {
+        description: {
+          label: 'Description',
+          placeholder: 'Add optional description',
+        },
+        image: 'Select image',
+        name: {
+          label: 'Name',
+          placeholder: 'Add name',
+        },
+        title: 'Edit details',
+      },
       make_private: {
         success: 'Playlist has been made private',
         title: 'Make private',

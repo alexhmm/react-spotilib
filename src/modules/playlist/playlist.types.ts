@@ -11,6 +11,7 @@ import {
 export enum PlaylistAction {
   Delete = 'DELETE',
   DownloadMetadata = 'DOWNLOAD_METADATA',
+  EditDetails = 'EDIT_DETAILS',
   MakePrivate = 'MAKE_PRIVATE',
   MakePublic = 'MAKE_PUBLIC',
 }

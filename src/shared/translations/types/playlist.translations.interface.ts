@@ -1,6 +1,18 @@
 export interface PlaylistTranslations {
   detail: {
     action: {
+      edit_details: {
+        description: {
+          label: string;
+          placeholder: string;
+        };
+        image: string;
+        name: {
+          label: string;
+          placeholder: string;
+        };
+        title: string;
+      };
       make_private: {
         success: string;
         title: string;

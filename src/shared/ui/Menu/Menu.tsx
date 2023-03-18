@@ -115,17 +115,22 @@ const Menu = (props: MenuProps) => {
           className={styles['menu-popover-content']}
           sx={{ backgroundColor: 'background.paper' }}
         >
-          {props.items.map((item, index) => (
-            <MenuItem
-              key={index}
-              hideIcon={props.hideItemIcon}
-              title={item.title}
-              onClick={() => {
-                onMenuClose();
-                props.onAction && props.onAction(item.action);
-              }}
-            />
-          ))}
+          {props.items.map((item, index) => {
+            if (!item.undefined) {
+              return (
+                <MenuItem
+                  key={index}
+                  hideIcon={props.hideItemIcon}
+                  title={item.title}
+                  onClick={() => {
+                    onMenuClose();
+                    props.onAction && props.onAction(item.action);
+                  }}
+                />
+              );
+            }
+            return null;
+          })}
         </Box>
       </MuiPopover>
     </>

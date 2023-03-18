@@ -1,0 +1,11 @@
+.dialog {
+  &-title {
+    @apply flex items-center justify-between;
+    &-close {
+      @apply shrink-0;
+    }
+    &-text {
+      @apply font-semibold truncate;
+    }
+  }
+}

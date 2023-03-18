@@ -44,6 +44,7 @@ export interface MenuItem {
   icon?: [IconPrefix, IconName];
   title: string;
   tooltip?: string;
+  undefined?: boolean;
 }
 
 export interface NavigationItem {
