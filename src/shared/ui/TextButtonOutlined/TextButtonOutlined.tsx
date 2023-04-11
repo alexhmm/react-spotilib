@@ -14,6 +14,7 @@ type TextButtonOutlinedProps = {
   classes?: string;
   preset?: ButtonType;
   sx?: SxProps<Theme>;
+  type?: 'reset' | 'submit';
   onClick?: () => void;
 };
 
@@ -49,11 +50,11 @@ const TextButtonOutlined = (props: TextButtonOutlinedProps) => {
     default:
       sx = {
         ...props.sx,
-        backgroundColor: 'background.default',
+        backgroundColor: 'transparent',
         borderColor: 'action.selected',
         color: 'text.primary',
         '&:hover': {
-          backgroundColor: 'background.default',
+          backgroundColor: 'transparent',
           borderColor: 'text.primary',
         },
       };
@@ -73,6 +74,7 @@ const TextButtonOutlined = (props: TextButtonOutlinedProps) => {
           color={color}
           variant="outlined"
           sx={{ ...sx }}
+          type={props.type}
           onClick={props.onClick && props.onClick}
         >
           {props.children}

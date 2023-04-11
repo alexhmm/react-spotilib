@@ -3,7 +3,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { CircularProgress, Tooltip } from '@mui/material';
+import { isMobile } from 'react-device-detect';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Box, CircularProgress, Tooltip } from '@mui/material';
 import clsx from 'clsx';
 
 // Components
@@ -22,6 +26,7 @@ import useTrackHttp from '../../../../shared/hooks/use-track-http.hook';
 import styles from './Playlist.module.scss';
 
 // Stores
+import usePlaylistStore from '../../use-playlist.store';
 import useSharedStore from '../../../../shared/stores/use-shared.store';
 import useUserStore from '../../../user/use-user.store';
 
@@ -39,6 +44,7 @@ import {
 import {
   ImageFallbackType,
   MenuItem,
+  ResultState,
 } from '../../../../shared/types/shared.types';
 import { SaveTracksPutRequest } from '../../../../shared/types/track.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
@@ -46,9 +52,12 @@ import { ButtonType } from '../../../../shared/types/ui.types';
 // UI
 import Dialog from '../../../../shared/ui/Dialog/Dialog';
 import H2 from '../../../../shared/ui/H2/H2';
+import Icon from '../../../../shared/ui/Icon/Icon';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
+import Input from '../../../../shared/ui/Input/Input';
 import Link from '../../../../shared/ui/Link/Link';
 import Menu from '../../../../shared/ui/Menu/Menu';
+import TextButtonOutlined from '../../../../shared/ui/TextButtonOutlined/TextButtonOutlined';
 
 // Utils
 import {
@@ -79,6 +88,16 @@ const Playlist = () => {
   // Refs
   const downloadMetadataRef = useRef<HTMLAnchorElement>(null);
 
+  // Component state
+  const [dialogDetailsEdit, setDialogDetailsEdit] = useState<boolean>(false);
+  const [playlist, setPlaylist] = useState<IPlaylist | undefined>(undefined);
+
+  // Playlists store state
+  const [playlists, setPlaylists] = usePlaylistStore((state) => [
+    state.playlists,
+    state.setPlaylists,
+  ]);
+
   // Shared store state
   const [following, setHeaderTitle, setFollowing, setNotification] =
     useSharedStore((state) => [
@@ -90,10 +109,6 @@ const Playlist = () => {
 
   // User store state
   const [profile] = useUserStore((state) => [state.profile]);
-
-  // Component state
-  const [dialogDetailsEdit, setDialogDetailsEdit] = useState<boolean>(false);
-  const [playlist, setPlaylist] = useState<IPlaylist | undefined>(undefined);
 
   // Constants
   const moreMenuItems: MenuItem[] = [
@@ -123,6 +138,23 @@ const Playlist = () => {
       title: t('app.actions.download_metadata'),
     },
   ];
+
+  // React hook form validation schema
+  const details = z.object({
+    description: z.string(),
+    name: z.string().min(1, {
+      message: t('playlist.detail.action.edit_details.name.error').toString(),
+    }),
+  });
+
+  const {
+    formState: { errors },
+    handleSubmit,
+    register,
+    setValue,
+  } = useForm<PlaylistUpdateRequest>({
+    resolver: zodResolver(details),
+  });
 
   // ####### //
   // QUERIES //
@@ -168,12 +200,21 @@ const Playlist = () => {
     },
     onSuccess: (data) => {
       if (data) {
+        // Set mapped playlist data
         const mappedPlaylist = playlistCreate(data);
         setPlaylist(mappedPlaylist);
+
+        // Set form values
+        setValue('description', mappedPlaylist.description);
+        setValue('name', mappedPlaylist.name);
+
+        // Create meta download blob
         const output = JSON.stringify({ playlist: mappedPlaylist }, null, 4);
         const blob = new Blob([output]);
         setObject(blob);
+
         setTitle(data.name);
+
         // Wait for transition animation
         setTimeout(() => {
           setHeaderTitle(data.name);
@@ -202,6 +243,32 @@ const Playlist = () => {
         }
       },
       onSuccess: (data, variables) => {
+        if (playlist && variables.action === PlaylistAction.EditDetails) {
+          // Update playlist details
+          const updatedPlaylist = { ...playlist };
+          setPlaylist({
+            ...updatedPlaylist,
+            description: variables.body.description ?? '',
+            name: variables.body.name ?? '',
+          });
+
+          // Update sidebar playlists
+          const updatedPlaylists = { ...playlists };
+          const matchedPlaylist = updatedPlaylists.items.find(
+            (playlist) => playlist.id === variables.id
+          );
+          if (matchedPlaylist) {
+            matchedPlaylist.description = variables.body.description ?? '';
+            matchedPlaylist.name = variables.body.name ?? '';
+          }
+          setPlaylists(updatedPlaylists);
+
+          // Close dialog and set notification
+          setDialogDetailsEdit(false);
+          setNotification({
+            title: t('playlist.detail.action.edit_details.success'),
+          });
+        }
         if (playlist && variables.action === PlaylistAction.MakePrivate) {
           setPlaylist({ ...playlist, public: false });
           setNotification({
@@ -356,6 +423,29 @@ const Playlist = () => {
     }
     // eslint-disable-next-line
   }, [playlist]);
+
+  /**
+   * Handler to edit playlist details.
+   * @param body PlaylistUpdateRequest
+   */
+  const onEditDetails = useCallback(
+    (body: PlaylistUpdateRequest) => {
+      id &&
+        playlistUpdateMutation.mutate({
+          id,
+          action: PlaylistAction.EditDetails,
+          body: {
+            description:
+              body.description && body.description.length > 1
+                ? body.description
+                : undefined,
+            name: body.name,
+          },
+        });
+    },
+    // eslint-disable-next-line
+    [id]
+  );
 
   /**
    * Handler to change following state.
@@ -607,13 +697,73 @@ const Playlist = () => {
           )}
         </InfiniteScroll>
       )}
-      <Dialog
-        open={dialogDetailsEdit && !!playlist}
-        title={t('playlist.detail.action.edit_details.title')}
-        onClose={() => setDialogDetailsEdit(false)}
-      >
-        Test
-      </Dialog>
+      {!isMobile && playlist && (
+        <Dialog
+          open={dialogDetailsEdit && !!playlist}
+          title={t('playlist.detail.action.edit_details.title')}
+          onClose={() => setDialogDetailsEdit(false)}
+        >
+          <form
+            className={styles['playlist-details-dialog']}
+            onSubmit={handleSubmit(onEditDetails)}
+          >
+            {errors?.name && (
+              <Box
+                className={styles['playlist-details-dialog-error']}
+                sx={{ backgroundColor: 'error.main', color: 'white' }}
+              >
+                <Icon
+                  classes={styles['playlist-details-dialog-error-icon']}
+                  icon={['fas', 'exclamation-triangle']}
+                  htmlColor="#ffffff"
+                />
+                {errors.name.message}
+              </Box>
+            )}
+            <div className={styles['playlist-details-dialog-form']}>
+              <div className={styles['playlist-details-dialog-form-cover']}>
+                <img
+                  alt={`${t('playlist.detail.title')} ${playlist.name}`}
+                  src={playlist.images[0].url}
+                />
+              </div>
+              <div className={styles['playlist-details-dialog-form-inputs']}>
+                <Input
+                  classes="mb-4"
+                  label={t(
+                    'playlist.detail.action.edit_details.name.label'
+                  ).toString()}
+                  placeholder={t(
+                    'playlist.detail.action.edit_details.name.placeholder'
+                  ).toString()}
+                  register={register('name')}
+                  state={errors?.name && ResultState.Error}
+                />
+                <Input
+                  fullHeight
+                  label={t(
+                    'playlist.detail.action.edit_details.description.label'
+                  ).toString()}
+                  placeholder={t(
+                    'playlist.detail.action.edit_details.description.placeholder'
+                  ).toString()}
+                  multiline={6}
+                  register={register('description')}
+                />
+              </div>
+            </div>
+            <TextButtonOutlined
+              classes={styles['playlist-details-dialog-form-save']}
+              type="submit"
+            >
+              {t('app.save.title')}
+            </TextButtonOutlined>
+            <div className={styles['playlist-details-dialog-form-disclaimer']}>
+              {t('playlist.detail.action.edit_details.disclaimer')}
+            </div>
+          </form>
+        </Dialog>
+      )}
     </>
   );
 };

@@ -6,11 +6,14 @@ export interface PlaylistTranslations {
           label: string;
           placeholder: string;
         };
+        disclaimer: string;
         image: string;
         name: {
+          error: string;
           label: string;
           placeholder: string;
         };
+        success: string;
         title: string;
       };
       make_private: {

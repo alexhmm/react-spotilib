@@ -19,6 +19,13 @@ export enum RequestMethod {
   Put = 'PUT',
 }
 
+export enum ResultState {
+  Error = 'ERROR',
+  Info = 'INFO',
+  Success = 'SUCCESS',
+  Warning = 'WARNING',
+}
+
 export enum SidebarTabType {
   Collections = 'COLLECTIONS',
   Playlists = 'PLAYLISTS',

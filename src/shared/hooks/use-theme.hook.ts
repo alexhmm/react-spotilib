@@ -16,16 +16,21 @@ declare module '@mui/material/styles' {
 
   interface Palette {
     bg: {
+      card: string;
+      form: string;
       sidebar: string;
     };
   }
 
   interface PaletteOptions {
     bg: {
+      card: string;
+      form: string;
       sidebar: string;
     };
     border: {
       app: string;
+      card: string;
     };
     // orange: {
     //   light: string;
@@ -34,21 +39,29 @@ declare module '@mui/material/styles' {
   }
 
   interface PaletteColor {
+    card?: string;
+    form?: string;
     sidebar?: string;
   }
 
   interface SimplePaletteColorOptions {
+    card?: string;
+    form?: string;
     sidebar?: string;
   }
 
   interface Theme {
     bg: {
+      card: React.CSSProperties['color'];
+      form: React.CSSProperties['color'];
       sidebar: React.CSSProperties['color'];
     };
   }
 
   interface ThemeOptions {
     bg: {
+      card: React.CSSProperties['color'];
+      form: React.CSSProperties['color'];
       sidebar: React.CSSProperties['color'];
     };
   }
@@ -86,6 +99,8 @@ const typography = {
 export const themeDark = createTheme({
   breakpoints,
   bg: {
+    card: '#232323',
+    form: '#3c3c3c',
     sidebar: '#0e0e0e',
   },
   palette: {
@@ -94,10 +109,13 @@ export const themeDark = createTheme({
       paper: '#202020',
     },
     bg: {
+      card: '#232323',
+      form: '#3c3c3c',
       sidebar: '#0e0e0e',
     },
     border: {
       app: '#3a3a3a',
+      card: '#8a8a8a',
     },
     mode: 'dark',
     // orange,
@@ -113,7 +131,9 @@ export const themeDark = createTheme({
 export const themeLight = createTheme({
   breakpoints,
   bg: {
-    sidebar: '#f9f9f9',
+    card: '#f3f6f9',
+    form: '#eaeaea',
+    sidebar: '#f2f3f5',
   },
   palette: {
     action: {
@@ -125,10 +145,13 @@ export const themeLight = createTheme({
       paper: '#f2f2f2',
     },
     bg: {
+      card: '#f3f6f9',
+      form: '#eaeaea',
       sidebar: '#f2f3f5',
     },
     border: {
       app: '#eaeaea',
+      card: '#9a9a9a',
     },
     mode: 'light',
     // orange,

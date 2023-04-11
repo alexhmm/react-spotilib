@@ -24,6 +24,7 @@ export const appTranslationsEN: AppTranslations = {
       success: 'added to library',
       title: 'Add to library',
     },
+    title: 'Save',
   },
   settings: {
     language: {

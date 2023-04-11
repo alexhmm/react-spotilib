@@ -8,11 +8,15 @@ export const playlistTranslationsDE: PlaylistTranslations = {
           label: 'Beschreibung',
           placeholder: 'Optionale Beschreibung hinzufügen',
         },
+        disclaimer:
+          'Wenn du fortfährst, stimmst du zu, dass Spotify auf dein hochgeladenes Bild zugreift. Stell bitte sicher, dass du berechtigt bist, dieses Bild hochzuladen',
         image: 'Foto auswählen',
         name: {
+          error: 'Du musst einen Playlist-Namen eingeben.',
           label: 'Name',
           placeholder: 'Namen eingeben',
         },
+        success: 'Playlist Details wurden bearbeitet',
         title: 'Details bearbeiten',
       },
       make_private: {

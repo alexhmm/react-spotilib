@@ -8,11 +8,15 @@ export const playlistTranslationsEN: PlaylistTranslations = {
           label: 'Description',
           placeholder: 'Add optional description',
         },
+        disclaimer:
+          'By proceeding, you agree to give Spotify access to the image you choose to upload. Please make sure you have the right to upload the image.',
         image: 'Select image',
         name: {
+          error: 'Playlist name is required.',
           label: 'Name',
           placeholder: 'Add name',
         },
+        success: 'Playlist details has been edited',
         title: 'Edit details',
       },
       make_private: {

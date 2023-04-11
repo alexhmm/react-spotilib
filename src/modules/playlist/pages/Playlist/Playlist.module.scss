@@ -17,6 +17,40 @@
   @apply flex flex-col;
 }
 
+.playlist-details-dialog {
+  @apply flex flex-col;
+  &-error {
+    @apply flex items-center mb-2 p-2 rounded-md text-sm;
+    &-icon {
+      @apply mr-2;
+    }
+  }
+  &-form {
+    @apply flex flex-col items-center pt-2 sm:flex-row sm:items-stretch;
+    &-cover {
+      @apply h-48 mb-4 relative shrink-0 w-48 sm:mb-0 sm:mr-2;
+      & img {
+        @apply h-full object-cover rounded-md w-full;
+      }
+    }
+    &-disclaimer {
+      @apply mt-4 text-xs;
+    }
+    &-inputs {
+      @apply flex flex-col grow w-full sm:ml-2;
+      &-description {
+        @apply grow w-full;
+      }
+      &-name {
+        @apply grow mb-2 shrink-0 w-full;
+      }
+    }
+    &-save {
+      @apply mt-4 self-end w-fit;
+    }
+  }
+}
+
 .playlist-header {
   @apply flex mb-4 w-full lg:items-end lg:mb-8;
   &-image {

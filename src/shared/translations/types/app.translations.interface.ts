@@ -22,6 +22,7 @@ export interface AppTranslations {
       success: string;
       title: string;
     };
+    title: string;
   };
   settings: {
     language: {

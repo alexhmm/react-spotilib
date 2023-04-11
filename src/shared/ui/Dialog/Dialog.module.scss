@@ -1,11 +1,12 @@
 .dialog {
+  @apply min-w-[300px] md:min-w-[560px];
   &-title {
-    @apply flex items-center justify-between;
+    @apply flex items-center justify-between p-4;
     &-close {
-      @apply shrink-0;
+      @apply ml-2 shrink-0;
     }
     &-text {
-      @apply font-semibold truncate;
+      @apply font-semibold truncate pl-2;
     }
   }
 }

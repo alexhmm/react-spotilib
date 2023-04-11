@@ -24,6 +24,7 @@ export const appTranslationsDE: AppTranslations = {
       success: 'in Bibliothek gespeichert',
       title: 'In Bibliothek speichern',
     },
+    title: 'Speichern',
   },
   settings: {
     language: {
