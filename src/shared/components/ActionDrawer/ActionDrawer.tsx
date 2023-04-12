@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import ImageFallback from '../ImageFallback/ImageFallback';
 
 // Styles
-import styles from './DetailDrawer.module.scss';
+import styles from './ActionDrawer.module.scss';
 
 // Types
 import { ImageFallbackType, MenuItem } from '../../types/shared.types';
@@ -16,34 +16,34 @@ import { ImageFallbackType, MenuItem } from '../../types/shared.types';
 import Icon from '../../ui/Icon/Icon';
 import TextButton from '../../ui/TextButton/TextButton';
 
-type DetailDrawerButtonProps = {
+type ActionDrawerButtonProps = {
   icon?: [IconPrefix, IconName];
   title: string;
   onClick: () => void;
 };
 
-const DetailDrawerButton = (props: DetailDrawerButtonProps) => {
+const ActionDrawerButton = (props: ActionDrawerButtonProps) => {
   return (
     <Button
-      className={styles['detail-drawer-button']}
+      className={styles['action-drawer-button']}
       color="inherit"
       onClick={props.onClick}
     >
       {props.icon && (
         <Icon
-          classes={styles['detail-drawer-button-icon']}
+          classes={styles['action-drawer-button-icon']}
           icon={props.icon}
           sx={{ color: 'text.secondary' }}
         />
       )}
-      <span className={styles['detail-drawer-button-title']}>
+      <span className={styles['action-drawer-button-title']}>
         {props.title}
       </span>
     </Button>
   );
 };
 
-type DetailDrawerProps = {
+type ActionDrawerProps = {
   items: MenuItem[];
   image?: string;
   imageBorderRadius?: string;
@@ -55,12 +55,12 @@ type DetailDrawerProps = {
   onClose: () => void;
 };
 
-const DetailDrawer = (props: DetailDrawerProps) => {
+const ActionDrawer = (props: ActionDrawerProps) => {
   return (
     <Drawer
       anchor="bottom"
       classes={{
-        paper: styles['detail-drawer'],
+        paper: styles['action-drawer'],
       }}
       hideBackdrop
       open={props.open}
@@ -73,8 +73,8 @@ const DetailDrawer = (props: DetailDrawerProps) => {
       }}
       onClose={props.onClose}
     >
-      <div className={styles['detail-drawer-content']}>
-        <div className={styles['detail-drawer-content-image']}>
+      <div className={styles['action-drawer-content']}>
+        <div className={styles['action-drawer-content-image']}>
           {props.image ? (
             <img
               alt={props.title}
@@ -90,20 +90,20 @@ const DetailDrawer = (props: DetailDrawerProps) => {
             />
           )}
         </div>
-        <div className={styles['detail-drawer-content-title']}>
+        <div className={styles['action-drawer-content-title']}>
           {props.title}
         </div>
         {
           <Box
-            className={styles['detail-drawer-content-subtitle']}
+            className={styles['action-drawer-content-subtitle']}
             sx={{ color: 'text.secondary' }}
           >
             {props.subtitle}
           </Box>
         }
-        <div className={styles['detail-drawer-content-items']}>
+        <div className={styles['action-drawer-content-items']}>
           {props.items.map((item, index) => (
-            <DetailDrawerButton
+            <ActionDrawerButton
               key={index}
               icon={item.icon}
               title={item.title}
@@ -112,11 +112,11 @@ const DetailDrawer = (props: DetailDrawerProps) => {
           ))}
         </div>
       </div>
-      <div className={styles['detail-drawer-close']}>
+      <div className={styles['action-drawer-close']}>
         <TextButton onClick={props.onClose}>Close</TextButton>
       </div>
     </Drawer>
   );
 };
 
-export default memo(DetailDrawer);
+export default memo(ActionDrawer);

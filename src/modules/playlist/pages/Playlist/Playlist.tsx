@@ -151,6 +151,7 @@ const Playlist = () => {
     formState: { errors },
     handleSubmit,
     register,
+    reset,
     setValue,
   } = useForm<PlaylistUpdateRequest>({
     resolver: zodResolver(details),
@@ -205,6 +206,7 @@ const Playlist = () => {
         setPlaylist(mappedPlaylist);
 
         // Set form values
+        reset();
         setValue('description', mappedPlaylist.description);
         setValue('name', mappedPlaylist.name);
 

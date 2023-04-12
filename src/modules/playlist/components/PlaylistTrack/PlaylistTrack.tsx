@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 import clsx from 'clsx';
 
 // Components
-import DetailDrawer from '../../../../shared/components/DetailDrawer/DetailDrawer';
+import ActionDrawer from '../../../../shared/components/ActionDrawer/ActionDrawer';
 
 // Hooks
 import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
@@ -186,7 +186,7 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
           />
         )}
       </Box>
-      <DetailDrawer
+      <ActionDrawer
         items={playlistTrackActionsGet(props.owner)}
         image={props.track.album.images[1]?.url}
         open={detailDrawer}
