@@ -4,10 +4,7 @@ import { useMutation, useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { isMobile } from 'react-device-detect';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, CircularProgress, Tooltip } from '@mui/material';
+import { CircularProgress, Tooltip } from '@mui/material';
 import clsx from 'clsx';
 
 // Components
@@ -44,7 +41,6 @@ import {
 import {
   ImageFallbackType,
   MenuItem,
-  ResultState,
 } from '../../../../shared/types/shared.types';
 import { SaveTracksPutRequest } from '../../../../shared/types/track.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
@@ -52,12 +48,9 @@ import { ButtonType } from '../../../../shared/types/ui.types';
 // UI
 import Dialog from '../../../../shared/ui/Dialog/Dialog';
 import H2 from '../../../../shared/ui/H2/H2';
-import Icon from '../../../../shared/ui/Icon/Icon';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
-import Input from '../../../../shared/ui/Input/Input';
 import Link from '../../../../shared/ui/Link/Link';
 import Menu from '../../../../shared/ui/Menu/Menu';
-import TextButtonOutlined from '../../../../shared/ui/TextButtonOutlined/TextButtonOutlined';
 
 // Utils
 import {
@@ -65,6 +58,8 @@ import {
   removePlaylistItemsEffect,
 } from '../../playlist.utils';
 import { setTitle } from '../../../../shared/utils/shared.utils';
+import DetailDrawer from '../../../../shared/components/DetailDrawer/DetailDrawer';
+import PlaylistEditDetails from '../../components/PlaylistEditDetails/PlaylistEditDetails';
 
 const Playlist = () => {
   const { handleError, handleRetry } = useFetch();
@@ -90,6 +85,7 @@ const Playlist = () => {
 
   // Component state
   const [dialogDetailsEdit, setDialogDetailsEdit] = useState<boolean>(false);
+  const [drawerDetailsEdit, setDrawerDetailsEdit] = useState<boolean>(false);
   const [playlist, setPlaylist] = useState<IPlaylist | undefined>(undefined);
 
   // Playlists store state
@@ -139,24 +135,6 @@ const Playlist = () => {
     },
   ];
 
-  // React hook form validation schema
-  const details = z.object({
-    description: z.string(),
-    name: z.string().min(1, {
-      message: t('playlist.detail.action.edit_details.name.error').toString(),
-    }),
-  });
-
-  const {
-    formState: { errors },
-    handleSubmit,
-    register,
-    reset,
-    setValue,
-  } = useForm<PlaylistUpdateRequest>({
-    resolver: zodResolver(details),
-  });
-
   // ####### //
   // QUERIES //
   // ####### //
@@ -204,11 +182,6 @@ const Playlist = () => {
         // Set mapped playlist data
         const mappedPlaylist = playlistCreate(data);
         setPlaylist(mappedPlaylist);
-
-        // Set form values
-        reset();
-        setValue('description', mappedPlaylist.description);
-        setValue('name', mappedPlaylist.name);
 
         // Create meta download blob
         const output = JSON.stringify({ playlist: mappedPlaylist }, null, 4);
@@ -474,7 +447,14 @@ const Playlist = () => {
       action === PlaylistAction.DownloadMetadata &&
         downloadMetadataRef.current &&
         downloadMetadataRef.current.click();
-      action === PlaylistAction.EditDetails && id && setDialogDetailsEdit(true);
+      action === PlaylistAction.EditDetails &&
+        id &&
+        isMobile &&
+        setDrawerDetailsEdit(true);
+      action === PlaylistAction.EditDetails &&
+        id &&
+        !isMobile &&
+        setDialogDetailsEdit(true);
       action === PlaylistAction.MakePrivate &&
         id &&
         playlistUpdateMutation.mutate({
@@ -699,13 +679,26 @@ const Playlist = () => {
           )}
         </InfiniteScroll>
       )}
+      {isMobile && playlist && (
+        <DetailDrawer
+          open={drawerDetailsEdit}
+          title={t('playlist.detail.action.edit_details.title')}
+          onClose={() => setDrawerDetailsEdit(false)}
+        >
+          <PlaylistEditDetails
+            playlist={playlist}
+            onClose={() => setDrawerDetailsEdit(false)}
+            onSubmit={onEditDetails}
+          />
+        </DetailDrawer>
+      )}
       {!isMobile && playlist && (
         <Dialog
           open={dialogDetailsEdit && !!playlist}
           title={t('playlist.detail.action.edit_details.title')}
           onClose={() => setDialogDetailsEdit(false)}
         >
-          <form
+          {/* <form
             className={styles['playlist-details-dialog']}
             onSubmit={handleSubmit(onEditDetails)}
           >
@@ -724,10 +717,14 @@ const Playlist = () => {
             )}
             <div className={styles['playlist-details-dialog-form']}>
               <div className={styles['playlist-details-dialog-form-cover']}>
-                <img
-                  alt={`${t('playlist.detail.title')} ${playlist.name}`}
-                  src={playlist.images[0].url}
-                />
+                {playlist.images[0]?.url ? (
+                  <img
+                    alt={`${t('playlist.detail.title')} ${playlist.name}`}
+                    src={playlist.images[0].url}
+                  />
+                ) : (
+                  <ImageFallback type={ImageFallbackType.Playlist} />
+                )}
               </div>
               <div className={styles['playlist-details-dialog-form-inputs']}>
                 <Input
@@ -763,7 +760,12 @@ const Playlist = () => {
             <div className={styles['playlist-details-dialog-form-disclaimer']}>
               {t('playlist.detail.action.edit_details.disclaimer')}
             </div>
-          </form>
+          </form> */}
+          <PlaylistEditDetails
+            playlist={playlist}
+            onClose={() => setDialogDetailsEdit(false)}
+            onSubmit={onEditDetails}
+          />
         </Dialog>
       )}
     </>

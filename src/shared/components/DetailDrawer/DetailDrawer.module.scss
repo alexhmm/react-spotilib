@@ -1,0 +1,42 @@
+.detail-drawer {
+  @apply backdrop-blur-sm flex flex-col h-screen items-center p-4 w-screen lg:p-8;
+}
+
+.detail-drawer-action-button {
+  @apply flex font-semibold items-center justify-start normal-case px-0 py-4 w-full;
+  &-icon {
+    @apply mr-2 w-8;
+  }
+  &-title {
+    @apply text-base;
+  }
+}
+
+.detail-drawer-content {
+  @apply flex flex-col h-[calc(100%-48x)] mt-4 overflow-y-auto w-full;
+  &-image {
+    @apply h-48 self-center shrink-0 w-48;
+    & img {
+      @apply h-full object-cover shadow-lg w-full;
+    }
+  }
+  &-items {
+    @apply flex flex-col mt-8 shrink-0 w-full;
+  }
+  &-subtitle {
+    @apply mt-2 shrink-0 text-base text-center truncate w-full;
+  }
+  &-title {
+    @apply font-semibold mt-4 shrink-0 text-base text-center truncate w-full;
+  }
+}
+
+.detail-drawer-title {
+  @apply flex items-center justify-between w-full;
+  &-text {
+    @apply font-bold text-lg truncate;
+  }
+  &-close {
+    @apply shrink-0 w-9;
+  }
+}
