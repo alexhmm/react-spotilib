@@ -1,5 +1,5 @@
 .tabs {
-  @apply bottom-0 gap-2 grid grid-cols-3 h-16 sticky w-full lg:hidden;
+  @apply bottom-0 gap-2 grid grid-cols-3 h-16 left-0 fixed w-full lg:hidden;
 }
 
 .tab-item {

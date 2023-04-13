@@ -5,6 +5,7 @@ import {
   StyledEngineProvider,
   ThemeProvider,
 } from '@mui/material';
+import clsx from 'clsx';
 
 // Components
 import Header from './shared/components/Header/Header';
@@ -53,7 +54,9 @@ function App() {
               {lgDown && pathname?.includes('library') && <LibraryNavigation />}
               <div className={styles['app-main']}>
                 <Sidebar />
-                <div className={styles['app-main-content']}>
+                <div
+                  className={clsx(styles['app-main-content'], 'mb-16 lg:mb-0')}
+                >
                   <AppRouter />
                 </div>
               </div>
