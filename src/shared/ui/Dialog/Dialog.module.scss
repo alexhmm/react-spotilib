@@ -1,5 +1,4 @@
 .dialog {
-  @apply min-w-[300px] md:min-w-[560px];
   &-title {
     @apply flex items-center justify-between p-4;
     &-close {
@@ -8,5 +7,8 @@
     &-text {
       @apply font-semibold truncate pl-2;
     }
+  }
+  &-width {
+    @apply min-w-[300px] md:min-w-[560px] max-w-full;
   }
 }

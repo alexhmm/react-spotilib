@@ -83,7 +83,7 @@ const ActionDrawer = (props: ActionDrawerProps) => {
           onClick={props.onClose}
         />
       </div>
-      <div className={styles['detail-drawer-content']}>
+      <div className={styles['detail-drawer-content']} id="drawer-content">
         {props.children && props.children}
         {props.actionItems && props.onAction && (
           <>

@@ -1,10 +1,14 @@
 export interface TrackTranslations {
   action: {
-    add: {
+    add_to_playlist: {
       success: string;
       title: string;
     };
-    delete: {
+    favorite: {
+      success: string;
+      title: string;
+    };
+    unfavorite: {
       success: string;
       title: string;
     };

@@ -13,7 +13,7 @@
 }
 
 .detail-drawer-content {
-  @apply flex flex-col h-[calc(100%-48x)] mt-4 overflow-y-auto w-full;
+  @apply flex flex-col mt-4 overflow-y-auto w-full;
   &-image {
     @apply h-48 self-center shrink-0 w-48;
     & img {

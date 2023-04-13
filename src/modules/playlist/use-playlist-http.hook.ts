@@ -1,11 +1,20 @@
+import { useMutation } from 'react-query';
+import { useTranslation } from 'react-i18next';
+
 // Hooks
 import useFetch from '../../shared/hooks/use-fetch.hook';
+import usePlaylist from './use-playlist.hook';
+
+// Stores
+import usePlaylistStore from './use-playlist.store';
+import useSharedStore from '../../shared/stores/use-shared.store';
 
 // Types
 import {
   PlaylistFollowPutRequest,
   PlaylistItemsRemoveDeleteRequest,
   PlaylistsGetParams,
+  PlaylistTracksAddPostRequest,
   PlaylistUpdateRequest,
 } from './playlist.types';
 import {
@@ -19,29 +28,90 @@ import {
 import { TracksGetResponse } from '../../shared/types/track.types';
 
 const usePlaylistHttp = () => {
-  const { fetchData } = useFetch();
+  const { fetchData, handleError, handleRetry } = useFetch();
+  const { playlistsAddEffect } = usePlaylist();
+  const { t } = useTranslation();
+
+  // Playlist store state
+  const [setDrawerAddTrackToPlaylist] = usePlaylistStore((state) => [
+    state.setAddTrackToPlaylist,
+  ]);
+
+  // Shared store state
+  const [setNotification] = useSharedStore((state) => [state.setNotification]);
+
+  // ######### //
+  // MUTATIONS //
+  // ######### //
+
+  // GET Add Playlists mutation
+  const playlistsAddMutation = useMutation(
+    (data: { id: string; params?: PlaylistsGetParams }) => playlistsGet(data),
+    {
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data) => {
+        try {
+          data &&
+            playlistsAddEffect({
+              items: data.items,
+              limit: data.limit,
+              offset: data.offset,
+              total: data.total,
+            });
+        } catch (error) {
+          console.error('ERROR on adding playlists:', error);
+        }
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
+  // GET Add tracks to playlists mutation
+  const playlistTracksPostMutation = useMutation(
+    (data: PlaylistTracksAddPostRequest) => playlistTracksPost(data),
+    {
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data) => {
+        setNotification({
+          title: t('track.action.add_to_playlist.success'),
+        });
+        setDrawerAddTrackToPlaylist(undefined);
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
 
   /**
    * GET List of the playlists owned or followed by a Spotify user.
-   * @param id Playlist id
-   * @param params PlaylistGetParams
+   * @param data Playlist id and PlaylistGetParams
    * @returns User playlists
    */
-  const playlistsGet = async (
-    id: string,
-    params?: PlaylistsGetParams
-  ): Promise<SpotifyDataGetResponse<SpotifyPlaylist[]> | undefined> => {
+  const playlistsGet = async (data: {
+    id: string;
+    params?: PlaylistsGetParams;
+  }): Promise<SpotifyDataGetResponse<SpotifyPlaylist[]> | undefined> => {
     const urlSearchParams = new URLSearchParams();
-    params?.limit && urlSearchParams.append('limit', params.limit.toString());
-    params?.offset &&
-      urlSearchParams.append('offset', params.offset.toString());
+    data.params?.limit &&
+      urlSearchParams.append('limit', data.params.limit.toString());
+    data.params?.offset &&
+      urlSearchParams.append('offset', data.params.offset.toString());
 
     return await fetchData(
-      `users/${id}/playlists`,
-      params && {
+      `users/${data.id}/playlists`,
+      data.params && {
         params: new URLSearchParams({
-          limit: params.limit.toString(),
-          offset: params.offset.toString(),
+          limit: data.params.limit.toString(),
+          offset: data.params.offset.toString(),
         }),
       }
     );
@@ -142,6 +212,23 @@ const usePlaylistHttp = () => {
   };
 
   /**
+   * POST Add tracks to playlist
+   * @param data PlaylistTracksAddPostRequest
+   * @returns Message
+   */
+  const playlistTracksPost = async (
+    data: PlaylistTracksAddPostRequest
+  ): Promise<string | undefined> => {
+    return await fetchData(`playlists/${data.id}/tracks`, {
+      body: {
+        position: data.position,
+        uris: data.uris,
+      },
+      method: RequestMethod.Post,
+    });
+  };
+
+  /**
    * DELETE Remove one or more items from a user's playlist.
    * @param data Playlist id and PlaylistItemsRemoveDeleteRequest
    * @returns Message
@@ -158,12 +245,15 @@ const usePlaylistHttp = () => {
 
   return {
     playlistsGet,
+    playlistsAddMutation,
     playlistGet,
     playlistUpdate,
     playlistFollowGet,
     playlistFollowDelete,
     playlistFollowPut,
     playlistTracksGet,
+    playlistTracksPost,
+    playlistTracksPostMutation,
     playlistTracksDelete,
   };
 };

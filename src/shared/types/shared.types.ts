@@ -16,6 +16,7 @@ export enum RequestMethod {
   Delete = 'DELETE',
   Get = 'GET',
   Patch = 'PATCH',
+  Post = 'POST',
   Put = 'PUT',
 }
 
@@ -34,6 +35,15 @@ export enum SidebarTabType {
 export enum Theme {
   Dark = 'Dark',
   Light = 'Light',
+}
+
+export enum TrackAction {
+  AddToPlaylist = 'ADD_TO_PLAYLIST',
+  Favorite = 'FAVORITE',
+  RemoveFromPlaylist = 'REMOVE_FROM_PLAYLIST',
+  ShowAlbum = 'SHOW_ALBUM',
+  ShowArtist = 'SHOW_ARTIST',
+  Unfavorite = 'UNFAVORITE',
 }
 
 export interface FollowingStateGetRequest {

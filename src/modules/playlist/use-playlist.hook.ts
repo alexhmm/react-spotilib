@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next';
 import usePlaylistStore from './use-playlist.store';
 
 // Types
-import { Playlists, Playlist, PlaylistTrackAction } from './playlist.types';
+import { Playlists, Playlist } from './playlist.types';
+import { MenuItem, TrackAction } from '../../shared/types/shared.types';
 import { SpotifyTrackMetaData } from '../../shared/types/spotify.types';
 
 // Utils
 import { playlistTracksMap } from './playlist.utils';
-import { MenuItem } from '../../shared/types/shared.types';
 
 const usePlaylist = () => {
   const { t } = useTranslation();
@@ -109,32 +109,30 @@ const usePlaylist = () => {
   const playlistTrackActionsGet = (owner: boolean | undefined): MenuItem[] => {
     const actions: MenuItem[] = [
       {
-        // action: favorite
-        //   ? PlaylistTrackAction.Unfavorite
-        //   : PlaylistTrackAction.Favorite,
-        // title: favorite
-        //   ? t('playlist.detail.tracks.actions.unfavorite')
-        //   : t('playlist.detail.tracks.actions.favorite'),
-        action: PlaylistTrackAction.Add,
+        action: TrackAction.Favorite,
         icon: ['far', 'heart'],
-        title: t('track.action.add.title'),
+        title: t('track.action.favorite.title'),
+      },
+      {
+        action: TrackAction.AddToPlaylist,
+        icon: ['far', 'square-plus'],
+        title: t('track.action.add_to_playlist.title'),
       },
     ];
     owner &&
       actions.push({
-        action: PlaylistTrackAction.RemoveFromPlaylist,
+        action: TrackAction.RemoveFromPlaylist,
         icon: ['far', 'square-minus'],
         title: t('playlist.detail.track.action.remove_from_playlist.title'),
       });
-
     actions.push(
       {
-        action: PlaylistTrackAction.ShowAlbum,
+        action: TrackAction.ShowAlbum,
         icon: ['fas', 'record-vinyl'],
         title: t('playlist.detail.track.action.show_album'),
       },
       {
-        action: PlaylistTrackAction.ShowArtist,
+        action: TrackAction.ShowArtist,
         icon: ['fas', 'user'],
         title: t('playlist.detail.track.action.show_artist'),
       }

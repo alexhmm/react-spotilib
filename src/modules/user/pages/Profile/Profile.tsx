@@ -100,7 +100,7 @@ const Profile = () => {
   // eslint-disable-next-line
   const playlistsQuery = useQuery(
     ['playlists', id],
-    () => playlistsGet(id ?? ''),
+    () => playlistsGet({ id: id ?? '' }),
     {
       refetchOnWindowFocus: false,
       onError: (error: any) => {

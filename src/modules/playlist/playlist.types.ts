@@ -16,14 +16,6 @@ export enum PlaylistAction {
   MakePublic = 'MAKE_PUBLIC',
 }
 
-export enum PlaylistTrackAction {
-  Add = 'ADD',
-  RemoveFromPlaylist = 'REMOVE_FROM_PLAYLIST',
-  ShowAlbum = 'SHOW_ALBUM',
-  ShowArtist = 'SHOW_ARTIST',
-  Unfavorite = 'UNFAVORITE',
-}
-
 export interface PlaylistFollowPutRequest {
   public?: boolean;
 }
@@ -38,6 +30,12 @@ export interface PlaylistTracks {
 
 export interface PlaylistTracksTotal {
   tracks_total: number;
+}
+
+export interface PlaylistTracksAddPostRequest {
+  id: string;
+  position?: number;
+  uris: string[];
 }
 
 export interface PlaylistTrackAlbum {

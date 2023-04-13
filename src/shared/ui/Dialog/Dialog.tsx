@@ -11,6 +11,7 @@ type DialogProps = {
   className?: string;
   open: boolean;
   title: string;
+  widthClassName?: string;
   onClose: () => void;
 };
 
@@ -18,7 +19,11 @@ const Dialog = (props: DialogProps) => {
   return (
     <MuiDialog
       classes={{
-        paper: clsx(styles['dialog'], props.className && props.className),
+        paper: clsx(
+          styles['dialog'],
+          props.className && props.className,
+          props.widthClassName ?? styles['dialog-width']
+        ),
       }}
       PaperProps={{
         sx: {
@@ -37,7 +42,7 @@ const Dialog = (props: DialogProps) => {
           onClick={props.onClose}
         />
       </DialogTitle>
-      <DialogContent>{props.children}</DialogContent>
+      <DialogContent id="dialog-content">{props.children}</DialogContent>
     </MuiDialog>
   );
 };

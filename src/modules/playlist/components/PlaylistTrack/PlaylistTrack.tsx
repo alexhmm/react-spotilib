@@ -14,11 +14,11 @@ import usePlaylist from '../../use-playlist.hook';
 import styles from './PlaylistTrack.module.scss';
 
 // Types
+import { PlaylistTrack as IPlaylistTrack } from '../../playlist.types';
 import {
-  PlaylistTrack as IPlaylistTrack,
-  PlaylistTrackAction,
-} from '../../playlist.types';
-import { ImageFallbackType } from '../../../../shared/types/shared.types';
+  ImageFallbackType,
+  TrackAction,
+} from '../../../../shared/types/shared.types';
 
 // UI
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
@@ -33,7 +33,7 @@ type PlaylistTrackProps = {
   index: number;
   owner?: boolean;
   track: IPlaylistTrack;
-  onAction: (action: PlaylistTrackAction) => void;
+  onAction: (action: TrackAction) => void;
   onPlay: () => void;
 };
 

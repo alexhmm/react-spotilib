@@ -81,3 +81,9 @@
     }
   }
 }
+
+.dialog-add-track-to-playlist {
+  &-width {
+    @apply w-full md:w-[560px] min-w-0;
+  }
+}
