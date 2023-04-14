@@ -1,14 +1,10 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
 
-// Components
-import DetailDrawer from '../../../../shared/components/DetailDrawer/DetailDrawer';
-
 // Hooks
 import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
-import usePlaylist from '../../use-playlist.hook';
 
 // Styles
 import styles from './PlaylistTrack.module.scss';
@@ -23,10 +19,9 @@ import {
 // UI
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
 import Link from '../../../../shared/ui/Link/Link';
-import Menu from '../../../../shared/ui/Menu/Menu';
 
 // Utils
-import { minutesSecondsByMillisecondsGet } from '../../../../shared/utils/shared.utils';
+import TrackMore from '../../../track/components/TrackMore/TrackMore';
 
 type PlaylistTrackProps = {
   locale: string;
@@ -54,10 +49,6 @@ const playlistPropsAreEqual = (
 
 const PlaylistTrack = (props: PlaylistTrackProps) => {
   const { smDown } = useBreakpoints();
-  const { playlistTrackActionsGet } = usePlaylist();
-
-  // Component state
-  const [detailDrawer, setDetailDrawer] = useState<boolean>(false);
 
   return (
     <Box
@@ -163,45 +154,14 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
           new Date(props.track.added_at)
         )}
       </Box>
-      <Box
-        className={styles['playlist-track-more']}
-        sx={{ color: 'text.secondary' }}
-      >
-        {!isMobile && (
-          <IconButton
-            classes="favorite"
-            icon={['far', 'heart']}
-            onClick={() => props.onAction(TrackAction.Favorite)}
-          />
-        )}
-        <span className={styles['playlist-track-more-duration']}>
-          {minutesSecondsByMillisecondsGet(props.track.duration_ms)}
-        </span>
-        {isMobile ? (
-          <IconButton
-            classes={styles['playlist-track-more-button']}
-            icon={['fas', 'ellipsis-v']}
-            onClick={() => setDetailDrawer(true)}
-          />
-        ) : (
-          <Menu
-            classes={clsx(styles['playlist-track-more-button'], 'more')}
-            hideItemIcon
-            icon={['fas', 'ellipsis']}
-            items={playlistTrackActionsGet(props.owner)}
-            onAction={props.onAction}
-          />
-        )}
-      </Box>
-      <DetailDrawer
-        actionItems={playlistTrackActionsGet(props.owner)}
+      <TrackMore
+        duration={props.track.duration_ms}
         image={props.track.album.images[1]?.url}
-        open={detailDrawer}
+        owner={props.owner}
         subtitle={`${props.track.artists[0].name} • ${props.track.album.name}`}
         title={props.track.name}
         type={ImageFallbackType.Playlist}
         onAction={props.onAction}
-        onClose={() => setDetailDrawer(false)}
       />
     </Box>
   );

@@ -11,23 +11,30 @@ import styles from './AlbumTrack.module.scss';
 
 // Types
 import { AlbumTrack as IAlbumTrack } from '../../album.types';
+import {
+  ImageFallbackType,
+  TrackAction,
+} from '../../../../shared/types/shared.types';
 
 // UI
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
 import Link from '../../../../shared/ui/Link/Link';
 
 // Utils
-import { minutesSecondsByMillisecondsGet } from '../../../../shared/utils/shared.utils';
+import TrackMore from '../../../track/components/TrackMore/TrackMore';
 
-type PlaylistTrackProps = {
+type AlbumTrackProps = {
+  image?: string;
   index: number;
+  name: string;
   track: IAlbumTrack;
+  onAction: (action: TrackAction) => void;
   onPlay: () => void;
 };
 
 const albumPropsAreEqual = (
-  prevProps: Readonly<PlaylistTrackProps>,
-  nextProps: Readonly<PlaylistTrackProps>
+  prevProps: Readonly<AlbumTrackProps>,
+  nextProps: Readonly<AlbumTrackProps>
 ): boolean => {
   if (prevProps.track.id === nextProps.track.id) {
     return true;
@@ -35,7 +42,7 @@ const albumPropsAreEqual = (
   return false;
 };
 
-const AlbumTrack = (props: PlaylistTrackProps) => {
+const AlbumTrack = (props: AlbumTrackProps) => {
   const { smDown } = useBreakpoints();
 
   return (
@@ -48,6 +55,9 @@ const AlbumTrack = (props: PlaylistTrackProps) => {
             '.index': {
               display: 'none',
             },
+            '.favorite, .more': {
+              visibility: 'visible',
+            },
             '.play': {
               display: 'flex !important',
             },
@@ -55,14 +65,19 @@ const AlbumTrack = (props: PlaylistTrackProps) => {
           '.app-link:hover': {
             color: 'primary.main',
           },
+          '.favorite, .more': {
+            visibility: 'hidden',
+          },
           '.play': {
             display: 'none !important',
           },
         },
       }}
-      onClick={() => isMobile && props.onPlay()}
     >
-      <div className={styles['album-track-title']}>
+      <div
+        className={styles['album-track-title']}
+        onClick={() => isMobile && props.onPlay()}
+      >
         <Box
           className={clsx(styles['album-track-title-index'], 'index')}
           sx={{ color: 'text.secondary' }}
@@ -104,12 +119,14 @@ const AlbumTrack = (props: PlaylistTrackProps) => {
           </div>
         </Box>
       </div>
-      <Box
-        className={styles['album-track-duration']}
-        sx={{ color: 'text.secondary' }}
-      >
-        {minutesSecondsByMillisecondsGet(props.track.duration_ms)}
-      </Box>
+      <TrackMore
+        duration={props.track.duration_ms}
+        image={props.image}
+        subtitle={`${props.track.artists[0].name} • ${props.name}`}
+        title={props.track.name}
+        type={ImageFallbackType.Album}
+        onAction={props.onAction}
+      />
     </Box>
   );
 };

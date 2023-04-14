@@ -1,6 +1,3 @@
-// Types
-import { AlbumTrack } from '../../modules/album/album.types';
-
 export enum ReleaseDatePrecision {
   Day = 'day',
 }
@@ -257,7 +254,7 @@ export interface SpotifyAlbum {
   release_date: string;
   release_date_precision: ReleaseDatePrecision;
   total_tracks: number;
-  tracks: SpotifyDataGetResponse<AlbumTrack[]>;
+  tracks: SpotifyDataGetResponse<SpotifyTrack[]>;
   type: SpotifyItemType;
   uri: string;
 }

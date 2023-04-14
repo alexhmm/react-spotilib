@@ -6,15 +6,6 @@
   &-album {
     @apply hidden text-sm xl:col-span-3 xl:flex xl:px-2;
   }
-  &-more {
-    @apply col-span-3 flex items-center justify-end text-sm sm:col-span-2;
-    &-button {
-      @apply shrink-0 sm:ml-2;
-    }
-    &-duration {
-      @apply hidden justify-end w-12 sm:flex;
-    }
-  }
   &-title {
     @apply col-span-9 flex items-center truncate sm:col-span-10 lg:col-span-8 xl:col-span-5 2xl:col-span-6;
     &-data {

@@ -20,7 +20,7 @@ import useObjectURL from '../../../../shared/hooks/use-object-url.hook';
 import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';
 import usePlaylist from '../../use-playlist.hook';
 import usePlaylistHttp from '../../use-playlist-http.hook';
-import useTrackHttp from '../../../../shared/hooks/use-track-http.hook';
+import useTrackHttp from '../../../track/hooks/use-track-http.hook';
 
 // Styles
 import styles from './Playlist.module.scss';
@@ -45,7 +45,6 @@ import {
   MenuItem,
   TrackAction,
 } from '../../../../shared/types/shared.types';
-import { SaveTracksPutRequest } from '../../../../shared/types/track.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
@@ -78,7 +77,7 @@ const Playlist = () => {
     playlistTracksGet,
     playlistTracksDelete,
   } = usePlaylistHttp();
-  const { saveTracks } = useTrackHttp();
+  const { saveTracksPutMutation } = useTrackHttp();
   const { i18n, t } = useTranslation();
 
   // Refs
@@ -322,25 +321,6 @@ const Playlist = () => {
         data &&
           playlist &&
           setPlaylist(playlistTracksGetEffect(data.items, playlist));
-      },
-      retry: (failureCount, error: any) => handleRetry(failureCount, error),
-    }
-  );
-
-  // PUT Save tracks mutation
-  const saveTracksPutMutation = useMutation(
-    (data: SaveTracksPutRequest) => saveTracks(data),
-    {
-      onError: (error: any) => {
-        const errRes = error?.response;
-        if (errRes) {
-          handleError(errRes.status);
-        }
-      },
-      onSuccess: () => {
-        setNotification({
-          title: t('track.action.favorite.success'),
-        });
       },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),
     }

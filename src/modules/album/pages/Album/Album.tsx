@@ -1,13 +1,16 @@
 import { memo, useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
+import { isMobile } from 'react-device-detect';
 import { Box, CircularProgress, Tooltip } from '@mui/material';
 
 // Components
+import DetailDrawer from '../../../../shared/components/DetailDrawer/DetailDrawer';
 import AlbumCard from '../../components/AlbumCard/AlbumCard';
 import AlbumTrack from '../../components/AlbumTrack/AlbumTrack';
 import ImageFallback from '../../../../shared/components/ImageFallback/ImageFallback';
+import PlaylistAddTrack from '../../../playlist/components/PlaylistAddTrack/PlaylistAddTrack';
 
 // Hooks
 import useAlbum from '../../use-album.hook';
@@ -17,22 +20,32 @@ import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
 import useFetch from '../../../../shared/hooks/use-fetch.hook';
 import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';
 import useShared from '../../../../shared/hooks/use-shared.hook';
+import useTrackHttp from '../../../track/hooks/use-track-http.hook';
 import useUserHttp from '../../../user/use-user-http.hook';
 
 // Styles
 import styles from './Album.module.scss';
 
 // Stores
+import usePlaylistStore from '../../../playlist/use-playlist.store';
 import useSharedStore from '../../../../shared/stores/use-shared.store';
 import useUserStore from '../../../user/use-user.store';
 
 // Types
-import { AlbumCard as IAlbumCard, AlbumWithDuration } from '../../album.types';
-import { ImageFallbackType } from '../../../../shared/types/shared.types';
+import {
+  AlbumCard as IAlbumCard,
+  AlbumWithDuration,
+  AlbumTrack as IAlbumTrack,
+} from '../../album.types';
+import {
+  ImageFallbackType,
+  TrackAction,
+} from '../../../../shared/types/shared.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
 import { SaveAlbumsPutDeleteRequest } from '../../../user/user.types';
 
 // UI
+import Dialog from '../../../../shared/ui/Dialog/Dialog';
 import H2 from '../../../../shared/ui/H2/H2';
 import H3 from '../../../../shared/ui/H3/H3';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
@@ -48,12 +61,19 @@ const Album = () => {
   const { albumsGet } = useArtistHttp();
   const { smDown } = useBreakpoints();
   const { handleError, handleRetry } = useFetch();
+  const navigate = useNavigate();
   const { id } = useParams();
   const { playPutMutation } = usePlayerHttp();
   const { durationByMillisecondsGet } = useShared();
+  const { saveTracksPutMutation } = useTrackHttp();
   const { i18n, t } = useTranslation();
   const { savedAlbumsCheckGet, savedAlbumsDelete, saveAlbumsPut } =
     useUserHttp();
+
+  // Playlists store state
+  const [addTrackToPlaylist, setAddTrackToPlaylist] = usePlaylistStore(
+    (state) => [state.addTrackToPlaylist, state.setAddTrackToPlaylist]
+  );
 
   // Shared store state
   const [setHeaderTitle, setNotification] = useSharedStore((state) => [
@@ -246,6 +266,34 @@ const Album = () => {
     // eslint-disable-next-line
   }, [savedAlbum, id]);
 
+  /**
+   * Handler on playlist track action.
+   * @param track PlaylistTrack
+   * @param action PlaylistTrackAction
+   */
+  const onTrackAction = useCallback(
+    (track: IAlbumTrack, albumId: string, action: TrackAction) => {
+      switch (action) {
+        case TrackAction.AddToPlaylist:
+          setAddTrackToPlaylist(track.uri);
+          break;
+        case TrackAction.Favorite:
+          saveTracksPutMutation.mutate({ ids: [track.id] });
+          break;
+        case TrackAction.ShowAlbum:
+          navigate(`/album/${albumId}`);
+          break;
+        case TrackAction.ShowArtist:
+          navigate(`/artist/${track.artists[0].id}`);
+          break;
+        default:
+          break;
+      }
+    },
+    // eslint-disable-next-line
+    [id]
+  );
+
   return (
     <>
       {!album && albumQuery.isLoading && <CircularProgress />}
@@ -361,8 +409,11 @@ const Album = () => {
             {album.tracks.items.map((track, index) => (
               <AlbumTrack
                 key={track.id}
+                image={album.images[1]?.url}
                 index={index}
+                name={album.name}
                 track={track}
+                onAction={(action) => onTrackAction(track, album.id, action)}
                 onPlay={() => onPlayContext(album.uri, track.uri)}
               />
             ))}
@@ -390,6 +441,30 @@ const Album = () => {
               ))}
             </div>
           </section>
+          {isMobile ? (
+            <DetailDrawer
+              open={!!addTrackToPlaylist}
+              title={t('track.action.add_to_playlist.title')}
+              onClose={() => setAddTrackToPlaylist(undefined)}
+            >
+              <PlaylistAddTrack
+                scrollableTarget="drawer-content"
+                uri={addTrackToPlaylist ?? ''}
+              />
+            </DetailDrawer>
+          ) : (
+            <Dialog
+              open={!!addTrackToPlaylist}
+              title={t('track.action.add_to_playlist.title')}
+              widthClassName={styles['dialog-add-track-to-playlist-width']}
+              onClose={() => setAddTrackToPlaylist(undefined)}
+            >
+              <PlaylistAddTrack
+                scrollableTarget="dialog-content"
+                uri={addTrackToPlaylist ?? ''}
+              />
+            </Dialog>
+          )}
         </Box>
       )}
     </>

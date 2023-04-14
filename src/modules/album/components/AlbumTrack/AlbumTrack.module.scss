@@ -1,10 +1,7 @@
 .album-track {
   @apply duration-200 grid grid-cols-12 items-center py-1 rounded-md transition-colors mb-2 sm:px-2;
-  &-duration {
-    @apply hidden text-sm md:col-span-1 md:flex md:justify-end md:pl-2 md:pr-4;
-  }
   &-title {
-    @apply col-span-full flex items-center truncate md:col-span-11;
+    @apply col-span-9 flex items-center truncate md:col-span-10;
     &-data {
       @apply flex flex-col truncate w-full;
       &-artists {
