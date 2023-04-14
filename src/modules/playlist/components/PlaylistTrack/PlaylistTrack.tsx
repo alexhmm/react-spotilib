@@ -69,7 +69,7 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
             '.index': {
               display: 'none',
             },
-            '.more': {
+            '.favorite, .more': {
               visibility: 'visible',
             },
             '.play': {
@@ -79,7 +79,7 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
           '.app-link:hover': {
             color: 'primary.main',
           },
-          '.more': {
+          '.favorite, .more': {
             visibility: 'hidden',
           },
           '.play': {
@@ -167,6 +167,13 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
         className={styles['playlist-track-more']}
         sx={{ color: 'text.secondary' }}
       >
+        {!isMobile && (
+          <IconButton
+            classes="favorite"
+            icon={['far', 'heart']}
+            onClick={() => props.onAction(TrackAction.Favorite)}
+          />
+        )}
         <span className={styles['playlist-track-more-duration']}>
           {minutesSecondsByMillisecondsGet(props.track.duration_ms)}
         </span>

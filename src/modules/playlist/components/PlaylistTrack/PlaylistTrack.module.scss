@@ -1,22 +1,22 @@
 .playlist-track {
   @apply duration-200 grid grid-cols-12 items-center py-1 rounded-md transition-colors mb-2 sm:px-2;
   &-added-at {
-    @apply hidden text-sm lg:col-span-2 lg:flex lg:px-2;
+    @apply hidden text-sm lg:col-span-2 lg:flex lg:px-2 2xl:col-span-1;
   }
   &-album {
     @apply hidden text-sm xl:col-span-3 xl:flex xl:px-2;
   }
   &-more {
-    @apply col-span-3 flex items-center justify-end text-sm sm:col-span-2 lg:col-span-2 xl:col-span-1;
+    @apply col-span-3 flex items-center justify-end text-sm sm:col-span-2;
     &-button {
       @apply shrink-0 sm:ml-2;
     }
     &-duration {
-      @apply hidden sm:flex;
+      @apply hidden justify-end w-12 sm:flex;
     }
   }
   &-title {
-    @apply col-span-9 flex items-center truncate sm:col-span-10 lg:col-span-8 xl:col-span-6;
+    @apply col-span-9 flex items-center truncate sm:col-span-10 lg:col-span-8 xl:col-span-5 2xl:col-span-6;
     &-data {
       @apply flex flex-col pl-2 pr-1 truncate w-full lg:pl-4 lg:pr-2;
       &-artists {
