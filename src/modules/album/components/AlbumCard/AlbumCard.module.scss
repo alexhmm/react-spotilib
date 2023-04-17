@@ -3,7 +3,7 @@
   &-image {
     @apply h-16 relative shrink-0 w-16 sm:aspect-square sm:h-auto sm:w-full;
     & img {
-      @apply absolute aspect-square left-0 object-cover shadow-xl top-0 w-full sm:rounded-md;
+      @apply absolute aspect-square left-0 object-cover top-0 w-full sm:rounded-md sm:shadow-xl;
     }
     &-play {
       @apply absolute bottom-0 duration-300 right-2 shadow-xl transform transition-all z-10;

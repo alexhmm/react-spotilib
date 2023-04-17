@@ -1,7 +1,7 @@
 .track-card {
   @apply duration-200 flex items-center py-1 rounded-md transition-colors w-full sm:px-2;
   &-image {
-    @apply aspect-square h-16 object-cover shadow-md shrink-0 w-16;
+    @apply aspect-square h-16 object-cover shrink-0 w-16;
   }
   &-info {
     @apply flex flex-col ml-4 truncate;

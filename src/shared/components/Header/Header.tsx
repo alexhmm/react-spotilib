@@ -280,7 +280,7 @@ const Header = () => {
         headerTitleRef.current.style.opacity = '100%';
       }
     };
-    !lgDown && window.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll);
 
     // Set initial refs style
     if (headerBgRef.current) {
