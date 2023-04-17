@@ -1,6 +1,7 @@
 import { memo, useCallback, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
+import { isMobile } from 'react-device-detect';
 import { Skeleton } from '@mui/material';
 
 // Components
@@ -192,7 +193,7 @@ const Home = () => {
               <Skeleton
                 key={index}
                 className={styles['home-top-item-loading']}
-                height={smDown ? 56 : 220}
+                height={isMobile ? 72 : smDown ? 56 : 220}
                 variant="rectangular"
               />
             );
@@ -229,7 +230,7 @@ const Home = () => {
               <Skeleton
                 key={index}
                 className={styles['home-top-item-loading']}
-                height={40}
+                height={isMobile ? 72 : 48}
                 variant="rectangular"
               />
             );

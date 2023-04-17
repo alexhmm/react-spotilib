@@ -99,9 +99,9 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
         <img
           alt={props.track.album.name}
           className={styles['playlist-track-title-image']}
-          height={isMobile ? 48 : 36}
+          height={isMobile ? 48 : 40}
           src={props.track.album.images[2].url}
-          width={isMobile ? 48 : 36}
+          width={isMobile ? 48 : 40}
           loading="lazy"
         />
         <Box className={styles['playlist-track-title-data']}>

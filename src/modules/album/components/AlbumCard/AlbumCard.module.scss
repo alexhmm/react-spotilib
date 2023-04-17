@@ -1,8 +1,7 @@
 .album-card {
   @apply cursor-pointer duration-200 flex py-1 relative rounded-md transition-colors w-full sm:flex-col sm:p-4;
-
   &-image {
-    @apply h-12 relative shrink-0 w-12 sm:aspect-square sm:h-auto sm:w-full;
+    @apply h-16 relative shrink-0 w-16 sm:aspect-square sm:h-auto sm:w-full;
     & img {
       @apply absolute aspect-square left-0 object-cover shadow-xl top-0 w-full sm:rounded-md;
     }
@@ -11,9 +10,9 @@
     }
   }
   &-info {
-    @apply flex flex-col ml-4 truncate w-full sm:mb-4 sm:ml-0 sm:mt-2;
+    @apply flex flex-col justify-center ml-4 truncate w-full sm:mb-4 sm:ml-0 sm:mt-2;
     &-data {
-      @apply text-sm overflow-hidden w-full;
+      @apply overflow-hidden w-full;
       &-artist {
         @apply duration-200 inline-block transition-colors;
       }
@@ -22,10 +21,26 @@
       }
     }
     &-name {
-      @apply font-semibold text-sm truncate sm:mb-2 sm:mt-4;
+      @apply font-semibold truncate sm:mb-2 sm:mt-4;
     }
   }
   &-link {
     @apply absolute h-full left-0 top-0 w-full;
+  }
+}
+
+@media (hover: hover) {
+  .album-card {
+    &-image {
+      @apply h-12 w-12 sm:h-auto sm:w-full;
+    }
+    &-info {
+      &-data {
+        @apply text-sm;
+      }
+      &-name {
+        @apply text-sm;
+      }
+    }
   }
 }

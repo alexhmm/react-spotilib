@@ -32,7 +32,7 @@ type AlbumTrackProps = {
   onPlay: () => void;
 };
 
-const albumPropsAreEqual = (
+const albumTrackPropsAreEqual = (
   prevProps: Readonly<AlbumTrackProps>,
   nextProps: Readonly<AlbumTrackProps>
 ): boolean => {
@@ -131,4 +131,4 @@ const AlbumTrack = (props: AlbumTrackProps) => {
   );
 };
 
-export default memo(AlbumTrack, albumPropsAreEqual);
+export default memo(AlbumTrack, albumTrackPropsAreEqual);

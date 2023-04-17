@@ -1,24 +1,41 @@
 .track-card {
   @apply duration-200 flex items-center py-1 rounded-md transition-colors w-full sm:px-2;
   &-image {
-    @apply aspect-square h-9 object-cover shadow-md w-9;
+    @apply aspect-square h-16 object-cover shadow-md shrink-0 w-16;
   }
   &-info {
     @apply flex flex-col ml-4 truncate;
     &-artists {
       @apply flex truncate;
       &-item {
-        @apply text-sm;
         &-link {
           @apply duration-200 transition-colors;
         }
       }
     }
     &-track {
-      @apply duration-200 font-semibold text-sm truncate transition-colors w-fit;
+      @apply duration-200 font-semibold truncate transition-colors w-fit;
     }
   }
   &-play {
-    @apply shrink-0;
+    @apply h-10 shrink-0 w-10;
+  }
+}
+
+@media (hover: hover) {
+  .track-card {
+    &-image {
+      @apply h-10 w-10;
+    }
+    &-info {
+      &-artists {
+        &-item {
+          @apply text-sm;
+        }
+      }
+      &-track {
+        @apply text-sm;
+      }
+    }
   }
 }

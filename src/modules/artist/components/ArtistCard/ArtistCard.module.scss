@@ -1,7 +1,7 @@
 .artist-card {
   @apply duration-200 flex items-center py-1 relative rounded-md transition-colors w-full sm:flex-col sm:items-start sm:p-4;
   &-image {
-    @apply h-12 relative w-12 sm:aspect-square sm:h-auto sm:w-full;
+    @apply h-16 relative shrink-0 w-16 sm:aspect-square sm:h-auto sm:w-full;
     & img {
       @apply absolute aspect-square left-0 object-cover rounded-full top-0 w-full sm:shadow-xl;
     }
@@ -13,6 +13,17 @@
     @apply absolute h-full left-0 top-0 w-full;
   }
   &-name {
-    @apply font-semibold ml-4 text-sm truncate w-full sm:ml-0 sm:my-4;
+    @apply font-semibold ml-4 truncate w-full sm:ml-0 sm:my-4;
+  }
+}
+
+@media (hover: hover) {
+  .artist-card {
+    &-image {
+      @apply h-12 w-12 sm:h-auto sm:w-full;
+    }
+    &-name {
+      @apply text-sm;
+    }
   }
 }

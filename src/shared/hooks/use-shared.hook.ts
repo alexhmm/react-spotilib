@@ -35,16 +35,16 @@ const useShared = () => {
   const libraryNavigationItemsGet = (): NavigationItem[] => {
     return [
       {
-        pathname: '/library/playlists',
-        title: t('playlist.title'),
-      },
-      {
         pathname: '/library/artists',
         title: t('artist.title'),
       },
       {
         pathname: '/library/albums',
         title: t('album.title'),
+      },
+      {
+        pathname: '/library/playlists',
+        title: t('playlist.title'),
       },
     ];
   };

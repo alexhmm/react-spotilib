@@ -122,22 +122,22 @@ const SearchResult = () => {
       {searchQuery.isLoading && <CircularProgress />}
       {searchData && (
         <>
-          {searchData.albums && searchData.albums.length > 0 && (
-            <>
-              <H3>{t('album.title')}</H3>
-              <div className="context-grid">
-                {searchData.albums.map((album) => (
-                  <AlbumCard key={album.id} album={album} />
-                ))}
-              </div>
-            </>
-          )}
           {searchData.artists && searchData.artists.length > 0 && (
             <>
               <H3>{t('artist.title')}</H3>
               <div className="context-grid">
                 {searchData.artists?.map((artist) => (
                   <ArtistCard key={artist.id} artist={artist} />
+                ))}
+              </div>
+            </>
+          )}
+          {searchData.albums && searchData.albums.length > 0 && (
+            <>
+              <H3>{t('album.title')}</H3>
+              <div className="context-grid">
+                {searchData.albums.map((album) => (
+                  <AlbumCard key={album.id} album={album} />
                 ))}
               </div>
             </>

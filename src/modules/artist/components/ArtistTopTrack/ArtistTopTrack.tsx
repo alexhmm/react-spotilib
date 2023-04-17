@@ -79,9 +79,9 @@ const ArtistTopTrack = (props: ArtistTopTrackProps) => {
         <img
           alt={props.track.album.name}
           className={clsx(styles['artist-top-track-title-image'], 'image')}
-          height={36}
+          height={40}
           src={props.track.album.images[2].url}
-          width={36}
+          width={40}
           loading="lazy"
         />
         <div className={styles['artist-top-track-title-name']}>

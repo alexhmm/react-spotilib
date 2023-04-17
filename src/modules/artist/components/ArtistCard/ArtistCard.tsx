@@ -27,7 +27,7 @@ type ArtistCardProps = {
 };
 
 const ArtistCard = (props: ArtistCardProps) => {
-  const { smDown, lgDown } = useBreakpoints();
+  const { smDown } = useBreakpoints();
   const { playPutMutation } = usePlayerHttp();
 
   /**
@@ -67,13 +67,16 @@ const ArtistCard = (props: ArtistCardProps) => {
     >
       <div className={clsx(styles['artist-card-image'], 'image')}>
         {(props.artist.images[0] && props.artist.images[0].url) ||
-        (props.artist.images[1] && props.artist.images[1].url) ? (
+        (props.artist.images[1] && props.artist.images[1].url) ||
+        (props.artist.images[2] && props.artist.images[2].url) ? (
           <img
             alt={props.artist.name}
             src={
-              lgDown
-                ? props.artist.images[1]?.url
-                  ? props.artist.images[1].url
+              smDown
+                ? props.artist.images[2]?.url
+                  ? props.artist.images[2].url
+                  : props.artist.images[1]?.url
+                  ? props.artist.images[1]?.url
                   : props.artist.images[0]?.url
                 : props.artist.images[0].url
             }

@@ -12,13 +12,13 @@
       @apply object-cover shrink-0;
     }
     &-index {
-      @apply h-9 hidden items-center justify-center mr-2 shrink-0 w-9 sm:flex;
+      @apply h-10 hidden items-center justify-center mr-2 shrink-0 w-10 sm:flex;
     }
     &-name {
       @apply duration-200 pl-2 transition-colors truncate lg:pl-4 lg:pr-2;
     }
     &-play {
-      @apply h-9 mr-2 shrink-0 w-9;
+      @apply h-10 mr-2 shrink-0 w-10;
     }
   }
 }

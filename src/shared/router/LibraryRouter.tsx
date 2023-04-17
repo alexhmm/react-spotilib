@@ -14,7 +14,7 @@ const Playlists = lazy(
 const LibraryRouter = () => {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/library/playlists" />} />
+      <Route path="/" element={<Navigate to="/library/artists" />} />
       <Route
         path="/albums"
         element={

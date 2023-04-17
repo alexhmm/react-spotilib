@@ -1,7 +1,7 @@
 .playlist-card {
   @apply duration-200 flex py-1 relative rounded-md transition-colors w-full sm:flex-col sm:p-4;
   &-image {
-    @apply h-12 relative shrink-0 w-12 sm:aspect-square sm:h-auto sm:w-full;
+    @apply h-16 relative shrink-0 w-16 sm:aspect-square sm:h-auto sm:w-full;
     & img {
       @apply absolute aspect-square left-0 object-cover top-0 w-full sm:rounded-md sm:shadow-xl;
     }
@@ -13,12 +13,28 @@
     @apply absolute h-full left-0 top-0 w-full;
   }
   &-info {
-    @apply flex flex-col ml-4 truncate w-full sm:ml-0;
+    @apply flex flex-col justify-center ml-4 truncate w-full sm:ml-0;
     &-name {
-      @apply font-semibold text-sm truncate sm:mt-4;
+      @apply font-semibold truncate sm:mt-4;
     }
     &-owner {
-      @apply text-sm truncate w-full sm:mb-4 sm:mt-2;
+      @apply truncate w-full sm:mb-4 sm:mt-2;
+    }
+  }
+}
+
+@media (hover: hover) {
+  .playlist-card {
+    &-image {
+      @apply h-12 w-12 sm:h-auto sm:w-full;
+    }
+    &-info {
+      &-name {
+        @apply text-sm;
+      }
+      &-owner {
+        @apply text-sm;
+      }
     }
   }
 }
