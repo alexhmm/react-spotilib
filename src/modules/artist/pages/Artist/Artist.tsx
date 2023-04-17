@@ -101,7 +101,10 @@ const Artist = () => {
   );
   const [appearsOn, setAppearsOn] = useState<IAlbumCard[]>([]);
   const [artist, setArtist] = useState<SpotifyArtist | undefined>(undefined);
+  const [compilations, setCompilations] = useState<IAlbumCard[]>([]);
+  const [releases, setReleases] = useState<IAlbumCard[]>([]);
   const [relatedArtists, setRelatedArtists] = useState<IArtistCard[]>([]);
+  const [singles, setSingles] = useState<IAlbumCard[]>([]);
   const [topTracks, setTopTracks] = useState<SpotifyTrack[]>([]);
   const [topTracksMore, setTopTracksMore] = useState<boolean>(false);
 
@@ -109,11 +112,11 @@ const Artist = () => {
   // QUERIES //
   // ####### //
 
-  // Get artist albums by id, user country and album type.
+  // Get artist albums by id, user country.
   // eslint-disable-next-line
   const albumsQuery = useQuery(
-    ['albums', id, profile?.country, albumsType],
-    () => albumsGet(id, profile?.country, albumsType),
+    ['albums', id, profile?.country, SpotifyAlbumType.Album],
+    () => albumsGet(id, profile?.country, SpotifyAlbumType.Album),
     {
       refetchOnWindowFocus: false,
       onError: (error: any) => {
@@ -179,6 +182,29 @@ const Artist = () => {
     retry: (failureCount, error: any) => handleRetry(failureCount, error),
   });
 
+  // Get artist compilations by id, user country.
+  // eslint-disable-next-line
+  const compilationsQuery = useQuery(
+    ['albums', id, profile?.country, SpotifyAlbumType.Compilation],
+    () => albumsGet(id, profile?.country, SpotifyAlbumType.Compilation),
+    {
+      refetchOnWindowFocus: false,
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          console.error('Error on getting artist compilations:', error);
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data) => {
+        if (data) {
+          setCompilations(albumDataMap(data.items));
+        }
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
   // Get artist following state by id.
   // eslint-disable-next-line
   const followingStateQuery = useQuery(
@@ -204,6 +230,29 @@ const Artist = () => {
     }
   );
 
+  // Get all artist releases by id, user country.
+  // eslint-disable-next-line
+  const releasesQuery = useQuery(
+    ['albums', id, profile?.country, undefined],
+    () => albumsGet(id, profile?.country, undefined),
+    {
+      refetchOnWindowFocus: false,
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          console.error('Error on getting artist albums:', error);
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data) => {
+        if (data) {
+          setReleases(albumDataMap(data.items));
+        }
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
   // Get related artists by artist id.
   // eslint-disable-next-line
   const relatedArtistsQuery = useQuery(
@@ -221,6 +270,29 @@ const Artist = () => {
       onSuccess: (data) => {
         if (data) {
           setRelatedArtists(artistDataMap(data.artists));
+        }
+      },
+      retry: (failureCount, error: any) => handleRetry(failureCount, error),
+    }
+  );
+
+  // Get artist singles and eps by id, user country.
+  // eslint-disable-next-line
+  const singlesQuery = useQuery(
+    ['albums', id, profile?.country, SpotifyAlbumType.Single],
+    () => albumsGet(id, profile?.country, SpotifyAlbumType.Single),
+    {
+      refetchOnWindowFocus: false,
+      onError: (error: any) => {
+        const errRes = error?.response;
+        if (errRes) {
+          console.error('Error on getting artist singles and eps:', error);
+          handleError(errRes.status);
+        }
+      },
+      onSuccess: (data) => {
+        if (data) {
+          setSingles(albumDataMap(data.items));
         }
       },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),
@@ -411,29 +483,48 @@ const Artist = () => {
                 title={t('artist.detail.discography.type.all')}
                 onClick={() => setAlbumsType(undefined)}
               />
-              <ArtistAlbumsTypeButton
-                currentType={albumsType}
-                title={t('artist.detail.discography.type.album')}
-                type={SpotifyAlbumType.Album}
-                onClick={() => setAlbumsType(SpotifyAlbumType.Album)}
-              />
-              <ArtistAlbumsTypeButton
-                currentType={albumsType}
-                title={t('artist.detail.discography.type.single')}
-                type={SpotifyAlbumType.Single}
-                onClick={() => setAlbumsType(SpotifyAlbumType.Single)}
-              />
-              <ArtistAlbumsTypeButton
-                currentType={albumsType}
-                title={t('artist.detail.discography.type.compilation')}
-                type={SpotifyAlbumType.Compilation}
-                onClick={() => setAlbumsType(SpotifyAlbumType.Compilation)}
-              />
+              {albums.length > 0 ? (
+                <ArtistAlbumsTypeButton
+                  currentType={albumsType}
+                  title={t('artist.detail.discography.type.album')}
+                  type={SpotifyAlbumType.Album}
+                  onClick={() => setAlbumsType(SpotifyAlbumType.Album)}
+                />
+              ) : null}
+              {singles.length > 0 ? (
+                <ArtistAlbumsTypeButton
+                  currentType={albumsType}
+                  title={t('artist.detail.discography.type.single')}
+                  type={SpotifyAlbumType.Single}
+                  onClick={() => setAlbumsType(SpotifyAlbumType.Single)}
+                />
+              ) : null}
+              {compilations.length ? (
+                <ArtistAlbumsTypeButton
+                  currentType={albumsType}
+                  title={t('artist.detail.discography.type.compilation')}
+                  type={SpotifyAlbumType.Compilation}
+                  onClick={() => setAlbumsType(SpotifyAlbumType.Compilation)}
+                />
+              ) : null}
             </div>
             <div className="context-grid">
-              {albums.map((album) => (
-                <AlbumCard key={album.id} album={album} />
-              ))}
+              {albumsType === undefined &&
+                releases.map((album) => (
+                  <AlbumCard key={album.id} album={album} />
+                ))}
+              {albumsType === SpotifyAlbumType.Album &&
+                albums.map((album) => (
+                  <AlbumCard key={album.id} album={album} />
+                ))}
+              {albumsType === SpotifyAlbumType.Single &&
+                singles.map((album) => (
+                  <AlbumCard key={album.id} album={album} />
+                ))}
+              {albumsType === SpotifyAlbumType.Compilation &&
+                compilations.map((album) => (
+                  <AlbumCard key={album.id} album={album} />
+                ))}
             </div>
           </section>
           <section className={styles['artist-section']}>
