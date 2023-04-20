@@ -106,12 +106,6 @@ const ArtistTopTrack = (props: ArtistTopTrackProps) => {
           {props.track.album.name}
         </Link>
       </Box>
-      {/* <Box
-        className={styles['artist-top-track-duration']}
-        sx={{ color: 'text.secondary' }}
-      >
-        {minutesSecondsByMillisecondsGet(props.track.duration_ms)}
-      </Box> */}
       <TrackMore
         duration={props.track.duration_ms}
         image={props.track.album.images[2]?.url ?? undefined}

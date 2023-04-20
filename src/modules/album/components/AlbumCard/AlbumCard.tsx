@@ -118,7 +118,8 @@ const AlbumCard = (props: AlbumCardProps) => {
             '.app-link:hover': {
               color: 'primary.main',
             },
-            zIndex: isMobile ? undefined : 10,
+            zIndex:
+              isMobile || location.pathname.includes('artist') ? undefined : 10,
           }}
         >
           {!smDown && (
