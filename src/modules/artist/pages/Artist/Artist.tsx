@@ -410,9 +410,17 @@ const Artist = () => {
   // Reset data on id change.
   useEffect(() => {
     return () => {
+      setAlbums([]);
+      setAlbumsType(undefined);
+      setAppearsOn([]);
       setArtist(undefined);
-      setFollowing(undefined);
+      setCompilations([]);
       setHeaderTitle(undefined);
+      setRelatedArtists([]);
+      setReleases([]);
+      setSingles([]);
+      setTopTracks([]);
+      setTopTracksMore(false);
       setTitle();
     };
     // eslint-disable-next-line
