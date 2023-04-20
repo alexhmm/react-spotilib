@@ -3,6 +3,8 @@ import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
 
+// Components
+import TrackMore from '../../../track/components/TrackMore/TrackMore';
 // Hooks
 import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
 
@@ -10,18 +12,20 @@ import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
 import styles from './ArtistTopTrack.module.scss';
 
 // Types
+import {
+  ImageFallbackType,
+  TrackAction,
+} from '../../../../shared/types/shared.types';
 import { SpotifyTrack } from '../../../../shared/types/spotify.types';
 
 // UI
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
 import Link from '../../../../shared/ui/Link/Link';
 
-// Utils
-import { minutesSecondsByMillisecondsGet } from '../../../../shared/utils/shared.utils';
-
 type ArtistTopTrackProps = {
   index: number;
   track: SpotifyTrack;
+  onAction: (action: TrackAction) => void;
   onPlay: () => void;
 };
 
@@ -48,12 +52,18 @@ const ArtistTopTrack = (props: ArtistTopTrackProps) => {
             '.index': {
               display: 'none',
             },
+            '.favorite, .more': {
+              visibility: 'visible',
+            },
             '.play': {
               display: 'flex !important',
             },
           },
           '.app-link:hover': {
             color: 'primary.main',
+          },
+          '.favorite, .more': {
+            visibility: 'hidden',
           },
           '.play': {
             display: 'none !important',
@@ -96,12 +106,20 @@ const ArtistTopTrack = (props: ArtistTopTrackProps) => {
           {props.track.album.name}
         </Link>
       </Box>
-      <Box
+      {/* <Box
         className={styles['artist-top-track-duration']}
         sx={{ color: 'text.secondary' }}
       >
         {minutesSecondsByMillisecondsGet(props.track.duration_ms)}
-      </Box>
+      </Box> */}
+      <TrackMore
+        duration={props.track.duration_ms}
+        image={props.track.album.images[2]?.url ?? undefined}
+        subtitle={`${props.track.artists[0].name} • ${props.track.name}`}
+        title={props.track.name}
+        type={ImageFallbackType.Playlist}
+        onAction={props.onAction}
+      />
     </Box>
   );
 };

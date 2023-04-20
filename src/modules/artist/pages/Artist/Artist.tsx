@@ -2,21 +2,26 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
+import { isMobile } from 'react-device-detect';
 import { CircularProgress } from '@mui/material';
 
 // Components
 import AlbumCard from '../../../album/components/AlbumCard/AlbumCard';
 import ArtistCard from '../../components/ArtistCard/ArtistCard';
 import ArtistTopTrack from '../../components/ArtistTopTrack/ArtistTopTrack';
+import DetailDrawer from '../../../../shared/components/DetailDrawer/DetailDrawer';
 import ImageFallback from '../../../../shared/components/ImageFallback/ImageFallback';
+import PlaylistAddTrack from '../../../playlist/components/PlaylistAddTrack/PlaylistAddTrack';
 
 // Hooks
 import useArtistHttp from '../../use-artist-http.hook';
 import useFetch from '../../../../shared/hooks/use-fetch.hook';
 import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';
+import useTrackHttp from '../../../track/hooks/use-track-http.hook';
 import useUserHttp from '../../../user/use-user-http.hook';
 
 // Stores
+import usePlaylistStore from '../../../playlist/use-playlist.store';
 import useSharedStore from '../../../../shared/stores/use-shared.store';
 import useUserStore from '../../../user/use-user.store';
 
@@ -32,6 +37,7 @@ import {
 import {
   ImageFallbackType,
   RequestMethod,
+  TrackAction,
 } from '../../../../shared/types/shared.types';
 import {
   SpotifyAlbumType,
@@ -43,6 +49,7 @@ import {
 import { ButtonType } from '../../../../shared/types/ui.types';
 
 // UI
+import Dialog from '../../../../shared/ui/Dialog/Dialog';
 import H2 from '../../../../shared/ui/H2/H2';
 import H3 from '../../../../shared/ui/H3/H3';
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
@@ -83,8 +90,14 @@ const Artist = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { playPutMutation } = usePlayerHttp();
+  const { saveTracksPutMutation } = useTrackHttp();
   const { t, i18n } = useTranslation();
   const { followingStateGet, followingStatePutDeleteMutation } = useUserHttp();
+
+  // Playlists store state
+  const [addTrackToPlaylist, setAddTrackToPlaylist] = usePlaylistStore(
+    (state) => [state.addTrackToPlaylist, state.setAddTrackToPlaylist]
+  );
 
   // Shared store state
   const [following, setHeaderTitle, setFollowing] = useSharedStore((state) => [
@@ -403,6 +416,35 @@ const Artist = () => {
     [topTracks]
   );
 
+  /**
+   * Handler on playlist track action.
+   * @param track SpotifyTrack
+   * @param albumId Album id
+   * @param action PlaylistTrackAction
+   */
+  const onTrackAction = useCallback(
+    (track: SpotifyTrack, albumId: string, action: TrackAction) => {
+      switch (action) {
+        case TrackAction.AddToPlaylist:
+          setAddTrackToPlaylist(track.uri);
+          break;
+        case TrackAction.Favorite:
+          saveTracksPutMutation.mutate({ ids: [track.id] });
+          break;
+        case TrackAction.ShowAlbum:
+          navigate(`/album/${albumId}`);
+          break;
+        case TrackAction.ShowArtist:
+          navigate(`/artist/${track.artists[0].id}`);
+          break;
+        default:
+          break;
+      }
+    },
+    // eslint-disable-next-line
+    [id]
+  );
+
   // ####### //
   // EFFECTS //
   // ####### //
@@ -486,6 +528,9 @@ const Artist = () => {
                       key={track.id}
                       index={index}
                       track={track}
+                      onAction={(action) =>
+                        onTrackAction(track, track.album.id, action)
+                      }
                       onPlay={() => onPlayTopTrack(index)}
                     />
                   );
@@ -580,6 +625,30 @@ const Artist = () => {
                 ))}
               </div>
             </section>
+          )}
+          {isMobile ? (
+            <DetailDrawer
+              open={!!addTrackToPlaylist}
+              title={t('track.action.add_to_playlist.title')}
+              onClose={() => setAddTrackToPlaylist(undefined)}
+            >
+              <PlaylistAddTrack
+                scrollableTarget="drawer-content"
+                uri={addTrackToPlaylist ?? ''}
+              />
+            </DetailDrawer>
+          ) : (
+            <Dialog
+              open={!!addTrackToPlaylist}
+              title={t('track.action.add_to_playlist.title')}
+              widthClassName={styles['dialog-add-track-to-playlist-width']}
+              onClose={() => setAddTrackToPlaylist(undefined)}
+            >
+              <PlaylistAddTrack
+                scrollableTarget="dialog-content"
+                uri={addTrackToPlaylist ?? ''}
+              />
+            </Dialog>
           )}
         </div>
       )}
