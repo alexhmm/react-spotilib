@@ -1,4 +1,6 @@
 import { memo, ReactNode } from 'react';
+import { Link } from 'react-router-dom';
+import { Box } from '@mui/material';
 import clsx from 'clsx';
 
 // Styles
@@ -15,6 +17,7 @@ type H3Props = {
   actionTitle?: string;
   children: ReactNode;
   classes?: string;
+  link?: string;
   menuItems?: IMenuItem[];
   menuTitle?: string;
   onAction?: () => void;
@@ -23,9 +26,22 @@ type H3Props = {
 
 const H3 = (props: H3Props) => {
   return (
-    <div className={clsx(styles['h3'], props.classes && props.classes)}>
+    <Box
+      className={clsx(styles['h3'], props.classes && props.classes)}
+      sx={{
+        '.app-link:hover': {
+          color: 'primary.main',
+        },
+      }}
+    >
       <div className={styles['h3-title']}>
-        <h3>{props.children}</h3>
+        {props.link ? (
+          <Link className="app-link transition-colors" to={props.link}>
+            <h3>{props.children}</h3>
+          </Link>
+        ) : (
+          <h3>{props.children}</h3>
+        )}
         {props.menuItems && props.menuTitle && (
           <Menu
             items={props.menuItems}
@@ -41,7 +57,7 @@ const H3 = (props: H3Props) => {
           <TextButton onClick={props.onAction}>{props.actionTitle}</TextButton>
         )}
       </div>
-    </div>
+    </Box>
   );
 };
 

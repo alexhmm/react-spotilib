@@ -1,5 +1,16 @@
 // Types
-import { SpotifyArtist, SpotifyTrack } from '../../shared/types/spotify.types';
+import {
+  SpotifyArtist,
+  SpotifyMarket,
+  SpotifyTrack,
+} from '../../shared/types/spotify.types';
+
+export interface ArtistAlbumsGetParams {
+  limit?: number;
+  market?: SpotifyMarket;
+  offset?: number;
+  include_groups?: string;
+}
 
 export interface ArtistRelatedArtistsGetResponse {
   artists: SpotifyArtist[];

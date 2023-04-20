@@ -4,6 +4,9 @@ import { CircularProgress } from '@mui/material';
 
 // Lazy-load pages
 const Artist = lazy(() => import('../../modules/artist/pages/Artist/Artist'));
+const ArtistReleases = lazy(
+  () => import('../../modules/artist/pages/ArtistAlbums/ArtistAlbums')
+);
 
 const ArtistRouter = () => {
   return (
@@ -13,6 +16,14 @@ const ArtistRouter = () => {
         element={
           <Suspense fallback={<CircularProgress />}>
             <Artist />
+          </Suspense>
+        }
+      />
+      <Route
+        path=":id/discography/:type"
+        element={
+          <Suspense fallback={<CircularProgress />}>
+            <ArtistReleases />
           </Suspense>
         }
       />

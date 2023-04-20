@@ -1,5 +1,5 @@
 import { Fragment, memo, useCallback } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useParams } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import ImageFallback from '../../../../shared/components/ImageFallback/ImageFallback';
 
 // Hooks
+import useAlbum from '../../use-album.hook';
 import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
 import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';
 
@@ -28,7 +29,9 @@ type AlbumCardProps = {
 };
 
 const AlbumCard = (props: AlbumCardProps) => {
+  const { typeTranslationByTypeGet } = useAlbum();
   const { lgDown, smDown } = useBreakpoints();
+  const location = useLocation();
   const { playPutMutation } = usePlayerHttp();
 
   // ######### //
@@ -124,36 +127,45 @@ const AlbumCard = (props: AlbumCardProps) => {
               <>{' • '}</>
             </time>
           )}
-          {props.album.artists.map((artist, index) => (
-            <Fragment key={artist.id}>
+          {location.pathname.includes('artist') && (
+            <Fragment>
               <> </>
-              {isMobile ? (
-                <Box
-                  className={styles['album-card-info-data-artist']}
-                  sx={{
-                    color: 'text.secondary',
-                  }}
-                >
-                  {artist.name}
-                </Box>
-              ) : (
-                <Link
-                  classes={clsx(
-                    styles['album-card-info-data-artist'],
-                    styles['album-card-info-data-artist-link']
-                  )}
-                  to={`/artist/${artist.id}`}
-                  onClick={() => {
-                    return false;
-                  }}
-                >
-                  {artist.name}
-                </Link>
-              )}
-
-              {`${index < props.album.artists.length - 1 ? ',' : ''}`}
+              <div className={styles['album-card-info-data-artist']}>
+                {typeTranslationByTypeGet(props.album.album_type)}
+              </div>
             </Fragment>
-          ))}
+          )}
+          {!location.pathname.includes('artist') &&
+            props.album.artists.map((artist, index) => (
+              <Fragment key={artist.id}>
+                <> </>
+                {isMobile ? (
+                  <Box
+                    className={styles['album-card-info-data-artist']}
+                    sx={{
+                      color: 'text.secondary',
+                    }}
+                  >
+                    {artist.name}
+                  </Box>
+                ) : (
+                  <Link
+                    classes={clsx(
+                      styles['album-card-info-data-artist'],
+                      styles['album-card-info-data-artist-link']
+                    )}
+                    to={`/artist/${artist.id}`}
+                    onClick={() => {
+                      return false;
+                    }}
+                  >
+                    {artist.name}
+                  </Link>
+                )}
+
+                {`${index < props.album.artists.length - 1 ? ',' : ''}`}
+              </Fragment>
+            ))}
         </Box>
       </div>
       <RouterLink

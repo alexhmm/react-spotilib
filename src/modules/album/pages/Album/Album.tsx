@@ -41,6 +41,7 @@ import {
   ImageFallbackType,
   TrackAction,
 } from '../../../../shared/types/shared.types';
+import { SpotifyMarket } from '../../../../shared/types/spotify.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
 import { SaveAlbumsPutDeleteRequest } from '../../../user/user.types';
 
@@ -52,7 +53,7 @@ import IconButton from '../../../../shared/ui/IconButton/IconButton';
 import Link from '../../../../shared/ui/Link/Link';
 
 // Utils
-import { albumDataMap } from '../../album.utils';
+import { mapAlbumData } from '../../album.utils';
 import { setTitle } from '../../../../shared/utils/shared.utils';
 
 const Album = () => {
@@ -132,7 +133,10 @@ const Album = () => {
   // eslint-disable-next-line
   const artistAlbumsQuery = useQuery(
     ['albums', album?.artists[0].id, profile?.country],
-    () => albumsGet(album?.artists[0].id, profile?.country),
+    () =>
+      albumsGet(album?.artists[0].id, {
+        market: (profile?.country as SpotifyMarket) ?? '',
+      }),
     {
       refetchOnWindowFocus: false,
       onError: (error: any) => {
@@ -144,7 +148,7 @@ const Album = () => {
       },
       onSuccess: (data) => {
         if (data) {
-          setOtherAlbums(albumDataMap(data.items));
+          setOtherAlbums(mapAlbumData(data.items));
         }
       },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),

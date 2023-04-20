@@ -27,7 +27,7 @@ import { SavedAlbumsGetParams } from '../../../user/user.types';
 import H3 from '../../../../shared/ui/H3/H3';
 
 // Utils
-import { savedAlbumDataMap } from '../../../album/album.utils';
+import { mapSavedAlbumData } from '../../../album/album.utils';
 import { concatArray, setTitle } from '../../../../shared/utils/shared.utils';
 
 const Albums = () => {
@@ -75,7 +75,7 @@ const Albums = () => {
         if (data) {
           !savedAlbumsTotal && setSavedAlbumsTotal(data.total);
           setSavedAlbums(
-            concatArray(savedAlbums, savedAlbumDataMap(data.items))
+            concatArray(savedAlbums, mapSavedAlbumData(data.items))
           );
         }
       },

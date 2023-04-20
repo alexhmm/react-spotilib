@@ -15,11 +15,11 @@ import {
   FollowedArtistsGetResponse,
   UserFollowingStateGetRequest,
   FollowingStatePutDeleteRequest,
-  SavedAlbumsGetParams,
   SavedAlbum,
   UserProfile,
   SavedAlbumsCheckGetRequest,
   SaveAlbumsPutDeleteRequest,
+  SavedAlbumsGetParams,
 } from './user.types';
 
 // Stores

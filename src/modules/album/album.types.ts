@@ -7,7 +7,7 @@ export interface AlbumWithDuration extends SpotifyAlbum {
 
 export type AlbumCard = Pick<
   SpotifyAlbum,
-  'artists' | 'id' | 'images' | 'name' | 'release_date' | 'uri'
+  'album_type' | 'artists' | 'id' | 'images' | 'name' | 'release_date' | 'uri'
 >;
 
 export type AlbumTrack = Omit<SpotifyTrack, 'album'>;

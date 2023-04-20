@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { CircularProgress } from '@mui/material';
@@ -37,6 +37,7 @@ import {
   SpotifyAlbumType,
   SpotifyArtist,
   SpotifyFollowType,
+  SpotifyMarket,
   SpotifyTrack,
 } from '../../../../shared/types/spotify.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
@@ -50,7 +51,7 @@ import TextButtonContained from '../../../../shared/ui/TextButtonContained/TextB
 import TextButtonOutlined from '../../../../shared/ui/TextButtonOutlined/TextButtonOutlined';
 
 // Utils
-import { albumDataMap } from '../../../album/album.utils';
+import { mapAlbumData } from '../../../album/album.utils';
 import { artistDataMap } from '../../artist.utils';
 import { setTitle } from '../../../../shared/utils/shared.utils';
 
@@ -80,6 +81,7 @@ const Artist = () => {
     useArtistHttp();
   const { handleError, handleRetry } = useFetch();
   const { id } = useParams();
+  const navigate = useNavigate();
   const { playPutMutation } = usePlayerHttp();
   const { t, i18n } = useTranslation();
   const { followingStateGet, followingStatePutDeleteMutation } = useUserHttp();
@@ -116,7 +118,11 @@ const Artist = () => {
   // eslint-disable-next-line
   const albumsQuery = useQuery(
     ['albums', id, profile?.country, SpotifyAlbumType.Album],
-    () => albumsGet(id, profile?.country, SpotifyAlbumType.Album),
+    () =>
+      albumsGet(id, {
+        include_groups: SpotifyAlbumType.Album,
+        market: (profile?.country as SpotifyMarket) ?? '',
+      }),
     {
       refetchOnWindowFocus: false,
       onError: (error: any) => {
@@ -128,7 +134,7 @@ const Artist = () => {
       },
       onSuccess: (data) => {
         if (data) {
-          setAlbums(albumDataMap(data.items));
+          setAlbums(mapAlbumData(data.items));
         }
       },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),
@@ -139,7 +145,11 @@ const Artist = () => {
   // eslint-disable-next-line
   const appearsOnQuery = useQuery(
     ['appears-on', id, profile?.country],
-    () => albumsGet(id, profile?.country, SpotifyAlbumType.AppearsOn),
+    () =>
+      albumsGet(id, {
+        include_groups: SpotifyAlbumType.AppearsOn,
+        market: (profile?.country as SpotifyMarket) ?? '',
+      }),
     {
       refetchOnWindowFocus: false,
       onError: (error: any) => {
@@ -151,7 +161,7 @@ const Artist = () => {
       },
       onSuccess: (data) => {
         if (data) {
-          setAppearsOn(albumDataMap(data.items));
+          setAppearsOn(mapAlbumData(data.items));
         }
       },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),
@@ -186,7 +196,11 @@ const Artist = () => {
   // eslint-disable-next-line
   const compilationsQuery = useQuery(
     ['albums', id, profile?.country, SpotifyAlbumType.Compilation],
-    () => albumsGet(id, profile?.country, SpotifyAlbumType.Compilation),
+    () =>
+      albumsGet(id, {
+        include_groups: SpotifyAlbumType.Compilation,
+        market: (profile?.country as SpotifyMarket) ?? '',
+      }),
     {
       refetchOnWindowFocus: false,
       onError: (error: any) => {
@@ -198,7 +212,7 @@ const Artist = () => {
       },
       onSuccess: (data) => {
         if (data) {
-          setCompilations(albumDataMap(data.items));
+          setCompilations(mapAlbumData(data.items));
         }
       },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),
@@ -234,7 +248,10 @@ const Artist = () => {
   // eslint-disable-next-line
   const releasesQuery = useQuery(
     ['albums', id, profile?.country, undefined],
-    () => albumsGet(id, profile?.country, undefined),
+    () =>
+      albumsGet(id, {
+        market: (profile?.country as SpotifyMarket) ?? '',
+      }),
     {
       refetchOnWindowFocus: false,
       onError: (error: any) => {
@@ -246,7 +263,7 @@ const Artist = () => {
       },
       onSuccess: (data) => {
         if (data) {
-          setReleases(albumDataMap(data.items));
+          setReleases(mapAlbumData(data.items));
         }
       },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),
@@ -280,7 +297,11 @@ const Artist = () => {
   // eslint-disable-next-line
   const singlesQuery = useQuery(
     ['albums', id, profile?.country, SpotifyAlbumType.Single],
-    () => albumsGet(id, profile?.country, SpotifyAlbumType.Single),
+    () =>
+      albumsGet(id, {
+        include_groups: SpotifyAlbumType.Single,
+        market: (profile?.country as SpotifyMarket) ?? '',
+      }),
     {
       refetchOnWindowFocus: false,
       onError: (error: any) => {
@@ -292,7 +313,7 @@ const Artist = () => {
       },
       onSuccess: (data) => {
         if (data) {
-          setSingles(albumDataMap(data.items));
+          setSingles(mapAlbumData(data.items));
         }
       },
       retry: (failureCount, error: any) => handleRetry(failureCount, error),
@@ -476,7 +497,14 @@ const Artist = () => {
             )}
           </section>
           <section className={styles['artist-section']}>
-            <H3>{t('artist.detail.discography.title')}</H3>
+            <H3
+              actionTitle={t('app.show.all').toString()}
+              onAction={() =>
+                navigate(`/artist/${id}/discography/${albumsType ?? 'all'}`)
+              }
+            >
+              {t('artist.detail.discography.title')}
+            </H3>
             <div className={styles['artist-discography-types']}>
               <ArtistAlbumsTypeButton
                 currentType={albumsType}

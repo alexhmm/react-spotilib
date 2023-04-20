@@ -3,6 +3,7 @@ import useFetch from '../../shared/hooks/use-fetch.hook';
 
 // Types
 import {
+  ArtistAlbumsGetParams,
   ArtistRelatedArtistsGetResponse,
   ArtistTopTracksGetResponse,
 } from './artist.types';
@@ -37,16 +38,31 @@ const useArtistHttp = () => {
    * @returns Artist's albums
    */
   const albumsGet = async (
-    id?: string,
-    country?: string,
-    type?: SpotifyAlbumType
+    id: string | undefined,
+    params: ArtistAlbumsGetParams
   ): Promise<SpotifyDataGetResponse<SpotifyArtistAlbum[]> | undefined> => {
-    if (id && country) {
+    if (id && params.market) {
+      const urlSearchParams = new URLSearchParams({
+        market: params.market ? params.market.toString() : '',
+      });
+
+      let include_groups = 'album,single,compilation';
+      if (
+        params.include_groups === SpotifyAlbumType.Album ||
+        params.include_groups === SpotifyAlbumType.AppearsOn ||
+        params.include_groups === SpotifyAlbumType.Compilation ||
+        params.include_groups === SpotifyAlbumType.Single
+      ) {
+        include_groups = params.include_groups;
+      }
+
+      urlSearchParams.append('include_groups', include_groups);
+      params.limit && urlSearchParams.append('limit', params.limit.toString());
+      params.offset &&
+        urlSearchParams.append('offset', params.offset.toString());
+
       return await fetchData(`artists/${id}/albums`, {
-        params: new URLSearchParams({
-          market: country ? country.toString() : '',
-          include_groups: type ? type.toString() : 'album,single,compilation',
-        }),
+        params: urlSearchParams,
       });
     } else {
       return undefined;

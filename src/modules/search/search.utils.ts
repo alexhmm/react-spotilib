@@ -2,7 +2,7 @@
 import { SearchData, SearchGetResponse } from './search.types';
 
 // Utils
-import { albumDataMap } from '../album/album.utils';
+import { mapAlbumData } from '../album/album.utils';
 import { artistDataMap } from '../artist/artist.utils';
 import { playlistDataMap } from '../playlist/playlist.utils';
 import { trackDataMap } from '../../shared/utils/track.utils';
@@ -20,7 +20,7 @@ export const searchDataCreate = (
   if (searchGetResponse.albums) {
     searchData = {
       ...searchData,
-      albums: albumDataMap(searchGetResponse.albums.items),
+      albums: mapAlbumData(searchGetResponse.albums.items),
     };
   }
 
