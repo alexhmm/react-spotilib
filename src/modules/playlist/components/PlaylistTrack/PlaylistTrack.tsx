@@ -11,10 +11,7 @@ import styles from './PlaylistTrack.module.scss';
 
 // Types
 import { PlaylistTrack as IPlaylistTrack } from '../../playlist.types';
-import {
-  ImageFallbackType,
-  TrackAction,
-} from '../../../../shared/types/shared.types';
+import { ImageFallbackType } from '../../../../shared/types/shared.types';
 
 // UI
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
@@ -25,10 +22,10 @@ import TrackMore from '../../../track/components/TrackMore/TrackMore';
 
 type PlaylistTrackProps = {
   locale: string;
+  id: string;
   index: number;
   owner?: boolean;
   track: IPlaylistTrack;
-  onAction: (action: TrackAction) => void;
   onPlay: () => void;
 };
 
@@ -157,11 +154,12 @@ const PlaylistTrack = (props: PlaylistTrackProps) => {
       <TrackMore
         duration={props.track.duration_ms}
         image={props.track.album.images[1]?.url}
+        playlistId={props.id}
         owner={props.owner}
         subtitle={`${props.track.artists[0].name} • ${props.track.album.name}`}
         title={props.track.name}
+        track={props.track}
         type={ImageFallbackType.Playlist}
-        onAction={props.onAction}
       />
     </Box>
   );

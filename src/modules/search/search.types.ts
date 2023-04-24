@@ -10,7 +10,7 @@ import {
   SpotifyPlaylist,
   SpotifyTrack,
 } from '../../shared/types/spotify.types';
-import { TrackCard } from '../../shared/types/track.types';
+import { TrackCard } from '../track/track.types';
 
 export interface SearchData {
   albums?: AlbumCard[];

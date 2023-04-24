@@ -9,7 +9,7 @@ import useSharedStore from '../../../shared/stores/use-shared.store';
 
 // Types
 import { RequestMethod } from '../../../shared/types/shared.types';
-import { SaveTracksPutRequest } from '../../../shared/types/track.types';
+import { SaveTracksPutRequest } from '../track.types';
 
 const useTrackHttp = () => {
   const { fetchData, handleError, handleRetry } = useFetch();

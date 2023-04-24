@@ -12,10 +12,7 @@ import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
 import styles from './ArtistTopTrack.module.scss';
 
 // Types
-import {
-  ImageFallbackType,
-  TrackAction,
-} from '../../../../shared/types/shared.types';
+import { ImageFallbackType } from '../../../../shared/types/shared.types';
 import { SpotifyTrack } from '../../../../shared/types/spotify.types';
 
 // UI
@@ -25,7 +22,6 @@ import Link from '../../../../shared/ui/Link/Link';
 type ArtistTopTrackProps = {
   index: number;
   track: SpotifyTrack;
-  onAction: (action: TrackAction) => void;
   onPlay: () => void;
 };
 
@@ -70,9 +66,11 @@ const ArtistTopTrack = (props: ArtistTopTrackProps) => {
           },
         },
       }}
-      onClick={() => isMobile && props.onPlay()}
     >
-      <div className={styles['artist-top-track-title']}>
+      <div
+        className={styles['artist-top-track-title']}
+        onClick={() => isMobile && props.onPlay()}
+      >
         <Box
           className={clsx(styles['artist-top-track-title-index'], 'index')}
           sx={{ color: 'text.secondary' }}
@@ -101,6 +99,7 @@ const ArtistTopTrack = (props: ArtistTopTrackProps) => {
       <Box
         className={styles['artist-top-track-album']}
         sx={{ color: 'text.secondary' }}
+        onClick={() => isMobile && props.onPlay()}
       >
         <Link to={`/album/${props.track.album.id}`}>
           {props.track.album.name}
@@ -111,8 +110,8 @@ const ArtistTopTrack = (props: ArtistTopTrackProps) => {
         image={props.track.album.images[2]?.url ?? undefined}
         subtitle={`${props.track.artists[0].name} • ${props.track.name}`}
         title={props.track.name}
+        track={props.track}
         type={ImageFallbackType.Playlist}
-        onAction={props.onAction}
       />
     </Box>
   );

@@ -1,14 +1,10 @@
 // Types
-import {
-  Playlist,
-  PlaylistCard,
-  PlaylistTrack,
-  PlaylistTrackArtist,
-} from './playlist.types';
+import { Playlist, PlaylistCard, PlaylistTrack } from './playlist.types';
 import {
   SpotifyPlaylist,
   SpotifyTrackMetaData,
 } from '../../shared/types/spotify.types';
+import { TrackArtist } from '../track/track.types';
 
 /**
  * Create playlist data by fetched spotify playlist.
@@ -63,7 +59,7 @@ export const playlistTracksMap = (
   const tracks: PlaylistTrack[] = [];
 
   for (let track of tracksSpotify) {
-    const artists: PlaylistTrackArtist[] = [];
+    const artists: TrackArtist[] = [];
 
     for (let artist of track.track.artists) {
       artists.push({
@@ -80,6 +76,8 @@ export const playlistTracksMap = (
         id: track.track.album.id,
         images: track.track.album.images,
         name: track.track.album.name,
+        type: track.track.type,
+        uri: track.track.uri,
       },
       artists,
       duration_ms: track.track.duration_ms,

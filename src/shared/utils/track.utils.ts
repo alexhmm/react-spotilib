@@ -1,6 +1,6 @@
 // Types
 import { SpotifyTrack } from '../types/spotify.types';
-import { TrackCard, TrackCardArtist } from '../types/track.types';
+import { TrackCard, TrackCardArtist } from '../../modules/track/track.types';
 
 /**
  * Map spotify track data.

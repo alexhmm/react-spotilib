@@ -1,12 +1,12 @@
 // Types
 import {
   SpotifyAlbum,
-  SpotifyArtist,
   SpotifyDataGetResponse,
   SpotifyPlaylist,
   SpotifyTrack,
   SpotifyTrackMetaData,
 } from '../../shared/types/spotify.types';
+import { Track } from '../track/track.types';
 
 export enum PlaylistAction {
   Delete = 'DELETE',
@@ -39,11 +39,7 @@ export interface PlaylistTracksAddPostRequest {
 }
 
 export interface PlaylistTrackAlbum {
-  album: Pick<SpotifyAlbum, 'id' | 'images' | 'name'>;
-}
-
-export interface PlaylistTrackArtists {
-  artists: PlaylistTrackArtist[];
+  album: Pick<SpotifyAlbum, 'id' | 'images' | 'name' | 'type' | 'uri'>;
 }
 
 export interface PlaylistsGetParams {
@@ -75,12 +71,5 @@ export type PlaylistCard = Pick<
   'id' | 'description' | 'images' | 'name' | 'owner' | 'uri'
 >;
 
-export type PlaylistTrack = Pick<
-  SpotifyTrack,
-  'duration_ms' | 'id' | 'name' | 'uri'
-> &
-  Pick<SpotifyTrackMetaData, 'added_at' | 'added_by'> &
-  PlaylistTrackAlbum &
-  PlaylistTrackArtists;
-
-export type PlaylistTrackArtist = Pick<SpotifyArtist, 'id' | 'name'>;
+export type PlaylistTrack = Track &
+  Pick<SpotifyTrackMetaData, 'added_at' | 'added_by'>;

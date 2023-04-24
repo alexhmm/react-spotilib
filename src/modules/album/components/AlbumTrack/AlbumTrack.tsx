@@ -10,11 +10,8 @@ import useBreakpoints from '../../../../shared/hooks/use-breakpoints.hook';
 import styles from './AlbumTrack.module.scss';
 
 // Types
-import { AlbumTrack as IAlbumTrack } from '../../album.types';
-import {
-  ImageFallbackType,
-  TrackAction,
-} from '../../../../shared/types/shared.types';
+import { ImageFallbackType } from '../../../../shared/types/shared.types';
+import { Track } from '../../../track/track.types';
 
 // UI
 import IconButton from '../../../../shared/ui/IconButton/IconButton';
@@ -27,8 +24,7 @@ type AlbumTrackProps = {
   image?: string;
   index: number;
   name: string;
-  track: IAlbumTrack;
-  onAction: (action: TrackAction) => void;
+  track: Track;
   onPlay: () => void;
 };
 
@@ -124,8 +120,8 @@ const AlbumTrack = (props: AlbumTrackProps) => {
         image={props.image}
         subtitle={`${props.track.artists[0].name} • ${props.name}`}
         title={props.track.name}
+        track={props.track}
         type={ImageFallbackType.Album}
-        onAction={props.onAction}
       />
     </Box>
   );

@@ -30,7 +30,7 @@ import {
 import {
   TopTracksGetResponse,
   TrackCard as ITrackCard,
-} from '../../../shared/types/track.types';
+} from '../../track/track.types';
 
 // UI
 import H2 from '../../../shared/ui/H2/H2';

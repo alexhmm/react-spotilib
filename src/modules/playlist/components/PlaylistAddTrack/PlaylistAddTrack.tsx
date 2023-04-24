@@ -83,6 +83,7 @@ const PlaylistItem = (props: PlaylistItemProps) => {
 type PlaylistAddTrackProps = {
   scrollableTarget: 'dialog-content' | 'drawer-content';
   uri: string;
+  onClose: () => void;
 };
 
 const PlaylistAddTrack = (props: PlaylistAddTrackProps) => {
@@ -118,6 +119,27 @@ const PlaylistAddTrack = (props: PlaylistAddTrackProps) => {
     // eslint-disable-next-line
   }, [playlists, profile?.id]);
 
+  /**
+   * Handler to add track to playlist.
+   * @param id Track id
+   */
+  const onPlaylistAddTrack = useCallback(
+    (id: string) => {
+      id &&
+        playlistTracksPostMutation.mutate(
+          {
+            id,
+            uris: [props.uri],
+          },
+          {
+            onSuccess: () => props.onClose(),
+          }
+        );
+    },
+    // eslint-disable-next-line
+    [props]
+  );
+
   return (
     <InfiniteScroll
       className={styles['playlist-add-track']}
@@ -134,12 +156,7 @@ const PlaylistAddTrack = (props: PlaylistAddTrackProps) => {
           <PlaylistItem
             key={playlist.id}
             playlist={playlist}
-            onClick={() =>
-              playlistTracksPostMutation.mutate({
-                id: playlist.id,
-                uris: [props.uri],
-              })
-            }
+            onClick={() => onPlaylistAddTrack(playlist.id)}
           />
         ))}
       {playlistsAddMutation.isLoading && <CircularProgress />}

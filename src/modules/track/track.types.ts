@@ -4,18 +4,10 @@ import {
   SpotifyArtist,
   SpotifyTrack,
   SpotifyTrackMetaData,
-} from './spotify.types';
+} from '../../shared/types/spotify.types';
 
 export interface SaveTracksPutRequest {
   ids: string[];
-}
-
-export interface TrackCardAlbumData {
-  album: Pick<SpotifyAlbum, 'images' | 'name'>;
-}
-
-export interface TrackCardArtistsData {
-  artists: TrackCardArtist[];
 }
 
 export interface TopTracksGetResponse {
@@ -27,6 +19,23 @@ export interface TopTracksGetResponse {
   previous: null;
   next: string;
 }
+
+export interface TrackAlbumData {
+  album: Pick<SpotifyAlbum, 'id' | 'images' | 'name' | 'type' | 'uri'>;
+}
+
+export interface TrackArtists {
+  artists: TrackArtist[];
+}
+
+export interface TrackCardAlbumData {
+  album: Pick<SpotifyAlbum, 'images' | 'name'>;
+}
+
+export interface TrackCardArtistsData {
+  artists: TrackCardArtist[];
+}
+
 export interface TracksGetResponse {
   items: SpotifyTrackMetaData[];
   total: number;
@@ -36,6 +45,12 @@ export interface TracksGetResponse {
   previous: null;
   next: string;
 }
+
+export type Track = Pick<SpotifyTrack, 'id' | 'duration_ms' | 'name' | 'uri'> &
+  TrackAlbumData &
+  TrackArtists;
+
+export type TrackArtist = Pick<SpotifyArtist, 'id' | 'name'>;
 
 export type TrackCard = Pick<
   SpotifyTrack,

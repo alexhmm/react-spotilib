@@ -10,7 +10,6 @@ import clsx from 'clsx';
 // Components
 import DetailDrawer from '../../../../shared/components/DetailDrawer/DetailDrawer';
 import ImageFallback from '../../../../shared/components/ImageFallback/ImageFallback';
-import PlaylistAddTrack from '../../components/PlaylistAddTrack/PlaylistAddTrack';
 import PlaylistEditDetails from '../../components/PlaylistEditDetails/PlaylistEditDetails';
 import PlaylistTrack from '../../components/PlaylistTrack/PlaylistTrack';
 
@@ -20,7 +19,6 @@ import useObjectURL from '../../../../shared/hooks/use-object-url.hook';
 import usePlayerHttp from '../../../../shared/hooks/use-player-http.hook';
 import usePlaylist from '../../use-playlist.hook';
 import usePlaylistHttp from '../../use-playlist-http.hook';
-import useTrackHttp from '../../../track/hooks/use-track-http.hook';
 
 // Styles
 import styles from './Playlist.module.scss';
@@ -33,17 +31,13 @@ import useUserStore from '../../../user/use-user.store';
 // Types
 import {
   PlaylistsGetParams,
-  Playlist as IPlaylist,
   PlaylistFollowPutRequest,
   PlaylistAction,
-  PlaylistItemsRemoveDeleteRequest,
-  PlaylistTrack as IPlaylistTrack,
   PlaylistUpdateRequest,
 } from '../../playlist.types';
 import {
   ImageFallbackType,
   MenuItem,
-  TrackAction,
 } from '../../../../shared/types/shared.types';
 import { ButtonType } from '../../../../shared/types/ui.types';
 
@@ -55,10 +49,7 @@ import Link from '../../../../shared/ui/Link/Link';
 import Menu from '../../../../shared/ui/Menu/Menu';
 
 // Utils
-import {
-  playlistCreate,
-  removePlaylistItemsEffect,
-} from '../../playlist.utils';
+import { playlistCreate } from '../../playlist.utils';
 import { setTitle } from '../../../../shared/utils/shared.utils';
 
 const Playlist = () => {
@@ -75,9 +66,7 @@ const Playlist = () => {
     playlistFollowGet,
     playlistFollowPut,
     playlistTracksGet,
-    playlistTracksDelete,
   } = usePlaylistHttp();
-  const { saveTracksPutMutation } = useTrackHttp();
   const { i18n, t } = useTranslation();
 
   // Refs
@@ -85,16 +74,16 @@ const Playlist = () => {
 
   // Component state
   const [detailsEdit, setDetailsEdit] = useState<boolean>(false);
-  const [playlist, setPlaylist] = useState<IPlaylist | undefined>(undefined);
 
   // Playlists store state
-  const [addTrackToPlaylist, playlists, setAddTrackToPlaylist, setPlaylists] =
-    usePlaylistStore((state) => [
-      state.addTrackToPlaylist,
+  const [playlist, playlists, setPlaylist, setPlaylists] = usePlaylistStore(
+    (state) => [
+      state.playlist,
       state.playlists,
-      state.setAddTrackToPlaylist,
+      state.setPlaylist,
       state.setPlaylists,
-    ]);
+    ]
+  );
 
   // Shared store state
   const [following, setHeaderTitle, setFollowing, setNotification] =
@@ -326,31 +315,6 @@ const Playlist = () => {
     }
   );
 
-  // DELETE Remove playlist items mutation
-  const removeItemsDeleteMutation = useMutation(
-    (data: { id: string; body: PlaylistItemsRemoveDeleteRequest }) =>
-      playlistTracksDelete(data),
-    {
-      onError: (error: any) => {
-        const errRes = error?.response;
-        if (errRes) {
-          handleError(errRes.status);
-        }
-      },
-      onSuccess: (data, variables) => {
-        playlist &&
-          setPlaylist(
-            removePlaylistItemsEffect(playlist, variables.body.tracks)
-          );
-        setNotification({
-          timeout: 3000,
-          title: t('playlist.detail.track.action.remove_from_playlist.success'),
-        });
-      },
-      retry: (failureCount, error: any) => handleRetry(failureCount, error),
-    }
-  );
-
   // ####### //
   // EFFECTS //
   // ####### //
@@ -452,47 +416,6 @@ const Playlist = () => {
     },
     // eslint-disable-next-line
     [downloadMetadataRef, id]
-  );
-
-  /**
-   * Handler on playlist track action.
-   * @param track PlaylistTrack
-   * @param action PlaylistTrackAction
-   */
-  const onTrackAction = useCallback(
-    (track: IPlaylistTrack, action: TrackAction) => {
-      switch (action) {
-        case TrackAction.AddToPlaylist:
-          setAddTrackToPlaylist(track.uri);
-          break;
-        case TrackAction.Favorite:
-          saveTracksPutMutation.mutate({ ids: [track.id] });
-          break;
-        case TrackAction.ShowAlbum:
-          navigate(`/album/${track.album.id}`);
-          break;
-        case TrackAction.ShowArtist:
-          navigate(`/artist/${track.artists[0].id}`);
-          break;
-        case TrackAction.RemoveFromPlaylist:
-          id &&
-            removeItemsDeleteMutation.mutate({
-              id,
-              body: {
-                tracks: [
-                  {
-                    uri: track.uri,
-                  },
-                ],
-              },
-            });
-          break;
-        default:
-          break;
-      }
-    },
-    // eslint-disable-next-line
-    [id]
   );
 
   /**
@@ -635,11 +558,11 @@ const Playlist = () => {
             {playlist.tracks.map((track, index) => (
               <PlaylistTrack
                 key={track.id}
+                id={playlist.id}
                 index={index}
                 locale={i18n.language}
                 owner={playlist.owner.id === profile?.id}
                 track={track}
-                onAction={(action) => onTrackAction(track, action)}
                 onPlay={() => onTrackPlay(playlist.uri, track.uri)}
               />
             ))}
@@ -659,55 +582,30 @@ const Playlist = () => {
         </InfiniteScroll>
       )}
       {isMobile && playlist && (
-        <>
-          <DetailDrawer
-            open={!!addTrackToPlaylist}
-            title={t('track.action.add_to_playlist.title')}
-            onClose={() => setAddTrackToPlaylist(undefined)}
-          >
-            <PlaylistAddTrack
-              scrollableTarget="drawer-content"
-              uri={addTrackToPlaylist ?? ''}
-            />
-          </DetailDrawer>
-          <DetailDrawer
-            open={detailsEdit}
-            title={t('playlist.detail.action.edit_details.title')}
+        <DetailDrawer
+          open={detailsEdit}
+          title={t('playlist.detail.action.edit_details.title')}
+          onClose={() => setDetailsEdit(false)}
+        >
+          <PlaylistEditDetails
+            playlist={playlist}
             onClose={() => setDetailsEdit(false)}
-          >
-            <PlaylistEditDetails
-              playlist={playlist}
-              onClose={() => setDetailsEdit(false)}
-              onSubmit={onEditDetails}
-            />
-          </DetailDrawer>
-        </>
+            onSubmit={onEditDetails}
+          />
+        </DetailDrawer>
       )}
       {!isMobile && playlist && (
-        <>
-          <Dialog
-            open={!!addTrackToPlaylist && !!playlist}
-            title={t('track.action.add_to_playlist.title')}
-            widthClassName={styles['dialog-add-track-to-playlist-width']}
-            onClose={() => setAddTrackToPlaylist(undefined)}
-          >
-            <PlaylistAddTrack
-              scrollableTarget="dialog-content"
-              uri={addTrackToPlaylist ?? ''}
-            />
-          </Dialog>
-          <Dialog
-            open={detailsEdit && !!playlist}
-            title={t('playlist.detail.action.edit_details.title')}
+        <Dialog
+          open={detailsEdit && !!playlist}
+          title={t('playlist.detail.action.edit_details.title')}
+          onClose={() => setDetailsEdit(false)}
+        >
+          <PlaylistEditDetails
+            playlist={playlist}
             onClose={() => setDetailsEdit(false)}
-          >
-            <PlaylistEditDetails
-              playlist={playlist}
-              onClose={() => setDetailsEdit(false)}
-              onSubmit={onEditDetails}
-            />
-          </Dialog>
-        </>
+            onSubmit={onEditDetails}
+          />
+        </Dialog>
       )}
     </>
   );

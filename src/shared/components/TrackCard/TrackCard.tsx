@@ -10,7 +10,7 @@ import useBreakpoints from '../../hooks/use-breakpoints.hook';
 import styles from './TrackCard.module.scss';
 
 // Types
-import { TrackCard as ITrackCard } from '../../types/track.types';
+import { TrackCard as ITrackCard } from '../../../modules/track/track.types';
 
 // UI
 import IconButton from '../../ui/IconButton/IconButton';
